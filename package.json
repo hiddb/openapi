@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/hiddb/openapi.git"
+    "url": "git+https://hiddb-machine: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@github.com/hiddb/openapi.git"
   },
   "author": "Benjamin Bolbrinker",
   "license": "ISC",
