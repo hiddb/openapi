@@ -65,10 +65,6 @@ tags:
     description: User authentification
   - name: Machine Authentification
     description: Machine authentification
-  - name: Organization
-    description: Operations on organizations
-  - name: User
-    description: Operations on users
   - name: Database
     description: Operations on databases
   - name: Instance
@@ -231,13 +227,6 @@ paths:
           description: unauthorized
         405:
           description: forbidden
-      requestBody:
-        description: Exchange access and secret token for JSON web token (JWT).
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRefresh"
-        required: true
 
   ############################## Machine Authentification ######################################
 
@@ -327,115 +316,6 @@ paths:
                 default: Ok
                 enum:
                   - Ok
-
-  ############################## Organizations #############################################
-
-  /organization:
-    get:
-      tags:
-        - Organization
-      description: Get information about organizations
-      summary: Get organizations
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OrganizationsResponse"
-
-    post:
-      tags:
-        - Organization
-      description: Create new organization
-      summary: Create organization
-      requestBody:
-        description: Newly created organization.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/OrganizationRequest"
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OrganizationResponse"
-
-  /organization/{organization_id}:
-    parameters:
-      - $ref: "#/components/parameters/OrganizationId"
-
-    get:
-      tags:
-        - Organization
-      description: Get information about specific organization
-      summary: Get organization
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OrganizationResponse"
-    delete:
-      tags:
-        - Organization
-      description: Delete a specific organization
-      summary: Delete organization
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OrganizationResponse"
-
-  ############################## Users #############################################
-
-  /user:
-    get:
-      tags:
-        - User
-      description: Get information about user in organization
-      summary: Get users
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UsersResponse"
-
-  /user/{user_id}:
-    parameters:
-      - $ref: "#/components/parameters/UserId"
-
-    get:
-      tags:
-        - User
-      description: Get information about specific user
-      summary: Get user
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserResponse"
-    delete:
-      tags:
-        - User
-      description: Delete a specific user
-      summary: Delete user
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserResponse"
 
   ############################## Databases #############################################
 
@@ -926,6 +806,9 @@ components:
   schemas:
     MachineLogin:
       type: object
+      required:
+        - access_key
+        - secret_key
       properties:
         access_key:
           type: string
@@ -938,6 +821,9 @@ components:
 
     UserLogin:
       type: object
+      required:
+        - email
+        - password
       properties:
         email:
           type: string
@@ -949,6 +835,9 @@ components:
 
     UserRegister:
       type: object
+      required:
+        - email
+        - password
       properties:
         email:
           type: string
@@ -958,11 +847,11 @@ components:
           type: string
           format: password
 
-    UserRefresh:
-      type: object
-
     UserVerify:
       type: object
+      required:
+        - user_id
+        - otp_id
       properties:
         user_id:
           type: string
@@ -974,6 +863,8 @@ components:
 
     UserReset:
       type: object
+      required:
+        - email
       properties:
         email:
           type: string
@@ -982,6 +873,10 @@ components:
 
     UserUpdateReset:
       type: object
+      required:
+        - user_id
+        - otp_id
+        - password
       properties:
         user_id:
           type: string
@@ -994,6 +889,8 @@ components:
     PostMachineRequest:
       allOf:
         - type: object
+          required:
+            - permission
           properties:
             permission:
               type: string
@@ -1005,6 +902,11 @@ components:
       type: object
       allOf:
         - type: object
+          required:
+            - key
+            - secret
+            - organization
+            - permission
           properties:
             key:
               type: string
@@ -1024,87 +926,13 @@ components:
                 - "write"
                 - "read"
 
-    OrganizationResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-              minLength: 18
-              maxLength: 18
-              pattern: "^[a-z0-9]{18,18}$"
-            name:
-              type: string
-              minLength: 3
-              maxLength: 20
-              pattern: "^[a-z0-9]{3,20}$"
-            created_at:
-              type: string
-              format: date-time
-            deleted_at:
-              type: string
-              format: date-time
-              nullable: true
-
-    OrganizationsResponse:
-      allOf:
-        - type: object
-          properties:
-            organizations:
-              type: array
-              items:
-                $ref: "#/components/schemas/OrganizationResponse"
-
-    OrganizationRequest:
-      allOf:
-        - type: object
-          properties:
-            name:
-              type: string
-              minLength: 3
-              maxLength: 20
-              pattern: "^[a-z0-9]{3,20}$"
-
-    UserResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-              minLength: 18
-              maxLength: 18
-              pattern: "^[a-z0-9]{18,18}$"
-            name:
-              type: string
-              minLength: 3
-              maxLength: 20
-              pattern: "^[a-z0-9]{3,20}$"
-            organization_id:
-              type: string
-              minLength: 18
-              maxLength: 18
-              pattern: "^[a-z0-9]{18,18}$"
-              example: "xxxxxxxxxxxxxxxxxx"
-            created_at:
-              type: string
-              format: date-time
-            deleted_at:
-              type: string
-              format: date-time
-              nullable: true
-
-    UsersResponse:
-      allOf:
-        - type: object
-          properties:
-            users:
-              type: array
-              items:
-                $ref: "#/components/schemas/UserResponse"
-
     InstanceRequest:
       allOf:
         - type: object
+          required:
+            - database_id
+            - type
+            - volume_size
           properties:
             database_id:
               type: string
@@ -1133,6 +961,14 @@ components:
     InstanceResponse:
       allOf:
         - type: object
+          required:
+            - id
+            - created_at
+            - deleted_at
+            - status
+            - type
+            - server
+            - volume_size
           properties:
             id:
               type: string
@@ -1161,6 +997,8 @@ components:
                 - l
             server:
               type: object
+              required:
+                - id
               properties:
                 id:
                   type: string
@@ -1179,6 +1017,8 @@ components:
     InstancesResponse:
       allOf:
         - type: object
+          required:
+            - instances
           properties:
             instances:
               type: array
@@ -1188,6 +1028,8 @@ components:
     SleepAwakeInstance:
       allOf:
         - type: object
+          required:
+            - status
           properties:
             status:
               type: string
@@ -1196,6 +1038,8 @@ components:
     DatabaseRequest:
       allOf:
         - type: object
+          required:
+            - database_name
           properties:
             database_name:
               type: string
@@ -1206,6 +1050,13 @@ components:
     DatabaseResponse:
       allOf:
         - type: object
+          required:
+            - id
+            - database_name
+            - organization_id
+            - created_at
+            - deleted_at
+            - instances
           properties:
             id:
               type: string
@@ -1237,6 +1088,8 @@ components:
     DatabasesResponse:
       allOf:
         - type: object
+          required:
+            - databases
           properties:
             databases:
               type: array
@@ -1247,6 +1100,8 @@ components:
       description: Collection details
       allOf:
         - type: object
+          required:
+            - collection_id
           properties:
             collection_id:
               type: string
@@ -1258,6 +1113,8 @@ components:
     CollectionsResponse:
       allOf:
         - type: object
+          required:
+            - collections
           properties:
             collections:
               type: array
@@ -1267,6 +1124,8 @@ components:
     CollectionResponse:
       allOf:
         - type: object
+          required:
+            - collection_id
           properties:
             collection_id:
               type: string
@@ -1277,6 +1136,9 @@ components:
 
     IndexRequest:
       type: object
+      required:
+        - field_id
+        - dimension
       properties:
         field_id:
           type: string
@@ -1291,11 +1153,15 @@ components:
 
     DocumentRequest:
       additionalProperties: true
+      required:
+        - documents
       properties:
         documents:
           type: array
           items:
             type: object
+            required:
+              - id
             properties:
               id:
                 type: string
@@ -1312,6 +1178,8 @@ components:
     DocumentResponse:
       type: object
       additionalProperties: true
+      required:
+        - id
       properties:
         id:
           type: string
@@ -1327,6 +1195,12 @@ components:
 
     IndexResponse:
       type: object
+      required:
+        - collection_id
+        - field_id
+        - size
+        - distance_metric
+        - dimension
       properties:
         collection_id:
           type: string
@@ -1353,6 +1227,8 @@ components:
     IndicesResponse:
       allOf:
         - type: object
+          required:
+            - indices
           properties:
             indices:
               type: array
@@ -1362,6 +1238,10 @@ components:
     SearchRequest:
       allOf:
         - type: object
+          required:
+            - vector
+            - max_neighbors
+            - field_id
           properties:
             vector:
               type: array
