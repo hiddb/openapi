@@ -39,10 +39,6 @@ tags:
     description: User authentification
   - name: Machine Authentification
     description: Machine authentification
-  - name: Organization
-    description: Operations on organizations
-  - name: User
-    description: Operations on users
   - name: Database
     description: Operations on databases
   - name: Instance
