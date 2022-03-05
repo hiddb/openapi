@@ -913,8 +913,8 @@ components:
       properties:
         machine_name:
           type: string
-          minLength: 18
-          maxLength: 18
+          minLength: 3
+          maxLength: 20
         permission:
           type: string
           enum:
