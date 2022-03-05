@@ -242,15 +242,12 @@ paths:
               $ref: "#/components/schemas/MachineLogin"
         required: true
 
-  /organization/{organization_id}/machine:
-    parameters:
-      - $ref: "#/components/parameters/OrganizationId"
-
+  /machine:
     post:
       tags:
-        - Machine Authentification
-      description: Create access and secret key for a new machine
-      summary: Create api keys for a new machine
+        - Create Machine Account
+      description: Create a new machine
+      summary: New machine
       operationId: createMachine
       responses:
         200:
@@ -266,6 +263,24 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/PostMachineRequest"
+
+    get:
+      tags:
+        - Machine Authentification
+      description: Get all machines in organization
+      summary: Get all machines
+      operationId: createMachine
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMachinesResponse"
+
+  /machine/{machine_id}:
+    parameters:
+      - $ref: "#/components/parameters/MachineId"
 
     delete:
       tags:
@@ -712,6 +727,18 @@ components:
         maxLength: 18
         pattern: "^[a-z0-9]{18}$"
 
+    MachineId:
+      name: machine_id
+      in: path
+      description: "The ID of the machine"
+      example: "xxxxxxxxxxxxxxxxxx"
+      required: true
+      schema:
+        type: string
+        minLength: 18
+        maxLength: 18
+        pattern: "^[a-z0-9]{18}$"
+
     OrganizationId:
       name: organization_id
       in: path
@@ -881,31 +908,10 @@ components:
     PostMachineRequest:
       type: object
       required:
+        - machine_name
         - permission
       properties:
-        permission:
-          type: string
-          enum:
-            - "write"
-            - "read"
-
-    PostMachineResponse:
-      type: object
-      required:
-        - key
-        - secret
-        - organization
-        - permission
-      properties:
-        key:
-          type: string
-          minLength: 20
-          maxLength: 20
-        secret:
-          type: string
-          minLength: 20
-          maxLength: 20
-        organization:
+        machine_name:
           type: string
           minLength: 18
           maxLength: 18
@@ -914,6 +920,68 @@ components:
           enum:
             - "write"
             - "read"
+            - "admin"
+
+    PostMachineResponse:
+      type: object
+      required:
+        - machine_name
+        - id
+        - key
+        - secret
+        - permission
+      properties:
+        machine_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+        id:
+          type: string
+          minLength: 18
+          maxLength: 18
+        key:
+          type: string
+          minLength: 20
+          maxLength: 20
+        secret:
+          type: string
+          minLength: 20
+          maxLength: 20
+        permission:
+          type: string
+          enum:
+            - "write"
+            - "read"
+            - "admin"
+
+    GetMachinesResponse:
+      type: array
+      items:
+        type: object
+        required:
+          - machine_name
+          - id
+          - key
+          - permission
+        properties:
+          machine_name:
+            type: string
+            minLength: 3
+            maxLength: 20
+          id:
+            type: string
+            minLength: 18
+            maxLength: 18
+          key:
+            type: string
+            minLength: 20
+            maxLength: 20
+          permission:
+            type: string
+            enum:
+              - "write"
+              - "read"
+              - "admin"
 
     InstanceRequest:
       type: object
