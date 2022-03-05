@@ -269,7 +269,7 @@ paths:
         - Machine Authentification
       description: Get all machines in organization
       summary: Get all machines
-      operationId: createMachine
+      operationId: getMachines
       responses:
         200:
           description: successful operation
@@ -955,33 +955,36 @@ components:
             - "admin"
 
     GetMachinesResponse:
-      type: array
-      items:
-        type: object
-        required:
-          - machine_name
-          - id
-          - key
-          - permission
-        properties:
-          machine_name:
-            type: string
-            minLength: 3
-            maxLength: 20
-          id:
-            type: string
-            minLength: 18
-            maxLength: 18
-          key:
-            type: string
-            minLength: 20
-            maxLength: 20
-          permission:
-            type: string
-            enum:
-              - "write"
-              - "read"
-              - "admin"
+      type: object
+      properties:
+        machines:
+          type: array
+          items:
+            type: object
+            required:
+              - machine_name
+              - id
+              - key
+              - permission
+            properties:
+              machine_name:
+                type: string
+                minLength: 3
+                maxLength: 20
+              id:
+                type: string
+                minLength: 18
+                maxLength: 18
+              key:
+                type: string
+                minLength: 20
+                maxLength: 20
+              permission:
+                type: string
+                enum:
+                  - "write"
+                  - "read"
+                  - "admin"
 
     InstanceRequest:
       type: object
