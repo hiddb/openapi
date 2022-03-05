@@ -26,7 +26,7 @@ info:
     If the response is `OK` for both requests everything worked out. 
     Congratulations your have now full and secure control over your personal HIDDB database.
 
-  version: 0.2.1
+  version: 0.2.2
   title: API documentation
   termsOfService: "https:/hiddb.com/terms"
   license:
@@ -787,17 +787,15 @@ components:
   schemas:
     LoginResponse:
       type: object
-      allOf:
-        - type: object
-          required:
-            - access_token
-            - type
-          properties:
-            access_token:
-              type: string
-            type:
-              type: string
-              enum: ["Bearer"]
+      required:
+        - access_token
+        - type
+      properties:
+        access_token:
+          type: string
+        type:
+          type: string
+          enum: ["Bearer"]
     MachineLogin:
       type: object
       required:
@@ -881,252 +879,239 @@ components:
           format: password
 
     PostMachineRequest:
-      allOf:
-        - type: object
-          required:
-            - permission
-          properties:
-            permission:
-              type: string
-              enum:
-                - "write"
-                - "read"
+      type: object
+      required:
+        - permission
+      properties:
+        permission:
+          type: string
+          enum:
+            - "write"
+            - "read"
 
     PostMachineResponse:
       type: object
-      allOf:
-        - type: object
-          required:
-            - key
-            - secret
-            - organization
-            - permission
-          properties:
-            key:
-              type: string
-              minLength: 20
-              maxLength: 20
-            secret:
-              type: string
-              minLength: 20
-              maxLength: 20
-            organization:
-              type: string
-              minLength: 18
-              maxLength: 18
-            permission:
-              type: string
-              enum:
-                - "write"
-                - "read"
+      required:
+        - key
+        - secret
+        - organization
+        - permission
+      properties:
+        key:
+          type: string
+          minLength: 20
+          maxLength: 20
+        secret:
+          type: string
+          minLength: 20
+          maxLength: 20
+        organization:
+          type: string
+          minLength: 18
+          maxLength: 18
+        permission:
+          type: string
+          enum:
+            - "write"
+            - "read"
 
     InstanceRequest:
-      allOf:
-        - type: object
-          required:
-            - database_id
-            - type
-            - volume_size
-          properties:
-            database_id:
-              type: string
-              pattern: "^[a-z0-9]{18,18}$"
-              example: "xxxxxxxxxxxxxxxxxx"
-              minLength: 3
-            type:
-              type: string
-              description: Instance type
-              default: s
-              example: s
-              enum:
-                - free
-                - s
-                - m
-                - l
-            volume_size:
-              type: number
-              description: Size of mounted and volume in gb
-              default: 10
-              example: 100
-              minimum: 10
-              maximum: 10000
-              multipleOf: 1
+      type: object
+      required:
+        - database_id
+        - type
+        - volume_size
+      properties:
+        database_id:
+          type: string
+          pattern: "^[a-z0-9]{18,18}$"
+          example: "xxxxxxxxxxxxxxxxxx"
+          minLength: 3
+        type:
+          type: string
+          description: Instance type
+          default: s
+          example: s
+          enum:
+            - free
+            - s
+            - m
+            - l
+        volume_size:
+          type: number
+          description: Size of mounted and volume in gb
+          default: 10
+          example: 100
+          minimum: 10
+          maximum: 10000
+          multipleOf: 1
 
     InstanceResponse:
-      allOf:
-        - type: object
+      type: object
+      required:
+        - id
+        - created_at
+        - deleted_at
+        - status
+        - type
+        - server
+        - volume_size
+      properties:
+        id:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: "^[a-z0-9]{18,18}$"
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+          enum: ["awake", "asleep"]
+        type:
+          type: string
+          description: Instance type
+          default: s
+          example: s
+          enum:
+            - free
+            - s
+            - m
+            - l
+        server:
+          type: object
           required:
             - id
-            - created_at
-            - deleted_at
-            - status
-            - type
-            - server
-            - volume_size
           properties:
             id:
               type: string
               minLength: 18
               maxLength: 18
               pattern: "^[a-z0-9]{18,18}$"
-            created_at:
-              type: string
-              format: date-time
-            deleted_at:
-              type: string
-              format: date-time
-              nullable: true
-            status:
-              type: string
-              enum: ["awake", "asleep"]
-            type:
-              type: string
-              description: Instance type
-              default: s
-              example: s
-              enum:
-                - free
-                - s
-                - m
-                - l
-            server:
-              type: object
-              required:
-                - id
-              properties:
-                id:
-                  type: string
-                  minLength: 18
-                  maxLength: 18
-                  pattern: "^[a-z0-9]{18,18}$"
-            volume_size:
-              type: number
-              description: Size of mounted and volume in gb
-              default: 10
-              example: 100
-              minimum: 10
-              maximum: 10000
-              multipleOf: 1
+        volume_size:
+          type: number
+          description: Size of mounted and volume in gb
+          default: 10
+          example: 100
+          minimum: 10
+          maximum: 10000
+          multipleOf: 1
 
     InstancesResponse:
-      allOf:
-        - type: object
-          required:
-            - instances
-          properties:
-            instances:
-              type: array
-              items:
-                $ref: "#/components/schemas/InstanceResponse"
+      type: object
+      required:
+        - instances
+      properties:
+        instances:
+          type: array
+          items:
+            $ref: "#/components/schemas/InstanceResponse"
 
     SleepAwakeInstance:
-      allOf:
-        - type: object
-          required:
-            - status
-          properties:
-            status:
-              type: string
-              enum: ["awake", "asleep"]
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: ["awake", "asleep"]
 
     DatabaseRequest:
-      allOf:
-        - type: object
-          required:
-            - database_name
-          properties:
-            database_name:
-              type: string
-              minLength: 3
-              maxLength: 20
-              pattern: "^[a-z0-9]{3,20}$"
+      type: object
+      required:
+        - database_name
+      properties:
+        database_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: "^[a-z0-9]{3,20}$"
 
     DatabaseResponse:
-      allOf:
-        - type: object
-          required:
-            - id
-            - database_name
-            - organization_id
-            - created_at
-            - deleted_at
-            - instances
-          properties:
-            id:
-              type: string
-              minLength: 18
-              maxLength: 18
-            database_name:
-              type: string
-              minLength: 3
-              maxLength: 20
-              pattern: "^[a-z0-9]{3,20}$"
-            organization_id:
-              type: string
-              minLength: 18
-              maxLength: 18
-              pattern: "^[a-z0-9]{3,20}$"
-              example: "xxxxxxxxxxxxxxxxxx"
-            created_at:
-              type: string
-              format: date-time
-            deleted_at:
-              type: string
-              format: date-time
-              nullable: true
-            instances:
-              type: array
-              items:
-                $ref: "#/components/schemas/InstanceResponse"
+      type: object
+      required:
+        - id
+        - database_name
+        - organization_id
+        - created_at
+        - deleted_at
+        - instances
+      properties:
+        id:
+          type: string
+          minLength: 18
+          maxLength: 18
+        database_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: "^[a-z0-9]{3,20}$"
+        organization_id:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: "^[a-z0-9]{3,20}$"
+          example: "xxxxxxxxxxxxxxxxxx"
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+        instances:
+          type: array
+          items:
+            $ref: "#/components/schemas/InstanceResponse"
 
     DatabasesResponse:
-      allOf:
-        - type: object
-          required:
-            - databases
-          properties:
-            databases:
-              type: array
-              items:
-                $ref: "#/components/schemas/DatabaseResponse"
+      type: object
+      required:
+        - databases
+      properties:
+        databases:
+          type: array
+          items:
+            $ref: "#/components/schemas/DatabaseResponse"
 
     CollectionRequest:
       description: Collection details
-      allOf:
-        - type: object
-          required:
-            - collection_id
-          properties:
-            collection_id:
-              type: string
-              minLength: 18
-              maxLength: 18
-              pattern: "^[a-z0-9]{18,18}$"
-              example: "xxxxxxxxxxxxxxxxxx"
+      type: object
+      required:
+        - collection_id
+      properties:
+        collection_id:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: "^[a-z0-9]{18,18}$"
+          example: "xxxxxxxxxxxxxxxxxx"
 
     CollectionsResponse:
-      allOf:
-        - type: object
-          required:
-            - collections
-          properties:
-            collections:
-              type: array
-              items:
-                $ref: "#/components/schemas/CollectionResponse"
+      type: object
+      required:
+        - collections
+      properties:
+        collections:
+          type: array
+          items:
+            $ref: "#/components/schemas/CollectionResponse"
 
     CollectionResponse:
-      allOf:
-        - type: object
-          required:
-            - collection_id
-          properties:
-            collection_id:
-              type: string
-              minLength: 18
-              maxLength: 18
-              pattern: "^[a-z0-9]{18,18}$"
-              example: "xxxxxxxxxxxxxxxxxx"
+      type: object
+      required:
+        - collection_id
+      properties:
+        collection_id:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: "^[a-z0-9]{18,18}$"
+          example: "xxxxxxxxxxxxxxxxxx"
 
     IndexRequest:
       type: object
@@ -1219,42 +1204,40 @@ components:
           format: int64
 
     IndicesResponse:
-      allOf:
-        - type: object
-          required:
-            - indices
-          properties:
-            indices:
-              type: array
-              items:
-                $ref: "#/components/schemas/IndexResponse"
+      type: object
+      required:
+        - indices
+      properties:
+        indices:
+          type: array
+          items:
+            $ref: "#/components/schemas/IndexResponse"
 
     SearchRequest:
-      allOf:
-        - type: object
-          required:
-            - vector
-            - max_neighbors
-            - field_id
-          properties:
-            vector:
-              type: array
-              items:
-                type: number
-              example: [1.0, 2.0, 3.0]
-              description: Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
-            max_neighbors:
-              type: number
-              default: 20
-              minimum: 1
-              description: Maximal number of neighbors to include in response
-            field_id:
-              type: string
-              minLength: 3
-              maxLength: 20
-              pattern: "^[a-z0-9]{3,20}$"
-              description: This parameter specifies the index to perform the query in
-              example: "xxxxxxxxxxxxxxxxxx"
+      type: object
+      required:
+        - vector
+        - max_neighbors
+        - field_id
+      properties:
+        vector:
+          type: array
+          items:
+            type: number
+          example: [1.0, 2.0, 3.0]
+          description: Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
+        max_neighbors:
+          type: number
+          default: 20
+          minimum: 1
+          description: Maximal number of neighbors to include in response
+        field_id:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: "^[a-z0-9]{3,20}$"
+          description: This parameter specifies the index to perform the query in
+          example: "xxxxxxxxxxxxxxxxxx"
 
     SearchResponse:
       type: array
