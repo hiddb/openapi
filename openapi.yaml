@@ -1004,10 +1004,11 @@ components:
           default: s
           example: s
           enum:
-            - free
+            - xs
             - s
             - m
             - l
+            - xl
         volume_size:
           type: number
           description: Size of mounted and volume in gb
@@ -1049,10 +1050,11 @@ components:
           default: s
           example: s
           enum:
-            - free
+            - xs
             - s
             - m
             - l
+            - xl
         server:
           type: object
           required:
