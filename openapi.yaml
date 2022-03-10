@@ -463,253 +463,253 @@ paths:
 
   ############################## Collection #############################################
 
-  /collection:
-    servers:
-      - url: https://{database_id}.hiddb.io
-        description: General operations
+  # /collection:
+  #   servers:
+  #     - url: https://{database_id}.hiddb.io
+  #       description: General operations
 
-    get:
-      tags:
-        - Collection
-      description: Get information about collections
-      summary: Get collections
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionsResponse"
+  #   get:
+  #     tags:
+  #       - Collection
+  #     description: Get information about collections
+  #     summary: Get collections
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/CollectionsResponse"
 
-    post:
-      tags:
-        - Collection
-      description: Create new collection
-      summary: Create collection
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CollectionRequest"
-        required: true
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionResponse"
-        400:
-          description: invalid parameters
+  #   post:
+  #     tags:
+  #       - Collection
+  #     description: Create new collection
+  #     summary: Create collection
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/CollectionRequest"
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/CollectionResponse"
+  #       400:
+  #         description: invalid parameters
 
-  /collection/{collection_id}:
-    servers:
-      - url: https://{database_id}.hiddb.io
-        description: General operations
-    get:
-      tags:
-        - Collection
-      description: Get information about a specific collection
-      summary: Get collection
-      parameters:
-        - name: collection_id
-          in: path
-          required: true
-          schema:
-            type: string
-            minLength: 3
-            maxLength: 20
-            pattern: "^[a-z0-9]{3,20}$"
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionResponse"
+  # /collection/{collection_id}:
+  #   servers:
+  #     - url: https://{database_id}.hiddb.io
+  #       description: General operations
+  #   get:
+  #     tags:
+  #       - Collection
+  #     description: Get information about a specific collection
+  #     summary: Get collection
+  #     parameters:
+  #       - name: collection_id
+  #         in: path
+  #         required: true
+  #         schema:
+  #           type: string
+  #           minLength: 3
+  #           maxLength: 20
+  #           pattern: "^[a-z0-9]{3,20}$"
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/CollectionResponse"
 
-    delete:
-      tags:
-        - Collection
-      description: Delete a specific collection
-      summary: Delete collection
-      parameters:
-        - name: collection_id
-          in: path
-          required: true
-          schema:
-            type: string
-            minLength: 3
-            maxLength: 20
-            pattern: "^[a-z0-9]{3,20}$"
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionResponse"
+  #   delete:
+  #     tags:
+  #       - Collection
+  #     description: Delete a specific collection
+  #     summary: Delete collection
+  #     parameters:
+  #       - name: collection_id
+  #         in: path
+  #         required: true
+  #         schema:
+  #           type: string
+  #           minLength: 3
+  #           maxLength: 20
+  #           pattern: "^[a-z0-9]{3,20}$"
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/CollectionResponse"
 
-  ############################## Index ##################################################
+  # ############################## Index ##################################################
 
-  /collection/{collection_id}/index:
-    servers:
-      - url: https://{database_id}.hiddb.io
-        description: General operations
-    parameters:
-      - $ref: "#/components/parameters/CollectionId"
+  # /collection/{collection_id}/index:
+  #   servers:
+  #     - url: https://{database_id}.hiddb.io
+  #       description: General operations
+  #   parameters:
+  #     - $ref: "#/components/parameters/CollectionId"
 
-    get:
-      tags:
-        - Index
-      description: Get information about an existing indices
-      summary: Get indices
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IndicesResponse"
+  #   get:
+  #     tags:
+  #       - Index
+  #     description: Get information about an existing indices
+  #     summary: Get indices
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/IndicesResponse"
 
-    post:
-      tags:
-        - Index
-      description: Create new index in the specified collection
-      summary: Create index
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/IndexRequest"
-        required: true
-      responses:
-        200:
-          description: successful operation
+  #   post:
+  #     tags:
+  #       - Index
+  #     description: Create new index in the specified collection
+  #     summary: Create index
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/IndexRequest"
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: successful operation
 
-  /collection/{collection_id}/index/{index_id}:
-    servers:
-      - url: https://{database_id}.hiddb.io
-        description: General operations
-    parameters:
-      - $ref: "#/components/parameters/CollectionId"
-      - $ref: "#/components/parameters/IndexId"
+  # /collection/{collection_id}/index/{index_id}:
+  #   servers:
+  #     - url: https://{database_id}.hiddb.io
+  #       description: General operations
+  #   parameters:
+  #     - $ref: "#/components/parameters/CollectionId"
+  #     - $ref: "#/components/parameters/IndexId"
 
-    get:
-      tags:
-        - Index
-      description: Get information about specific index
-      summary: Get index
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IndexResponse"
-        400:
-          description: invalid parameters
+  #   get:
+  #     tags:
+  #       - Index
+  #     description: Get information about specific index
+  #     summary: Get index
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/IndexResponse"
+  #       400:
+  #         description: invalid parameters
 
-    delete:
-      tags:
-        - Index
-      description: Delete index
-      summary: Delete index
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IndexResponse"
-        400:
-          description: invalid parameters
+  #   delete:
+  #     tags:
+  #       - Index
+  #     description: Delete index
+  #     summary: Delete index
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/IndexResponse"
+  #       400:
+  #         description: invalid parameters
 
-  ############################## Document ###############################################
+  # ############################## Document ###############################################
 
-  /collection/{collection_id}/document:
-    servers:
-      - url: https://{database_id}.hiddb.io
-        description: General operations
-    parameters:
-      - $ref: "#/components/parameters/CollectionId"
+  # /collection/{collection_id}/document:
+  #   servers:
+  #     - url: https://{database_id}.hiddb.io
+  #       description: General operations
+  #   parameters:
+  #     - $ref: "#/components/parameters/CollectionId"
 
-    post:
-      tags:
-        - Document
-      description:
-        Insert document. The field "field_id" will be indexed by all existing
-        indices
-      summary: Insert document
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DocumentRequest"
-        required: true
-      responses:
-        200:
-          description: Insertion successful
+  #   post:
+  #     tags:
+  #       - Document
+  #     description:
+  #       Insert document. The field "field_id" will be indexed by all existing
+  #       indices
+  #     summary: Insert document
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/DocumentRequest"
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: Insertion successful
 
-  /collection/{collection_id}/document/search:
-    servers:
-      - url: https://{database_id}.hiddb.io
-        description: General operations
-    parameters:
-      - $ref: "#/components/parameters/CollectionId"
+  # /collection/{collection_id}/document/search:
+  #   servers:
+  #     - url: https://{database_id}.hiddb.io
+  #       description: General operations
+  #   parameters:
+  #     - $ref: "#/components/parameters/CollectionId"
 
-    post:
-      tags:
-        - Document
-      description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"
-      summary: ANN-search
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SearchRequest"
-        required: true
-      responses:
-        200:
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SearchResponse"
+  #   post:
+  #     tags:
+  #       - Document
+  #     description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"
+  #     summary: ANN-search
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/SearchRequest"
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: Insertion successful
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/SearchResponse"
 
-  /collection/{collection_id}/document/{document_id}:
-    servers:
-      - url: https://{database_id}.hiddb.io
-        description: General operations
-    parameters:
-      - $ref: "#/components/parameters/CollectionId"
-      - $ref: "#/components/parameters/DocumentId"
+  # /collection/{collection_id}/document/{document_id}:
+  #   servers:
+  #     - url: https://{database_id}.hiddb.io
+  #       description: General operations
+  #   parameters:
+  #     - $ref: "#/components/parameters/CollectionId"
+  #     - $ref: "#/components/parameters/DocumentId"
 
-    get:
-      tags:
-        - Document
-      description: Get document by ID
-      summary: Get document by ID
-      responses:
-        200:
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentResponse"
+  #   get:
+  #     tags:
+  #       - Document
+  #     description: Get document by ID
+  #     summary: Get document by ID
+  #     responses:
+  #       200:
+  #         description: Insertion successful
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/DocumentResponse"
 
-    delete:
-      tags:
-        - Document
-      description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated
-      summary: Remove document by ID
-      responses:
-        200:
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentResponse"
+  #   delete:
+  #     tags:
+  #       - Document
+  #     description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated
+  #     summary: Remove document by ID
+  #     responses:
+  #       200:
+  #         description: Insertion successful
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/DocumentResponse"
 
 ############################## Components #############################################
 
