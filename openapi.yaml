@@ -246,7 +246,7 @@ paths:
     post:
       tags:
         - Create Machine Account
-      description: Create a new machine
+      description: Create a new machine account.
       summary: New machine
       operationId: createMachine
       responses:
@@ -258,7 +258,6 @@ paths:
                 $ref: "#/components/schemas/PostMachineResponse"
 
       requestBody:
-        description: Newly created organization.
         content:
           application/json:
             schema:
