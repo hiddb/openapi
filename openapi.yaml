@@ -501,7 +501,7 @@ paths:
         400:
           description: invalid parameters
 
-  /collection/{collection_id}:
+  /collection/{collection_name}:
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -511,7 +511,7 @@ paths:
       description: Get information about a specific collection
       summary: Get collection
       parameters:
-        - name: collection_id
+        - name: collection_name
           in: path
           required: true
           schema:
@@ -533,7 +533,7 @@ paths:
       description: Delete a specific collection
       summary: Delete collection
       parameters:
-        - name: collection_id
+        - name: collection_name
           in: path
           required: true
           schema:
@@ -551,7 +551,7 @@ paths:
 
   ############################## Index ##################################################
 
-  /collection/{collection_id}/index:
+  /collection/{collection_name}/index:
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -585,7 +585,7 @@ paths:
         200:
           description: successful operation
 
-  /collection/{collection_id}/index/{index_id}:
+  /collection/{collection_name}/index/{field_name}:
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -625,7 +625,7 @@ paths:
 
   ############################## Document ###############################################
 
-  /collection/{collection_id}/document:
+  /collection/{collection_name}/document:
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -636,7 +636,7 @@ paths:
       tags:
         - Document
       description:
-        Insert document. The field "field_id" will be indexed by all existing
+        Insert document. The field "field_name" will be indexed by all existing
         indices
       summary: Insert document
       requestBody:
@@ -648,7 +648,7 @@ paths:
         200:
           description: Insertion successful
 
-  /collection/{collection_id}/document/search:
+  /collection/{collection_name}/document/search:
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -673,7 +673,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SearchResponse"
 
-  /collection/{collection_id}/document/{document_id}:
+  /collection/{collection_name}/document/{document_id}:
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -772,7 +772,7 @@ components:
         pattern: "^[a-z0-9]{18}$"
 
     CollectionId:
-      name: collection_id
+      name: collection_name
       in: path
       description: "The ID of the collection"
       example: "xxxxxxxxxxxxxxxxxx"
@@ -784,7 +784,7 @@ components:
         pattern: "^[a-z0-9]{3,20}$"
 
     IndexId:
-      name: index_id
+      name: field_name
       in: path
       description: "The ID of the index"
       example: "xxxxxxxxxxxxxxxxxx"
@@ -1151,9 +1151,9 @@ components:
       description: Collection details
       type: object
       required:
-        - collection_id
+        - collection_name
       properties:
-        collection_id:
+        collection_name:
           type: string
           minLength: 3
           maxLength: 20
@@ -1173,9 +1173,9 @@ components:
     CollectionResponse:
       type: object
       required:
-        - collection_id
+        - collection_name
       properties:
-        collection_id:
+        collection_name:
           type: string
           minLength: 3
           maxLength: 20
@@ -1185,10 +1185,10 @@ components:
     IndexRequest:
       type: object
       required:
-        - field_id
+        - field_name
         - dimension
       properties:
-        field_id:
+        field_name:
           type: string
           minLength: 3
           maxLength: 20
@@ -1244,19 +1244,19 @@ components:
     IndexResponse:
       type: object
       required:
-        - collection_id
-        - field_id
+        - collection_name
+        - field_name
         - size
         - distance_metric
         - dimension
       properties:
-        collection_id:
+        collection_name:
           type: string
           minLength: 3
           maxLength: 20
           pattern: "^[a-z0-9]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
-        field_id:
+        field_name:
           type: string
           minLength: 3
           maxLength: 20
@@ -1287,7 +1287,7 @@ components:
       required:
         - vector
         - max_neighbors
-        - field_id
+        - field_name
       properties:
         vector:
           type: array
@@ -1300,7 +1300,7 @@ components:
           default: 20
           minimum: 1
           description: Maximal number of neighbors to include in response
-        field_id:
+        field_name:
           type: string
           minLength: 3
           maxLength: 20
