@@ -584,6 +584,10 @@ paths:
       responses:
         200:
           description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IndexResponse"
 
   /collection/{collection_name}/index/{field_name}:
     servers:
@@ -1311,4 +1315,7 @@ components:
     SearchResponse:
       type: array
       items:
-        type: string
+        type: object
+        properties:
+          ann:
+            type: string
