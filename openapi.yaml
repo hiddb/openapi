@@ -1159,9 +1159,9 @@ components:
       properties:
         collection_id:
           type: string
-          minLength: 18
-          maxLength: 18
-          pattern: "^[a-z0-9]{18,18}$"
+          minLength: 3
+          maxLength: 20
+          pattern: "^[a-z0-9]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
 
     CollectionsResponse:
@@ -1181,9 +1181,9 @@ components:
       properties:
         collection_id:
           type: string
-          minLength: 18
-          maxLength: 18
-          pattern: "^[a-z0-9]{18,18}$"
+          minLength: 3
+          maxLength: 20
+          pattern: "^[a-z0-9]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
 
     IndexRequest:
