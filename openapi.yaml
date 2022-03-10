@@ -517,7 +517,7 @@ paths:
             type: string
             minLength: 3
             maxLength: 20
-            pattern: "^[a-z0-9]{3,20}$"
+            pattern: "^[a-z0-9_-]{3,20}$"
       responses:
         200:
           description: successful operation
@@ -539,7 +539,7 @@ paths:
             type: string
             minLength: 3
             maxLength: 20
-            pattern: "^[a-z0-9]{3,20}$"
+            pattern: "^[a-z0-9_-]{3,20}$"
       responses:
         200:
           description: successful operation
@@ -784,7 +784,7 @@ components:
         type: string
         minLength: 3
         maxLength: 20
-        pattern: "^[a-z0-9]{3,20}$"
+        pattern: "^[a-z0-9_-]{3,20}$"
 
     IndexId:
       name: field_name
@@ -796,7 +796,7 @@ components:
         type: string
         minLength: 3
         maxLength: 20
-        pattern: "^[a-z0-9]{3,20}$"
+        pattern: "^[a-z0-9_-]{3,20}$"
 
     DocumentId:
       name: document_id
@@ -808,7 +808,7 @@ components:
         type: string
         minLength: 3
         maxLength: 20
-        pattern: "^[a-z0-9]{3,20}$"
+        pattern: "^[a-z0-9_-]{3,20}$"
 
   schemas:
     LoginResponse:
@@ -1101,7 +1101,7 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
 
     DatabaseResponse:
       type: object
@@ -1121,7 +1121,7 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
         organization_id:
           type: string
           minLength: 18
@@ -1160,7 +1160,7 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
 
     CollectionsResponse:
@@ -1182,7 +1182,7 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
 
     IndexRequest:
@@ -1195,7 +1195,7 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
 
         dimension:
@@ -1257,13 +1257,13 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
         field_name:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
         size:
           type: integer
@@ -1307,7 +1307,7 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9]{3,20}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
           description: This parameter specifies the index to perform the query in
           example: "xxxxxxxxxxxxxxxxxx"
 
