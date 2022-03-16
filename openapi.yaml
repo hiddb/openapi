@@ -1218,8 +1218,7 @@ components:
               id:
                 type: string
                 minLength: 3
-                maxLength: 20
-                pattern: "^[a-z0-9_-]{3,20}$"
+                maxLength: 50
               field:
                 type: array
                 items:
@@ -1236,8 +1235,7 @@ components:
         id:
           type: string
           minLength: 3
-          maxLength: 20
-          pattern: "^[a-z0-9_-]{3,20}$"
+          maxLength: 50
         field:
           type: array
           items:
