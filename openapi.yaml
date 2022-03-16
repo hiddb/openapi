@@ -1117,6 +1117,7 @@ components:
           type: string
           minLength: 18
           maxLength: 18
+          pattern: "^[a-z0-9]{18,18}$"
         database_name:
           type: string
           minLength: 3
@@ -1218,7 +1219,7 @@ components:
                 type: string
                 minLength: 3
                 maxLength: 20
-                pattern: "^[a-z0-9_-]{18,18}$"
+                pattern: "^[a-z0-9_-]{3,20}$"
               field:
                 type: array
                 items:
@@ -1236,7 +1237,7 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: "^[a-z0-9_-]{18,18}$"
+          pattern: "^[a-z0-9_-]{3,20}$"
         field:
           type: array
           items:
