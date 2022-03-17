@@ -1287,15 +1287,22 @@ components:
     SearchRequest:
       type: object
       required:
-        - vector
         - max_neighbors
         - field_name
       properties:
-        vector:
+        ids:
           type: array
           items:
-            type: number
-          example: [1.0, 2.0, 3.0]
+            type: string
+          example: ["document1", "document2", "document3"]
+          description: Get documents close to the specified document. Provide either `ids` or `vectors`
+        vectors:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+          example: [[1.0, 2.0, 3.0]]
           description: Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
         max_neighbors:
           type: number
@@ -1315,5 +1322,12 @@ components:
       items:
         type: object
         properties:
-          ann:
-            type: string
+          data:
+            type: array
+            items:
+              type: array
+              items:
+                type: string
+                
+                  
+                  
