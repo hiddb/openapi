@@ -1248,7 +1248,7 @@ components:
       required:
         - collection_name
         - field_name
-        - size
+        - n_documents
         - distance_metric
         - dimension
       properties:
@@ -1264,7 +1264,7 @@ components:
           maxLength: 20
           pattern: "^[a-z0-9_-]{3,20}$"
           example: "xxxxxxxxxxxxxxxxxx"
-        size:
+        n_documents:
           type: integer
           format: int64
         distance_metric:
