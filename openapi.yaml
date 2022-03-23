@@ -18,13 +18,31 @@ info:
     Make sure to copy the token because it won't be shown to you again.
 
     Now you have to sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
-    This creates a API Token for you.
+  
+    ```bash
+    KEY="<key>"
+    SECRET="<secret>"
+    TOKEN=`\
+    curl --location \
+         --request POST "https://api.hiddb.io/machine/login" \
+         --header "Content-Type: application/json" \
+         --header "Accept: application/json" \
+         --data-raw "{
+             \"access_key\": \"$KEY\",
+             \"secret_key\": \"$SECRET\"
+         }" | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])"`
+    ```
+
     Once you have your API Token created, all API requests are authorized in the same way. 
     HIDDB uses the RFC standard `Authorization: Bearer <Token>` interface.
     When used in an example API request it looks like this:
 
     ```bash
-    echo $HOME
+    DATABASE_ID="<database_id>"
+    curl --location \
+         --request GET "https://${DATABASE_ID}.hiddb.io/collection" \
+         --header "Accept: application/json" \
+         --header "Authorization: Bearer $TOKEN"
     ```
 
     Congratulations your have now full and secure control over your personal HIDDB database.
