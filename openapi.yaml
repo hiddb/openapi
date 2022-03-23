@@ -13,17 +13,20 @@ info:
   description: |
     This is the official API documentation for the HIDDB vector search database.
 
-    # Getting started
-
     In order to get started you will need to generate a API access key and secret token.
-    Sign in into the your [dashboard](https://hiddb.com/dashboard) and navigate to `API Tokens`.
+    Sign in into the your [dashboard](https://dashboard.hiddb.com/) and navigate to `API Access` / `Create API Key`.
     Make sure to copy the token because it won't be shown to you again.
 
     Now you have to sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
+    This creates a API Token for you.
+    Once you have your API Token created, all API requests are authorized in the same way. 
+    HIDDB uses the RFC standard `Authorization: Bearer <Token>` interface.
+    When used in an example API request it looks like this:
 
-    You're now ready to do your first request against the API.
-    You can try make a simple GET request to `/health/dashboard` and `/health/database` using your JWT.
-    If the response is `OK` for both requests everything worked out. 
+    ```bash
+    echo $HOME
+    ```
+
     Congratulations your have now full and secure control over your personal HIDDB database.
 
   version: 0.2.2
