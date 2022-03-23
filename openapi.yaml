@@ -17,7 +17,7 @@ info:
     Sign in into the your [dashboard](https://dashboard.hiddb.com/) and navigate to `API Access` / `Create API Key`.
     Make sure to copy the token because it won't be shown to you again.
 
-    Now you have to sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
+    Now you can sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
   
     ```bash
     KEY="<key>"
