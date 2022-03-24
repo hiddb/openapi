@@ -891,14 +891,14 @@ components:
       type: object
       required:
         - user_id
-        - otp_id
+        - otp
       properties:
         user_id:
           type: string
           minLength: 18
           maxLength: 18
           pattern: "^[a-z0-9]{18,18}$"
-        otp_id:
+        otp:
           type: string
 
     UserReset:
@@ -914,12 +914,12 @@ components:
       type: object
       required:
         - user_id
-        - otp_id
+        - otp
         - password
       properties:
         user_id:
           type: string
-        otp_id:
+        otp:
           type: string
         password:
           type: string
