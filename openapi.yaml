@@ -1123,6 +1123,30 @@ components:
           minLength: 3
           maxLength: 20
           pattern: "^[a-z0-9_-]{3,20}$"
+        instances:
+          type: array
+          items:
+            type: object
+            required:
+              - type
+              - volume_size
+            properties:
+              type:
+                type: string
+                enum:
+                  - xs
+                  - s
+                  - m
+                  - l
+                  - xl
+              volume_size:
+                type: number
+                description: Size of mounted and volume in gb
+                default: 10
+                example: 100
+                minimum: 10
+                maximum: 10000
+                multipleOf: 1
 
     DatabaseResponse:
       type: object
