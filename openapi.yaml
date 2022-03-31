@@ -1054,7 +1054,6 @@ components:
           minLength: 18
           maxLength: 18
           pattern: "^[a-z0-9]{18,18}$"
-          nullable: true
         created_at:
           type: string
           format: date-time
