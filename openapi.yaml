@@ -1063,7 +1063,7 @@ components:
           nullable: true
         status:
           type: string
-          enum: ["awake", "asleep"]
+          enum: ["awake", "provisioning", "asleep"]
         type:
           type: string
           description: Instance type
@@ -1111,7 +1111,7 @@ components:
       properties:
         status:
           type: string
-          enum: ["awake", "asleep"]
+          enum: ["awake", "provisioning", "asleep"]
 
     DatabaseRequest:
       type: object
