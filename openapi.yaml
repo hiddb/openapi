@@ -367,6 +367,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DatabaseResponse"
+        "202":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatabaseResponse"
 
   /database/{database_id}:
     parameters:
