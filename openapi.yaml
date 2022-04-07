@@ -480,7 +480,7 @@ paths:
       description: Delete a specific Instance
       summary: Delete instance
       responses:
-        "200":
+        "202":
           description: successful operation
           content:
             application/json:
