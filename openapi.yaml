@@ -201,6 +201,16 @@ paths:
               $ref: "#/components/schemas/UserLogin"
         required: true
 
+  /user/logout:
+    post:
+      tags:
+        - User Authentification
+      description: Log user out
+      summary: Log out user
+      responses:
+        200:
+          description: successful operation
+
   /user/refresh:
     post:
       tags:
