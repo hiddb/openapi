@@ -471,7 +471,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  error:
                     type: string
         401:
           description: invalid input
@@ -505,7 +505,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  error:
                     type: string
         401:
           description: invalid input
@@ -533,7 +533,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  error:
                     type: string
         401:
           description: invalid input
@@ -1214,7 +1214,7 @@ components:
           nullable: true
         status:
           type: string
-          enum: ["awake", "provisioning", "asleep"]
+          enum: ["awake", "provisioning", "wakingup", "asleep"]
         type:
           type: string
           description: Instance type
@@ -1263,7 +1263,7 @@ components:
       properties:
         status:
           type: string
-          enum: ["awake", "provisioning", "asleep"]
+          enum: ["awake", "provisioning", "wakingup", "asleep"]
 
     DatabaseRequest:
       type: object
