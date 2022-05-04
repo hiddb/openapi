@@ -466,6 +466,13 @@ paths:
                 $ref: "#/components/schemas/InstanceResponse"
         400:
           description: invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         401:
           description: invalid input
         403:
@@ -493,6 +500,13 @@ paths:
                 $ref: "#/components/schemas/InstanceResponse"
         400:
           description: invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         401:
           description: invalid input
         403:
@@ -514,6 +528,13 @@ paths:
                 $ref: "#/components/schemas/InstanceResponse"
         400:
           description: invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         401:
           description: invalid input
         403:
