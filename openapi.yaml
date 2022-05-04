@@ -458,12 +458,20 @@ paths:
       description: Get information about specific instance
       summary: Get instance
       responses:
-        "200":
+        200:
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/InstanceResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
     put:
       tags:
@@ -477,12 +485,20 @@ paths:
               $ref: "#/components/schemas/SleepAwakeInstance"
 
       responses:
-        "200":
+        200:
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/InstanceResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
     delete:
       tags:
@@ -490,12 +506,20 @@ paths:
       description: Delete a specific Instance
       summary: Delete instance
       responses:
-        "202":
+        202:
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/InstanceResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
   ############################## Collection #############################################
 
@@ -516,6 +540,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CollectionsResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
     post:
       tags:
@@ -536,6 +568,12 @@ paths:
                 $ref: "#/components/schemas/CollectionResponse"
         400:
           description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
   /collection/{collection_name}:
     servers:
@@ -562,6 +600,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CollectionResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
     delete:
       tags:
@@ -584,6 +630,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CollectionResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
   ############################## Index ##################################################
 
@@ -606,6 +660,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/IndicesResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
     post:
       tags:
@@ -624,6 +686,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/IndexResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
   /collection/{collection_name}/index/{field_name}:
     servers:
@@ -647,6 +717,12 @@ paths:
                 $ref: "#/components/schemas/IndexResponse"
         400:
           description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
     delete:
       tags:
@@ -662,6 +738,12 @@ paths:
                 $ref: "#/components/schemas/IndexResponse"
         400:
           description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
   ############################## Document ###############################################
 
@@ -687,6 +769,14 @@ paths:
       responses:
         200:
           description: Insertion successful
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
   /collection/{collection_name}/document/search:
     servers:
@@ -712,6 +802,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SearchResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
   /collection/{collection_name}/document/{document_id}:
     servers:
@@ -733,6 +831,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DocumentResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
     delete:
       tags:
@@ -746,6 +852,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DocumentResponse"
+        400:
+          description: invalid parameters
+        401:
+          description: invalid input
+        403:
+          description: unauthorized
+        405:
+          description: forbidden
 
 ############################## Components #############################################
 
