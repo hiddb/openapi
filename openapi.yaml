@@ -1964,6 +1964,14 @@ components:
           maximum: 10000
           multipleOf: 1
 
+        location:
+          type: string
+          description: Physical instance location
+          enum:
+            - hel
+            - nbg
+            - ash
+
     InstanceResponse:
       type: object
       required:
