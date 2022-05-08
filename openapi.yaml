@@ -89,6 +89,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
       requestBody:
@@ -113,6 +115,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
       requestBody:
@@ -137,6 +141,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
       requestBody:
@@ -161,6 +167,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
       requestBody:
@@ -191,6 +199,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
       requestBody:
@@ -230,6 +240,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
       requestBody:
@@ -263,6 +275,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
       requestBody:
@@ -477,6 +491,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -511,6 +527,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -539,6 +557,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -567,6 +587,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -593,6 +615,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -627,6 +651,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -657,6 +683,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -685,6 +713,8 @@ paths:
           description: invalid parameters
         401:
           description: invalid input
+        404:
+          description: not found
         403:
           description: unauthorized
         405:
@@ -713,6 +743,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -742,6 +774,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -763,6 +797,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -796,6 +832,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -829,6 +867,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -858,6 +898,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
@@ -879,6 +921,8 @@ paths:
           description: invalid input
         403:
           description: unauthorized
+        404:
+          description: not found
         405:
           description: forbidden
 
