@@ -1968,9 +1968,9 @@ components:
           type: string
           description: Physical instance location
           enum:
-            - de1
-            - fi1
-            - us1
+            - de_1
+            - fi_1
+            - us_1
 
     InstanceResponse:
       type: object
