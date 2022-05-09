@@ -1968,9 +1968,9 @@ components:
           type: string
           description: Physical instance location
           enum:
-            - de_1
-            - fi_1
-            - us_1
+            - hel1
+            - nbg1
+            - fsn1
 
     InstanceResponse:
       type: object
@@ -2028,6 +2028,13 @@ components:
           minimum: 10
           maximum: 10000
           multipleOf: 1
+        location:
+          type: string
+          description: Physical instance location
+          enum:
+            - hel1
+            - nbg1
+            - fsn1
 
     InstancesResponse:
       type: object
