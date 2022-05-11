@@ -1,7 +1,5 @@
 type: object
 additionalProperties: true
-required:
-  - id
 properties:
   id:
     type: string

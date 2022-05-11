@@ -1,6 +1,5 @@
 type: object
-required:
-  - collection_name
+additionalProperties: false
 properties:
   collection_name:
     type: string

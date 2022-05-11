@@ -18,8 +18,7 @@ get:
         application/json:
           schema:
             type: object
-            required:
-              - indices
+            additionalProperties: false
             properties:
               indices:
                 type: array
@@ -43,6 +42,7 @@ post:
           required:
             - field_name
             - dimension
+          additionalProperties: false
           properties:
             field_name:
               type: string

@@ -87,9 +87,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - access_token
-                  - type
+                additionalProperties: false
                 properties:
                   access_token:
                     type: string
@@ -109,6 +107,7 @@ paths:
               required:
                 - email
                 - password
+              additionalProperties: true
               properties:
                 email:
                   type: string
@@ -173,6 +172,7 @@ paths:
               required:
                 - access_key
                 - secret_key
+              additionalProperties: false
               properties:
                 access_key:
                   type: string
@@ -187,7 +187,7 @@ paths:
       x-internal: false
       x-hidden: false
       tags:
-        - Create Machine Account
+        - Machine Authentification
       description: Create a new machine account.
       summary: New machine
       operationId: createMachine
@@ -198,12 +198,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - machine_name
-                  - id
-                  - key
-                  - secret
-                  - permission
+                additionalProperties: false
                 properties:
                   machine_name:
                     type: string
@@ -237,6 +232,7 @@ paths:
               required:
                 - machine_name
                 - permission
+              additionalProperties: false
               properties:
                 machine_name:
                   type: string
@@ -263,16 +259,13 @@ paths:
             application/json:
               schema:
                 type: object
+                additionalProperties: false
                 properties:
                   machines:
                     type: array
                     items:
                       type: object
-                      required:
-                        - machine_name
-                        - id
-                        - key
-                        - permission
+                      additionalProperties: false
                       properties:
                         machine_name:
                           type: string
@@ -322,34 +315,6 @@ paths:
   /health:
     servers:
       - url: https://api.hiddb.io
-    get:
-      x-internal: false
-      x-hidden: false
-      tags:
-        - Check health
-      description: Check access to databases
-      summary: Check health database
-      responses:
-        "200":
-          description: successfull operation
-          content:
-            text/plain:
-              schema:
-                type: string
-                default: Ok
-                enum:
-                  - Ok
-        default:
-          description: error
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                properties:
-                  error:
-                    type: string
   /database:
     get:
       x-internal: false
@@ -365,13 +330,12 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - databases
+                additionalProperties: false
                 properties:
                   databases:
                     type: array
                     items:
-                      $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
+                      $ref: "#/paths/~1database/post/responses/202/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
     post:
@@ -389,6 +353,7 @@ paths:
               type: object
               required:
                 - database_name
+              additionalProperties: false
               properties:
                 database_name:
                   type: string
@@ -399,10 +364,14 @@ paths:
                   type: array
                   items:
                     type: object
-                    required:
-                      - type
-                      - volume_size
+                    additionalProperties: false
                     properties:
+                      location:
+                        type: string
+                        enum:
+                          - hel1
+                          - nbg1
+                          - fsn1
                       type:
                         type: string
                         enum:
@@ -420,19 +389,13 @@ paths:
                         maximum: 10000
                         multipleOf: 1
       responses:
-        "200":
+        "202":
           description: successful operation
           content:
             application/json:
               schema:
                 type: object
-                required:
-                  - id
-                  - database_name
-                  - organization_id
-                  - created_at
-                  - deleted_at
-                  - instances
+                additionalProperties: false
                 properties:
                   id:
                     type: string
@@ -461,12 +424,6 @@ paths:
                     type: array
                     items:
                       $ref: "#/paths/~1instance/post/responses/202/content/application~1json/schema"
-        "202":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
   "/database/{database_id}":
@@ -494,7 +451,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1database/post/responses/202/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
     delete:
@@ -510,7 +467,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1database/post/responses/202/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
   /instance:
@@ -530,6 +487,7 @@ paths:
                 type: object
                 required:
                   - instances
+                additionalProperties: false
                 properties:
                   instances:
                     type: array
@@ -552,8 +510,7 @@ paths:
               type: object
               required:
                 - database_id
-                - type
-                - volume_size
+              additionalProperties: false
               properties:
                 database_id:
                   type: string
@@ -593,14 +550,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - id
-                  - created_at
-                  - deleted_at
-                  - status
-                  - type
-                  - server
-                  - volume_size
+                additionalProperties: false
                 properties:
                   id:
                     type: string
@@ -635,8 +585,7 @@ paths:
                   server:
                     type: object
                     nullable: true
-                    required:
-                      - id
+                    additionalProperties: false
                     properties:
                       id:
                         type: string
@@ -686,14 +635,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - id
-                  - created_at
-                  - deleted_at
-                  - status
-                  - type
-                  - server
-                  - volume_size
+                additionalProperties: false
                 properties:
                   id:
                     type: string
@@ -728,8 +670,7 @@ paths:
                   server:
                     type: object
                     nullable: true
-                    required:
-                      - id
+                    additionalProperties: false
                     properties:
                       id:
                         type: string
@@ -751,37 +692,6 @@ paths:
                       - hel1
                       - nbg1
                       - fsn1
-        default:
-          $ref: "#/paths/~1health/get/responses/default"
-    put:
-      x-internal: false
-      x-hidden: false
-      tags:
-        - Instance
-      description: Awake or put instance to sleep
-      summary: Instance awake, sleep
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - status
-              properties:
-                status:
-                  type: string
-                  enum:
-                    - awake
-                    - provisioning
-                    - wakingup
-                    - asleep
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/paths/~1instance/post/responses/202/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
     delete:
@@ -816,8 +726,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - collections
+                additionalProperties: false
                 properties:
                   collections:
                     type: array
@@ -838,6 +747,7 @@ paths:
               type: object
               required:
                 - collection_name
+              additionalProperties: false
               properties:
                 collection_name:
                   type: string
@@ -852,8 +762,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - collection_name
+                additionalProperties: false
                 properties:
                   collection_name:
                     type: string
@@ -946,8 +855,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - indices
+                additionalProperties: false
                 properties:
                   indices:
                     type: array
@@ -970,6 +878,7 @@ paths:
               required:
                 - field_name
                 - dimension
+              additionalProperties: false
               properties:
                 field_name:
                   type: string
@@ -987,12 +896,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - collection_name
-                  - field_name
-                  - n_documents
-                  - distance_metric
-                  - dimension
+                additionalProperties: false
                 properties:
                   collection_name:
                     type: string
@@ -1083,9 +987,9 @@ paths:
         content:
           application/json:
             schema:
-              additionalProperties: true
               required:
                 - documents
+              additionalProperties: false
               properties:
                 documents:
                   type: array
@@ -1093,6 +997,7 @@ paths:
                     type: object
                     required:
                       - id
+                    additionalProperties: true
                     properties:
                       id:
                         type: string
@@ -1133,6 +1038,7 @@ paths:
               required:
                 - max_neighbors
                 - field_name
+              additionalProperties: false
               properties:
                 ids:
                   type: array
@@ -1175,6 +1081,7 @@ paths:
                 type: array
                 items:
                   type: object
+                  additionalProperties: false
                   properties:
                     data:
                       type: array
@@ -1215,8 +1122,6 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
-                required:
-                  - id
                 properties:
                   id:
                     type: string
@@ -1238,7 +1143,7 @@ paths:
       x-hidden: false
       tags:
         - Document
-      description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated
+      description: COMING SOON! Remove document by ID. The corresponding indices will be updated
       summary: Remove document by ID
       responses:
         "200":

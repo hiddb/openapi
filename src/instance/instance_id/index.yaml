@@ -20,7 +20,7 @@ get:
 
 put:
   x-internal: false
-  x-hidden: false 
+  x-hidden: true 
   tags:
     - Instance
   description: Awake or put instance to sleep
@@ -32,10 +32,11 @@ put:
           type: object
           required:
             - status
+          additionalProperties: false
           properties:
             status:
               type: string
-              enum: ["awake", "provisioning", "wakingup", "asleep"]
+              enum: ["awake", "asleep"]
 
   responses:
     200:

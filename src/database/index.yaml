@@ -12,8 +12,7 @@ get:
         application/json:
           schema:
             type: object
-            required:
-              - databases
+            additionalProperties: false
             properties:
               databases:
                 type: array
@@ -39,6 +38,7 @@ post:
           type: object
           required:
             - database_name
+          additionalProperties: false
           properties:
             database_name:
               type: string
@@ -49,10 +49,14 @@ post:
               type: array
               items:
                 type: object
-                required:
-                  - type
-                  - volume_size
+                additionalProperties: false
                 properties:
+                  location:
+                    type: string
+                    enum: 
+                      - hel1
+                      - nbg1
+                      - fsn1
                   type:
                     type: string
                     enum:
@@ -70,12 +74,6 @@ post:
                     maximum: 10000
                     multipleOf: 1
   responses:
-    "200":
-      description: successful operation
-      content:
-        application/json:
-          schema:
-            $ref: "../components/schemas/DatabaseResponse.yaml"
     202:
       description: successful operation
       content:
