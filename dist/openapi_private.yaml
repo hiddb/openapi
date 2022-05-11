@@ -1,1939 +1,1343 @@
-{
-  "openapi": "3.0.0",
-  "servers": [
-    {
-      "url": "https://{service}.hiddb.io",
-      "description": "Access to your HIDDB databases",
-      "variables": {
-        "service": {
-          "default": "api",
-          "enum": [
-            "api",
-            "{database_id}"
-          ]
-        }
-      }
-    }
-  ],
-  "info": {
-    "description": "This is the official API documentation for the HIDDB vector search database.\n\nIn order to get started you will need to generate a API access key and secret token.\nSign in into the your [dashboard](https://dashboard.hiddb.com/) and navigate to `API Access` / `Create API Key`.\nMake sure to copy the token because it won't be shown to you again.\n\nNow you can sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.\n\n```bash\nKEY=\"<key>\"\nSECRET=\"<secret>\"\nTOKEN=`\\\ncurl --location \\\n     --request POST \"https://api.hiddb.io/machine/login\" \\\n     --header \"Content-Type: application/json\" \\\n     --header \"Accept: application/json\" \\\n     --data-raw \"{\n         \\\"access_key\\\": \\\"$KEY\\\",\n         \\\"secret_key\\\": \\\"$SECRET\\\"\n     }\" | python3 -c \"import sys, json; print(json.load(sys.stdin)['access_token'])\"`\n```\n\nOnce you have your API Token created, all API requests are authorized in the same way. \nHIDDB uses the RFC standard `Authorization: Bearer <Token>` interface.\nWhen used in an example API request it looks like this:\n\n```bash\nDATABASE_ID=\"<database_id>\"\ncurl --location \\\n     --request GET \"https://${DATABASE_ID}.hiddb.io/collection\" \\\n     --header \"Accept: application/json\" \\\n     --header \"Authorization: Bearer $TOKEN\"\n```\n\nCongratulations your have now full and secure control over your personal HIDDB database.\n",
-    "version": "0.2.3",
-    "title": "API documentation",
-    "termsOfService": "https:/hiddb.com/terms",
-    "license": {
-      "name": "Propretary Licence",
-      "url": "https://hiddb.com/licence"
-    }
-  },
-  "tags": [
-    {
-      "name": "Check health",
-      "description": "Check if you are all good"
-    },
-    {
-      "name": "User Authentification",
-      "description": "User authentification"
-    },
-    {
-      "name": "Machine Authentification",
-      "description": "Machine authentification"
-    },
-    {
-      "name": "Database",
-      "description": "Operations on databases"
-    },
-    {
-      "name": "Instance",
-      "description": "Operations on instances"
-    },
-    {
-      "name": "Collection",
-      "description": "Operations on collections"
-    },
-    {
-      "name": "Index",
-      "description": "Operations on indices"
-    },
-    {
-      "name": "Document",
-      "description": "Operations on documents"
-    }
-  ],
-  "paths": {
-    "/user/register": {
-      "post": {
-        "x-internal": false,
-        "x-hidden": true,
-        "tags": [
-          "User Authentification"
-        ],
-        "summary": "Register user",
-        "description": "Register user. Email containing URL with OTP is send out to user.",
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/reset": {
-      "post": {
-        "x-internal": false,
-        "x-hidden": true,
-        "tags": [
-          "User Authentification"
-        ],
-        "summary": "User password reset",
-        "description": "Send URL containing OTP to email adress provided by user to reset password.",
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/update/verify": {
-      "post": {
-        "x-internal": false,
-        "x-hidden": true,
-        "tags": [
-          "User Authentification"
-        ],
-        "summary": "Verify user's email",
-        "description": "Verify email adress provided by the user.",
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "user_id",
-                  "otp"
-                ],
-                "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "minLength": 18,
-                    "maxLength": 18,
-                    "pattern": "^[a-z0-9]{18,18}$"
-                  },
-                  "otp": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/update/reset": {
-      "post": {
-        "x-internal": false,
-        "x-hidden": true,
-        "tags": [
-          "User Authentification"
-        ],
-        "summary": "Update password",
-        "description": "Reset password as requested by the user.",
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "user_id",
-                  "otp",
-                  "password"
-                ],
-                "properties": {
-                  "user_id": {
-                    "type": "string"
-                  },
-                  "otp": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/login": {
-      "post": {
-        "x-internal": false,
-        "x-hidden": false,
-        "tags": [
-          "User Authentification"
-        ],
-        "description": "User login using access and secret token.",
-        "summary": "User login",
-        "operationId": "userLogin",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "access_token",
-                    "type"
-                  ],
-                  "properties": {
-                    "access_token": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "Bearer"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        },
-        "requestBody": {
-          "description": "Login email and password in exchange for JWT.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/logout": {
-      "post": {
-        "x-internal": false,
-        "x-hidden": false,
-        "tags": [
-          "User Authentification"
-        ],
-        "description": "Log user out",
-        "summary": "Log out user",
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/user/refresh": {
-      "post": {
-        "tags": [
-          "User Authentification"
-        ],
-        "description": "Refresh access token using cookie",
-        "summary": "Refresh JWT",
-        "responses": {
-          "200": {
-            "$ref": "#/paths/~1user~1login/post/responses/200"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        },
-        "requestBody": {
-          "description": "Exchange access and secret token for JSON web token (JWT).",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/machine/login": {
-      "post": {
-        "x-internal": false,
-        "x-hidden": false,
-        "tags": [
-          "Machine Authentification"
-        ],
-        "description": "Machine login using access and secret token.",
-        "summary": "Machine login",
-        "operationId": "machineLogin",
-        "responses": {
-          "200": {
-            "$ref": "#/paths/~1user~1login/post/responses/200"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        },
-        "requestBody": {
-          "description": "Exchange access and secret token for JSON web token (JWT).",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "access_key",
-                  "secret_key"
-                ],
-                "properties": {
-                  "access_key": {
-                    "type": "string",
-                    "minLength": 20,
-                    "maxLength": 20
-                  },
-                  "secret_key": {
-                    "type": "string",
-                    "minLength": 20,
-                    "maxLength": 20
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/machine": {
-      "post": {
-        "tags": [
-          "Create Machine Account"
-        ],
-        "description": "Create a new machine account.",
-        "summary": "New machine",
-        "operationId": "createMachine",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "machine_name",
-                    "id",
-                    "key",
-                    "secret",
-                    "permission"
-                  ],
-                  "properties": {
-                    "machine_name": {
-                      "type": "string",
-                      "minLength": 3,
-                      "maxLength": 20
-                    },
-                    "id": {
-                      "type": "string",
-                      "minLength": 18,
-                      "maxLength": 18
-                    },
-                    "key": {
-                      "type": "string",
-                      "minLength": 20,
-                      "maxLength": 20
-                    },
-                    "secret": {
-                      "type": "string",
-                      "minLength": 20,
-                      "maxLength": 20
-                    },
-                    "permission": {
-                      "type": "string",
-                      "enum": [
-                        "write",
-                        "read",
-                        "admin"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "machine_name",
-                  "permission"
-                ],
-                "properties": {
-                  "machine_name": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 20
-                  },
-                  "permission": {
-                    "type": "string",
-                    "enum": [
-                      "write",
-                      "read",
-                      "admin"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Machine Authentification"
-        ],
-        "description": "Get all machines in organization",
-        "summary": "Get all machines",
-        "operationId": "getMachines",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "machines": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "required": [
-                          "machine_name",
-                          "id",
-                          "key",
-                          "permission"
-                        ],
-                        "properties": {
-                          "machine_name": {
-                            "type": "string",
-                            "minLength": 3,
-                            "maxLength": 20
-                          },
-                          "id": {
-                            "type": "string",
-                            "minLength": 18,
-                            "maxLength": 18
-                          },
-                          "key": {
-                            "type": "string",
-                            "minLength": 20,
-                            "maxLength": 20
-                          },
-                          "permission": {
-                            "type": "string",
-                            "enum": [
-                              "write",
-                              "read",
-                              "admin"
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/machine/{machine_id}": {
-      "parameters": [
-        {
-          "name": "machine_id",
-          "in": "path",
-          "description": "The ID of the machine",
-          "example": "xxxxxxxxxxxxxxxxxx",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18,
-            "pattern": "^[a-z0-9]{18}$"
-          }
-        }
-      ],
-      "delete": {
-        "tags": [
-          "Machine Authentification"
-        ],
-        "description": "Delete machine account",
-        "summary": "Delete machine account",
-        "operationId": "deleteMachine",
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/health": {
-      "servers": [
-        {
-          "url": "https://api.hiddb.io"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Check health"
-        ],
-        "description": "Check access to databases",
-        "summary": "Check health database",
-        "responses": {
-          "200": {
-            "description": "successfull operation",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string",
-                  "default": "Ok",
-                  "enum": [
-                    "Ok"
-                  ]
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/database": {
-      "get": {
-        "tags": [
-          "Database"
-        ],
-        "description": "Get information about databases",
-        "summary": "Get databases",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatabasesResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "error"
-                  ],
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Database"
-        ],
-        "description": "Create new database",
-        "summary": "Create database",
-        "requestBody": {
-          "description": "Newly created database.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DatabaseRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatabaseResponse"
-                }
-              }
-            }
-          },
-          "202": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatabaseResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/database/{database_id}": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/DatabaseId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Database"
-        ],
-        "description": "Get information about specific database",
-        "summary": "Get database",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatabaseResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Database"
-        ],
-        "description": "Delete a specific database",
-        "summary": "Delete database",
-        "responses": {
-          "202": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatabaseResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/instance": {
-      "get": {
-        "tags": [
-          "Instance"
-        ],
-        "description": "Get information about instances",
-        "summary": "Get instances",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InstancesResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Instance"
-        ],
-        "description": "Create new instance",
-        "summary": "Create instance",
-        "requestBody": {
-          "description": "Newly created Instance.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InstanceRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InstanceResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/instance/{instance_id}": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/InstanceId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Instance"
-        ],
-        "description": "Get information about specific instance",
-        "summary": "Get instance",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InstanceResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Instance"
-        ],
-        "description": "Awake or put instance to sleep",
-        "summary": "Instance awake, sleep",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SleepAwakeInstance"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InstanceResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Instance"
-        ],
-        "description": "Delete a specific Instance",
-        "summary": "Delete instance",
-        "responses": {
-          "202": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InstanceResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/collection": {
-      "servers": [
-        {
-          "url": "https://{database_id}.hiddb.io",
-          "description": "General operations"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Collection"
-        ],
-        "description": "Get information about collections",
-        "summary": "Get collections",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionsResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Collection"
-        ],
-        "description": "Create new collection",
-        "summary": "Create collection",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/collection/{collection_name}": {
-      "servers": [
-        {
-          "url": "https://{database_id}.hiddb.io",
-          "description": "General operations"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Collection"
-        ],
-        "description": "Get information about a specific collection",
-        "summary": "Get collection",
-        "parameters": [
-          {
-            "name": "collection_name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 20,
-              "pattern": "^[a-z0-9_-]{3,20}$"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Collection"
-        ],
-        "description": "Delete a specific collection",
-        "summary": "Delete collection",
-        "parameters": [
-          {
-            "name": "collection_name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 20,
-              "pattern": "^[a-z0-9_-]{3,20}$"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/collection/{collection_name}/index": {
-      "servers": [
-        {
-          "url": "https://{database_id}.hiddb.io",
-          "description": "General operations"
-        }
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/CollectionId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Index"
-        ],
-        "description": "Get information about an existing indices",
-        "summary": "Get indices",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndicesResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Index"
-        ],
-        "description": "Create new index in the specified collection",
-        "summary": "Create index",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/collection/{collection_name}/index/{field_name}": {
-      "servers": [
-        {
-          "url": "https://{database_id}.hiddb.io",
-          "description": "General operations"
-        }
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/CollectionId"
-        },
-        {
-          "$ref": "#/components/parameters/IndexId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Index"
-        ],
-        "description": "Get information about specific index",
-        "summary": "Get index",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Index"
-        ],
-        "description": "Delete index",
-        "summary": "Delete index",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/collection/{collection_name}/document": {
-      "servers": [
-        {
-          "url": "https://{database_id}.hiddb.io",
-          "description": "General operations"
-        }
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/CollectionId"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Document"
-        ],
-        "description": "Insert document. The field \"field_name\" will be indexed by all existing indices",
-        "summary": "Insert document",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DocumentRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Insertion successful"
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/collection/{collection_name}/document/search": {
-      "servers": [
-        {
-          "url": "https://{database_id}.hiddb.io",
-          "description": "General operations"
-        }
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/CollectionId"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Document"
-        ],
-        "description": "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead",
-        "summary": "ANN-search",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SearchRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Insertion successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SearchResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    },
-    "/collection/{collection_name}/document/{document_id}": {
-      "servers": [
-        {
-          "url": "https://{database_id}.hiddb.io",
-          "description": "General operations"
-        }
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/CollectionId"
-        },
-        {
-          "$ref": "#/components/parameters/DocumentId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Document"
-        ],
-        "description": "Get document by ID",
-        "summary": "Get document by ID",
-        "responses": {
-          "200": {
-            "description": "Insertion successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Document"
-        ],
-        "description": "This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated",
-        "summary": "Remove document by ID",
-        "responses": {
-          "200": {
-            "description": "Insertion successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/paths/~1database/get/responses/default"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "parameters": {
-      "UserId": {
-        "name": "user_id",
-        "in": "path",
-        "description": "Your user ID. You can find your user ID in your dashboard",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 18,
-          "maxLength": 18,
-          "pattern": "^[a-z0-9]{18}$"
-        }
-      },
-      "MachineId": {
-        "name": "machine_id",
-        "in": "path",
-        "description": "The ID of the machine",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 18,
-          "maxLength": 18,
-          "pattern": "^[a-z0-9]{18}$"
-        }
-      },
-      "OrganizationId": {
-        "name": "organization_id",
-        "in": "path",
-        "description": "Your organization ID. You can find your organization ID in your dashboard",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 18,
-          "maxLength": 18,
-          "pattern": "^[a-z0-9]{18}$"
-        }
-      },
-      "InstanceId": {
-        "name": "instance_id",
-        "in": "path",
-        "description": "The ID of the instance",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 18,
-          "maxLength": 18,
-          "pattern": "^[a-z0-9]{18}$"
-        }
-      },
-      "DatabaseId": {
-        "name": "database_id",
-        "in": "path",
-        "description": "The ID of the database",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 18,
-          "maxLength": 18,
-          "pattern": "^[a-z0-9]{18}$"
-        }
-      },
-      "CollectionId": {
-        "name": "collection_name",
-        "in": "path",
-        "description": "The ID of the collection",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 3,
-          "maxLength": 20,
-          "pattern": "^[a-z0-9_-]{3,20}$"
-        }
-      },
-      "IndexId": {
-        "name": "field_name",
-        "in": "path",
-        "description": "The ID of the index",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 3,
-          "maxLength": 20,
-          "pattern": "^[a-z0-9_-]{3,20}$"
-        }
-      },
-      "DocumentId": {
-        "name": "document_id",
-        "in": "path",
-        "description": "The ID of the index",
-        "example": "xxxxxxxxxxxxxxxxxx",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "minLength": 3,
-          "maxLength": 20,
-          "pattern": "^[a-z0-9_-]{3,20}$"
-        }
-      }
-    },
-    "schemas": {
-      "InstanceRequest": {
-        "type": "object",
-        "required": [
-          "database_id",
-          "type",
-          "volume_size"
-        ],
-        "properties": {
-          "database_id": {
-            "type": "string",
-            "pattern": "^[a-z0-9]{18,18}$",
-            "example": "xxxxxxxxxxxxxxxxxx",
-            "minLength": 3
-          },
-          "type": {
-            "type": "string",
-            "description": "Instance type",
-            "default": "s",
-            "example": "s",
-            "enum": [
-              "xs",
-              "s",
-              "m",
-              "l",
-              "xl"
-            ]
-          },
-          "volume_size": {
-            "type": "number",
-            "description": "Size of mounted and volume in gb",
-            "default": 10,
-            "example": 100,
-            "minimum": 10,
-            "maximum": 10000,
-            "multipleOf": 1
-          },
-          "location": {
-            "type": "string",
-            "description": "Physical instance location",
-            "enum": [
-              "hel1",
-              "nbg1",
-              "fsn1"
-            ]
-          }
-        }
-      },
-      "InstanceResponse": {
-        "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "deleted_at",
-          "status",
-          "type",
-          "server",
-          "volume_size"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18,
-            "pattern": "^[a-z0-9]{18,18}$"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "deleted_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "awake",
-              "provisioning",
-              "wakingup",
-              "asleep"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "description": "Instance type",
-            "default": "s",
-            "example": "s",
-            "enum": [
-              "xs",
-              "s",
-              "m",
-              "l",
-              "xl"
-            ]
-          },
-          "server": {
-            "type": "object",
-            "nullable": true,
-            "required": [
-              "id"
-            ],
-            "properties": {
-              "id": {
-                "type": "string",
-                "minLength": 18,
-                "maxLength": 18,
-                "pattern": "^[a-z0-9]{18,18}$"
-              }
-            }
-          },
-          "volume_size": {
-            "type": "number",
-            "description": "Size of mounted and volume in gb",
-            "default": 10,
-            "example": 100,
-            "minimum": 10,
-            "maximum": 10000,
-            "multipleOf": 1
-          },
-          "location": {
-            "type": "string",
-            "description": "Physical instance location",
-            "enum": [
-              "hel1",
-              "nbg1",
-              "fsn1"
-            ]
-          }
-        }
-      },
-      "InstancesResponse": {
-        "type": "object",
-        "required": [
-          "instances"
-        ],
-        "properties": {
-          "instances": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InstanceResponse"
-            }
-          }
-        }
-      },
-      "SleepAwakeInstance": {
-        "type": "object",
-        "required": [
-          "status"
-        ],
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "awake",
-              "provisioning",
-              "wakingup",
-              "asleep"
-            ]
-          }
-        }
-      },
-      "DatabaseRequest": {
-        "type": "object",
-        "required": [
-          "database_name"
-        ],
-        "properties": {
-          "database_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$"
-          },
-          "instances": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "volume_size"
-              ],
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "xs",
-                    "s",
-                    "m",
-                    "l",
-                    "xl"
-                  ]
-                },
-                "volume_size": {
-                  "type": "number",
-                  "description": "Size of mounted and volume in gb",
-                  "default": 10,
-                  "example": 100,
-                  "minimum": 10,
-                  "maximum": 10000,
-                  "multipleOf": 1
-                }
-              }
-            }
-          }
-        }
-      },
-      "DatabaseResponse": {
-        "type": "object",
-        "required": [
-          "id",
-          "database_name",
-          "organization_id",
-          "created_at",
-          "deleted_at",
-          "instances"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18,
-            "pattern": "^[a-z0-9]{18,18}$"
-          },
-          "database_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$"
-          },
-          "organization_id": {
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18,
-            "pattern": "^[a-z0-9]{3,20}$",
-            "example": "xxxxxxxxxxxxxxxxxx"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "deleted_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "instances": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InstanceResponse"
-            }
-          }
-        }
-      },
-      "DatabasesResponse": {
-        "type": "object",
-        "required": [
-          "databases"
-        ],
-        "properties": {
-          "databases": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DatabaseResponse"
-            }
-          }
-        }
-      },
-      "CollectionRequest": {
-        "description": "Collection details",
-        "type": "object",
-        "required": [
-          "collection_name"
-        ],
-        "properties": {
-          "collection_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$",
-            "example": "xxxxxxxxxxxxxxxxxx"
-          }
-        }
-      },
-      "CollectionsResponse": {
-        "type": "object",
-        "required": [
-          "collections"
-        ],
-        "properties": {
-          "collections": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CollectionResponse"
-            }
-          }
-        }
-      },
-      "CollectionResponse": {
-        "type": "object",
-        "required": [
-          "collection_name"
-        ],
-        "properties": {
-          "collection_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$",
-            "example": "xxxxxxxxxxxxxxxxxx"
-          }
-        }
-      },
-      "IndexRequest": {
-        "type": "object",
-        "required": [
-          "field_name",
-          "dimension"
-        ],
-        "properties": {
-          "field_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$",
-            "example": "xxxxxxxxxxxxxxxxxx"
-          },
-          "dimension": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "DocumentRequest": {
-        "additionalProperties": true,
-        "required": [
-          "documents"
-        ],
-        "properties": {
-          "documents": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "minLength": 3,
-                  "maxLength": 50
-                },
-                "field": {
-                  "type": "array",
-                  "items": {
-                    "type": "number",
-                    "format": "double"
-                  },
-                  "example": [
-                    1,
-                    2,
-                    3
-                  ]
-                }
-              }
-            }
-          }
-        }
-      },
-      "DocumentResponse": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 50
-          },
-          "field": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            },
-            "example": [
-              1,
-              2,
-              3
-            ]
-          }
-        }
-      },
-      "IndexResponse": {
-        "type": "object",
-        "required": [
-          "collection_name",
-          "field_name",
-          "n_documents",
-          "distance_metric",
-          "dimension"
-        ],
-        "properties": {
-          "collection_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$",
-            "example": "xxxxxxxxxxxxxxxxxx"
-          },
-          "field_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$",
-            "example": "xxxxxxxxxxxxxxxxxx"
-          },
-          "n_documents": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "distance_metric": {
-            "type": "string",
-            "enum": [
-              "euclidean"
-            ]
-          },
-          "dimension": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "IndicesResponse": {
-        "type": "object",
-        "required": [
-          "indices"
-        ],
-        "properties": {
-          "indices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IndexResponse"
-            }
-          }
-        }
-      },
-      "SearchRequest": {
-        "type": "object",
-        "required": [
-          "max_neighbors",
-          "field_name"
-        ],
-        "properties": {
-          "ids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "document1",
-              "document2",
-              "document3"
-            ],
-            "description": "Get documents close to the specified document. Provide either `ids` or `vectors`"
-          },
-          "vectors": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
-            },
-            "example": [
-              [
-                1,
-                2,
-                3
-              ]
-            ],
-            "description": "Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index"
-          },
-          "max_neighbors": {
-            "type": "number",
-            "default": 20,
-            "minimum": 1,
-            "description": "Maximal number of neighbors to include in response"
-          },
-          "field_name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20,
-            "pattern": "^[a-z0-9_-]{3,20}$",
-            "description": "This parameter specifies the index to perform the query in",
-            "example": "xxxxxxxxxxxxxxxxxx"
-          }
-        }
-      },
-      "SearchResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "data": {
-              "type": "array",
-              "items": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "responses": {
-      "defaultError": {
-        "description": "error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+openapi: 3.0.0
+servers:
+  - url: 'https://{service}.hiddb.io'
+    description: Access to your HIDDB databases
+    variables:
+      service:
+        default: api
+        enum:
+          - api
+          - '{database_id}'
+info:
+  description: |
+    This is the official API documentation for the HIDDB vector search database.
+
+    In order to get started you will need to generate a API access key and secret token.
+    Sign in into the your [dashboard](https://dashboard.hiddb.com/) and navigate to `API Access` / `Create API Key`.
+    Make sure to copy the token because it won't be shown to you again.
+
+    Now you can sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
+
+    ```bash
+    KEY="<key>"
+    SECRET="<secret>"
+    TOKEN=`\
+    curl --location \
+         --request POST "https://api.hiddb.io/machine/login" \
+         --header "Content-Type: application/json" \
+         --header "Accept: application/json" \
+         --data-raw "{
+             \"access_key\": \"$KEY\",
+             \"secret_key\": \"$SECRET\"
+         }" | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])"`
+    ```
+
+    Once you have your API Token created, all API requests are authorized in the same way. 
+    HIDDB uses the RFC standard `Authorization: Bearer <Token>` interface.
+    When used in an example API request it looks like this:
+
+    ```bash
+    DATABASE_ID="<database_id>"
+    curl --location \
+         --request GET "https://${DATABASE_ID}.hiddb.io/collection" \
+         --header "Accept: application/json" \
+         --header "Authorization: Bearer $TOKEN"
+    ```
+
+    Congratulations your have now full and secure control over your personal HIDDB database.
+  version: 0.2.3
+  title: API documentation
+  termsOfService: 'https:/hiddb.com/terms'
+  license:
+    name: Propretary Licence
+    url: 'https://hiddb.com/licence'
+tags:
+  - name: Check health
+    description: Check if you are all good
+  - name: User Authentification
+    description: User authentification
+  - name: Machine Authentification
+    description: Machine authentification
+  - name: Database
+    description: Operations on databases
+  - name: Instance
+    description: Operations on instances
+  - name: Collection
+    description: Operations on collections
+  - name: Index
+    description: Operations on indices
+  - name: Document
+    description: Operations on documents
+paths:
+  /user/register:
+    post:
+      x-internal: false
+      x-hidden: true
+      tags:
+        - User Authentification
+      summary: Register user
+      description: Register user. Email containing URL with OTP is send out to user.
+      responses:
+        '200':
+          description: successful operation
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+  /user/reset:
+    post:
+      x-internal: false
+      x-hidden: true
+      tags:
+        - User Authentification
+      summary: User password reset
+      description: Send URL containing OTP to email adress provided by user to reset password.
+      responses:
+        '200':
+          description: successful operation
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+  /user/update/verify:
+    post:
+      x-internal: false
+      x-hidden: true
+      tags:
+        - User Authentification
+      summary: Verify user's email
+      description: Verify email adress provided by the user.
+      responses:
+        '200':
+          description: successful operation
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - otp
+              properties:
+                user_id:
+                  type: string
+                  minLength: 18
+                  maxLength: 18
+                  pattern: '^[a-z0-9]{18,18}$'
+                otp:
+                  type: string
+  /user/update/reset:
+    post:
+      x-internal: false
+      x-hidden: true
+      tags:
+        - User Authentification
+      summary: Update password
+      description: Reset password as requested by the user.
+      responses:
+        '200':
+          description: successful operation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - otp
+                - password
+              properties:
+                user_id:
+                  type: string
+                otp:
+                  type: string
+                password:
+                  type: string
+                  format: password
+  /user/login:
+    post:
+      x-internal: false
+      x-hidden: false
+      tags:
+        - User Authentification
+      description: User login using access and secret token.
+      summary: User login
+      operationId: userLogin
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - access_token
+                  - type
+                properties:
+                  access_token:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+      requestBody:
+        description: Login email and password in exchange for JWT.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+  /user/logout:
+    post:
+      x-internal: false
+      x-hidden: false
+      tags:
+        - User Authentification
+      description: Log user out
+      summary: Log out user
+      responses:
+        '200':
+          description: successful operation
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  /user/refresh:
+    post:
+      tags:
+        - User Authentification
+      description: Refresh access token using cookie
+      summary: Refresh JWT
+      responses:
+        '200':
+          $ref: '#/paths/~1user~1login/post/responses/200'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+      requestBody:
+        description: Exchange access and secret token for JSON web token (JWT).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /machine/login:
+    post:
+      x-internal: false
+      x-hidden: false
+      tags:
+        - Machine Authentification
+      description: Machine login using access and secret token.
+      summary: Machine login
+      operationId: machineLogin
+      responses:
+        '200':
+          $ref: '#/paths/~1user~1login/post/responses/200'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+      requestBody:
+        description: Exchange access and secret token for JSON web token (JWT).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - access_key
+                - secret_key
+              properties:
+                access_key:
+                  type: string
+                  minLength: 20
+                  maxLength: 20
+                secret_key:
+                  type: string
+                  minLength: 20
+                  maxLength: 20
+  /machine:
+    post:
+      tags:
+        - Create Machine Account
+      description: Create a new machine account.
+      summary: New machine
+      operationId: createMachine
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - machine_name
+                  - id
+                  - key
+                  - secret
+                  - permission
+                properties:
+                  machine_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                  key:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                  secret:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                  permission:
+                    type: string
+                    enum:
+                      - write
+                      - read
+                      - admin
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - machine_name
+                - permission
+              properties:
+                machine_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                permission:
+                  type: string
+                  enum:
+                    - write
+                    - read
+                    - admin
+    get:
+      tags:
+        - Machine Authentification
+      description: Get all machines in organization
+      summary: Get all machines
+      operationId: getMachines
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  machines:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - machine_name
+                        - id
+                        - key
+                        - permission
+                      properties:
+                        machine_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                        key:
+                          type: string
+                          minLength: 20
+                          maxLength: 20
+                        permission:
+                          type: string
+                          enum:
+                            - write
+                            - read
+                            - admin
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/machine/{machine_id}':
+    parameters:
+      - name: machine_id
+        in: path
+        description: The ID of the machine
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18}$'
+    delete:
+      tags:
+        - Machine Authentification
+      description: Delete machine account
+      summary: Delete machine account
+      operationId: deleteMachine
+      responses:
+        '200':
+          description: successful operation
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  /health:
+    servers:
+      - url: 'https://api.hiddb.io'
+    get:
+      tags:
+        - Check health
+      description: Check access to databases
+      summary: Check health database
+      responses:
+        '200':
+          description: successfull operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                default: Ok
+                enum:
+                  - Ok
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  /database:
+    get:
+      tags:
+        - Database
+      description: Get information about databases
+      summary: Get databases
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabasesResponse'
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+    post:
+      tags:
+        - Database
+      description: Create new database
+      summary: Create database
+      requestBody:
+        description: Newly created database.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseResponse'
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/database/{database_id}':
+    parameters:
+      - $ref: '#/components/parameters/DatabaseId'
+    get:
+      tags:
+        - Database
+      description: Get information about specific database
+      summary: Get database
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    delete:
+      tags:
+        - Database
+      description: Delete a specific database
+      summary: Delete database
+      responses:
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  /instance:
+    get:
+      tags:
+        - Instance
+      description: Get information about instances
+      summary: Get instances
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstancesResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    post:
+      tags:
+        - Instance
+      description: Create new instance
+      summary: Create instance
+      requestBody:
+        description: Newly created Instance.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceRequest'
+      responses:
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/instance/{instance_id}':
+    parameters:
+      - $ref: '#/components/parameters/InstanceId'
+    get:
+      tags:
+        - Instance
+      description: Get information about specific instance
+      summary: Get instance
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    put:
+      tags:
+        - Instance
+      description: Awake or put instance to sleep
+      summary: 'Instance awake, sleep'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SleepAwakeInstance'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    delete:
+      tags:
+        - Instance
+      description: Delete a specific Instance
+      summary: Delete instance
+      responses:
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  /collection:
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    get:
+      tags:
+        - Collection
+      description: Get information about collections
+      summary: Get collections
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionsResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    post:
+      tags:
+        - Collection
+      description: Create new collection
+      summary: Create collection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/collection/{collection_name}':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    get:
+      tags:
+        - Collection
+      description: Get information about a specific collection
+      summary: Get collection
+      parameters:
+        - name: collection_name
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 20
+            pattern: '^[a-z0-9_-]{3,20}$'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    delete:
+      tags:
+        - Collection
+      description: Delete a specific collection
+      summary: Delete collection
+      parameters:
+        - name: collection_name
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 20
+            pattern: '^[a-z0-9_-]{3,20}$'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/collection/{collection_name}/index':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/components/parameters/CollectionId'
+    get:
+      tags:
+        - Index
+      description: Get information about an existing indices
+      summary: Get indices
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndicesResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    post:
+      tags:
+        - Index
+      description: Create new index in the specified collection
+      summary: Create index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/collection/{collection_name}/index/{field_name}':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/components/parameters/CollectionId'
+      - $ref: '#/components/parameters/IndexId'
+    get:
+      tags:
+        - Index
+      description: Get information about specific index
+      summary: Get index
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    delete:
+      tags:
+        - Index
+      description: Delete index
+      summary: Delete index
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/collection/{collection_name}/document':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/components/parameters/CollectionId'
+    post:
+      tags:
+        - Document
+      description: Insert document. The field "field_name" will be indexed by all existing indices
+      summary: Insert document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentRequest'
+      responses:
+        '200':
+          description: Insertion successful
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/collection/{collection_name}/document/search':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/components/parameters/CollectionId'
+    post:
+      tags:
+        - Document
+      description: 'Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead'
+      summary: ANN-search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+  '/collection/{collection_name}/document/{document_id}':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/components/parameters/CollectionId'
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      tags:
+        - Document
+      description: Get document by ID
+      summary: Get document by ID
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+    delete:
+      tags:
+        - Document
+      description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated
+      summary: Remove document by ID
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponse'
+        default:
+          $ref: '#/paths/~1database/get/responses/default'
+components:
+  parameters:
+    UserId:
+      name: user_id
+      in: path
+      description: Your user ID. You can find your user ID in your dashboard
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 18
+        maxLength: 18
+        pattern: '^[a-z0-9]{18}$'
+    MachineId:
+      name: machine_id
+      in: path
+      description: The ID of the machine
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 18
+        maxLength: 18
+        pattern: '^[a-z0-9]{18}$'
+    OrganizationId:
+      name: organization_id
+      in: path
+      description: Your organization ID. You can find your organization ID in your dashboard
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 18
+        maxLength: 18
+        pattern: '^[a-z0-9]{18}$'
+    InstanceId:
+      name: instance_id
+      in: path
+      description: The ID of the instance
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 18
+        maxLength: 18
+        pattern: '^[a-z0-9]{18}$'
+    DatabaseId:
+      name: database_id
+      in: path
+      description: The ID of the database
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 18
+        maxLength: 18
+        pattern: '^[a-z0-9]{18}$'
+    CollectionId:
+      name: collection_name
+      in: path
+      description: The ID of the collection
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 20
+        pattern: '^[a-z0-9_-]{3,20}$'
+    IndexId:
+      name: field_name
+      in: path
+      description: The ID of the index
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 20
+        pattern: '^[a-z0-9_-]{3,20}$'
+    DocumentId:
+      name: document_id
+      in: path
+      description: The ID of the index
+      example: xxxxxxxxxxxxxxxxxx
+      required: true
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 20
+        pattern: '^[a-z0-9_-]{3,20}$'
+  schemas:
+    InstanceRequest:
+      type: object
+      required:
+        - database_id
+        - type
+        - volume_size
+      properties:
+        database_id:
+          type: string
+          pattern: '^[a-z0-9]{18,18}$'
+          example: xxxxxxxxxxxxxxxxxx
+          minLength: 3
+        type:
+          type: string
+          description: Instance type
+          default: s
+          example: s
+          enum:
+            - xs
+            - s
+            - m
+            - l
+            - xl
+        volume_size:
+          type: number
+          description: Size of mounted and volume in gb
+          default: 10
+          example: 100
+          minimum: 10
+          maximum: 10000
+          multipleOf: 1
+        location:
+          type: string
+          description: Physical instance location
+          enum:
+            - hel1
+            - nbg1
+            - fsn1
+    InstanceResponse:
+      type: object
+      required:
+        - id
+        - created_at
+        - deleted_at
+        - status
+        - type
+        - server
+        - volume_size
+      properties:
+        id:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18,18}$'
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+          enum:
+            - awake
+            - provisioning
+            - wakingup
+            - asleep
+        type:
+          type: string
+          description: Instance type
+          default: s
+          example: s
+          enum:
+            - xs
+            - s
+            - m
+            - l
+            - xl
+        server:
+          type: object
+          nullable: true
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              minLength: 18
+              maxLength: 18
+              pattern: '^[a-z0-9]{18,18}$'
+        volume_size:
+          type: number
+          description: Size of mounted and volume in gb
+          default: 10
+          example: 100
+          minimum: 10
+          maximum: 10000
+          multipleOf: 1
+        location:
+          type: string
+          description: Physical instance location
+          enum:
+            - hel1
+            - nbg1
+            - fsn1
+    InstancesResponse:
+      type: object
+      required:
+        - instances
+      properties:
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceResponse'
+    SleepAwakeInstance:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - awake
+            - provisioning
+            - wakingup
+            - asleep
+    DatabaseRequest:
+      type: object
+      required:
+        - database_name
+      properties:
+        database_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+        instances:
+          type: array
+          items:
+            type: object
+            required:
+              - type
+              - volume_size
+            properties:
+              type:
+                type: string
+                enum:
+                  - xs
+                  - s
+                  - m
+                  - l
+                  - xl
+              volume_size:
+                type: number
+                description: Size of mounted and volume in gb
+                default: 10
+                example: 100
+                minimum: 10
+                maximum: 10000
+                multipleOf: 1
+    DatabaseResponse:
+      type: object
+      required:
+        - id
+        - database_name
+        - organization_id
+        - created_at
+        - deleted_at
+        - instances
+      properties:
+        id:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18,18}$'
+        database_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+        organization_id:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{3,20}$'
+          example: xxxxxxxxxxxxxxxxxx
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceResponse'
+    DatabasesResponse:
+      type: object
+      required:
+        - databases
+      properties:
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseResponse'
+    CollectionRequest:
+      description: Collection details
+      type: object
+      required:
+        - collection_name
+      properties:
+        collection_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+          example: xxxxxxxxxxxxxxxxxx
+    CollectionsResponse:
+      type: object
+      required:
+        - collections
+      properties:
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionResponse'
+    CollectionResponse:
+      type: object
+      required:
+        - collection_name
+      properties:
+        collection_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+          example: xxxxxxxxxxxxxxxxxx
+    IndexRequest:
+      type: object
+      required:
+        - field_name
+        - dimension
+      properties:
+        field_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+          example: xxxxxxxxxxxxxxxxxx
+        dimension:
+          type: integer
+          format: int64
+    DocumentRequest:
+      additionalProperties: true
+      required:
+        - documents
+      properties:
+        documents:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                minLength: 3
+                maxLength: 50
+              field:
+                type: array
+                items:
+                  type: number
+                  format: double
+                example:
+                  - 1
+                  - 2
+                  - 3
+    DocumentResponse:
+      type: object
+      additionalProperties: true
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          minLength: 3
+          maxLength: 50
+        field:
+          type: array
+          items:
+            type: number
+            format: double
+          example:
+            - 1
+            - 2
+            - 3
+    IndexResponse:
+      type: object
+      required:
+        - collection_name
+        - field_name
+        - n_documents
+        - distance_metric
+        - dimension
+      properties:
+        collection_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+          example: xxxxxxxxxxxxxxxxxx
+        field_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+          example: xxxxxxxxxxxxxxxxxx
+        n_documents:
+          type: integer
+          format: int64
+        distance_metric:
+          type: string
+          enum:
+            - euclidean
+        dimension:
+          type: integer
+          format: int64
+    IndicesResponse:
+      type: object
+      required:
+        - indices
+      properties:
+        indices:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexResponse'
+    SearchRequest:
+      type: object
+      required:
+        - max_neighbors
+        - field_name
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+          example:
+            - document1
+            - document2
+            - document3
+          description: Get documents close to the specified document. Provide either `ids` or `vectors`
+        vectors:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+          example:
+            - - 1
+              - 2
+              - 3
+          description: Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
+        max_neighbors:
+          type: number
+          default: 20
+          minimum: 1
+          description: Maximal number of neighbors to include in response
+        field_name:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+          description: This parameter specifies the index to perform the query in
+          example: xxxxxxxxxxxxxxxxxx
+    SearchResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          data:
+            type: array
+            items:
+              type: array
+              items:
+                type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+  responses:
+    defaultError:
+      description: error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
