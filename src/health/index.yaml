@@ -1,0 +1,19 @@
+servers:
+  - url: https://api.hiddb.io
+get:
+  tags:
+    - Check health
+  description: Check access to databases
+  summary: Check health database
+  responses:
+    200:
+      description: successfull operation
+      content:
+        text/plain:
+          schema:
+            type: string
+            default: Ok
+            enum:
+              - Ok
+    default:
+      $ref: "../responses/errors/default.yaml"

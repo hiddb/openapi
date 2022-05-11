@@ -1,0 +1,14 @@
+parameters:
+  - $ref: "../../schemas/machine_id.yaml"
+
+delete:
+  tags:
+    - Machine Authentification
+  description: Delete machine account
+  summary: Delete machine account
+  operationId: deleteMachine
+  responses:
+    200:
+      description: successful operation
+    default:
+      $ref: "../../responses/errors/default.yaml"
