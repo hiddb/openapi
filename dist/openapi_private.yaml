@@ -937,6 +937,322 @@ paths:
                 $ref: '#/paths/~1collection/post/responses/200/content/application~1json/schema'
         default:
           $ref: '#/paths/~1health/get/responses/default'
+  '/collection/{collection_name}/index':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - name: collection_name
+        in: path
+        description: The ID of the collection
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+    get:
+      tags:
+        - Index
+      description: Get information about an existing indices
+      summary: Get indices
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - indices
+                properties:
+                  indices:
+                    type: array
+                    items:
+                      $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/post/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+    post:
+      tags:
+        - Index
+      description: Create new index in the specified collection
+      summary: Create index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - field_name
+                - dimension
+              properties:
+                field_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                  pattern: '^[a-z0-9_-]{3,20}$'
+                  example: xxxxxxxxxxxxxxxxxx
+                dimension:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - collection_name
+                  - field_name
+                  - n_documents
+                  - distance_metric
+                  - dimension
+                properties:
+                  collection_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  field_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  n_documents:
+                    type: integer
+                    format: int64
+                  distance_metric:
+                    type: string
+                    enum:
+                      - euclidean
+                  dimension:
+                    type: integer
+                    format: int64
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+  '/collection/{collection_name}/index/{field_name}':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+      - name: field_name
+        in: path
+        description: The ID of the index
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+    get:
+      tags:
+        - Index
+      description: Get information about specific index
+      summary: Get index
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/post/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+    delete:
+      tags:
+        - Index
+      description: Delete index
+      summary: Delete index
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/post/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+  '/collection/{collection_name}/document':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+    post:
+      tags:
+        - Document
+      description: Insert document. The field "field_name" will be indexed by all existing indices
+      summary: Insert document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              required:
+                - documents
+              properties:
+                documents:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: string
+                        minLength: 3
+                        maxLength: 50
+                      field:
+                        type: array
+                        items:
+                          type: number
+                          format: double
+                        example:
+                          - 1
+                          - 2
+                          - 3
+      responses:
+        '200':
+          description: Insertion successful
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+  '/collection/{collection_name}/document/search':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+    post:
+      tags:
+        - Document
+      description: 'Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead'
+      summary: ANN-search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - max_neighbors
+                - field_name
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - document1
+                    - document2
+                    - document3
+                  description: Get documents close to the specified document. Provide either `ids` or `vectors`
+                vectors:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: number
+                  example:
+                    - - 1
+                      - 2
+                      - 3
+                  description: Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
+                max_neighbors:
+                  type: number
+                  default: 20
+                  minimum: 1
+                  description: Maximal number of neighbors to include in response
+                field_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                  pattern: '^[a-z0-9_-]{3,20}$'
+                  description: This parameter specifies the index to perform the query in
+                  example: xxxxxxxxxxxxxxxxxx
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: array
+                        items:
+                          type: string
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+  '/collection/{collection_name}/document/{document_id}':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    parameters:
+      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+      - name: document_id
+        in: path
+        description: The ID of the index
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
+    get:
+      tags:
+        - Document
+      description: Get document by ID
+      summary: Get document by ID
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    minLength: 3
+                    maxLength: 50
+                  field:
+                    type: array
+                    items:
+                      type: number
+                      format: double
+                    example:
+                      - 1
+                      - 2
+                      - 3
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+    delete:
+      tags:
+        - Document
+      description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated
+      summary: Remove document by ID
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1document~1%7Bdocument_id%7D/get/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
 components:
   parameters:
     UserId:
@@ -973,154 +1289,6 @@ components:
         maxLength: 18
         pattern: '^[a-z0-9]{18}$'
   schemas:
-    IndexRequest:
-      type: object
-      required:
-        - field_name
-        - dimension
-      properties:
-        field_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-          pattern: '^[a-z0-9_-]{3,20}$'
-          example: xxxxxxxxxxxxxxxxxx
-        dimension:
-          type: integer
-          format: int64
-    DocumentRequest:
-      additionalProperties: true
-      required:
-        - documents
-      properties:
-        documents:
-          type: array
-          items:
-            type: object
-            required:
-              - id
-            properties:
-              id:
-                type: string
-                minLength: 3
-                maxLength: 50
-              field:
-                type: array
-                items:
-                  type: number
-                  format: double
-                example:
-                  - 1
-                  - 2
-                  - 3
-    DocumentResponse:
-      type: object
-      additionalProperties: true
-      required:
-        - id
-      properties:
-        id:
-          type: string
-          minLength: 3
-          maxLength: 50
-        field:
-          type: array
-          items:
-            type: number
-            format: double
-          example:
-            - 1
-            - 2
-            - 3
-    IndexResponse:
-      type: object
-      required:
-        - collection_name
-        - field_name
-        - n_documents
-        - distance_metric
-        - dimension
-      properties:
-        collection_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-          pattern: '^[a-z0-9_-]{3,20}$'
-          example: xxxxxxxxxxxxxxxxxx
-        field_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-          pattern: '^[a-z0-9_-]{3,20}$'
-          example: xxxxxxxxxxxxxxxxxx
-        n_documents:
-          type: integer
-          format: int64
-        distance_metric:
-          type: string
-          enum:
-            - euclidean
-        dimension:
-          type: integer
-          format: int64
-    IndicesResponse:
-      type: object
-      required:
-        - indices
-      properties:
-        indices:
-          type: array
-          items:
-            $ref: '#/components/schemas/IndexResponse'
-    SearchRequest:
-      type: object
-      required:
-        - max_neighbors
-        - field_name
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-          example:
-            - document1
-            - document2
-            - document3
-          description: Get documents close to the specified document. Provide either `ids` or `vectors`
-        vectors:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-          example:
-            - - 1
-              - 2
-              - 3
-          description: Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
-        max_neighbors:
-          type: number
-          default: 20
-          minimum: 1
-          description: Maximal number of neighbors to include in response
-        field_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-          pattern: '^[a-z0-9_-]{3,20}$'
-          description: This parameter specifies the index to perform the query in
-          example: xxxxxxxxxxxxxxxxxx
-    SearchResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          data:
-            type: array
-            items:
-              type: array
-              items:
-                type: string
     ErrorResponse:
       type: object
       properties:

@@ -1,0 +1,61 @@
+servers:
+  - url: https://{database_id}.hiddb.io
+    description: General operations
+parameters:
+  - $ref: "../../../components/parameters/CollectionId.yaml"
+
+get:
+  tags:
+    - Index
+  description: Get information about an existing indices
+  summary: Get indices
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - indices
+            properties:
+              indices:
+                type: array
+                items:
+                  $ref: "../../../components/schemas/IndexResponse.yaml"
+    default:
+      $ref: "../../../responses/errors/default.yaml"
+
+post:
+  tags:
+    - Index
+  description: Create new index in the specified collection
+  summary: Create index
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - field_name
+            - dimension
+          properties:
+            field_name:
+              type: string
+              minLength: 3
+              maxLength: 20
+              pattern: "^[a-z0-9_-]{3,20}$"
+              example: "xxxxxxxxxxxxxxxxxx"
+
+            dimension:
+              type: integer
+              format: int64
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/IndexResponse.yaml"
+    default:
+      $ref: "../../../responses/errors/default.yaml"
