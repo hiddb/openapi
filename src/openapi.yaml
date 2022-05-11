@@ -70,6 +70,8 @@ tags:
     description: Operations on indices
   - name: Document
     description: Operations on documents
+  - name: Internal
+    description: Internal operations
 
 paths:
   ############################## User Authentification ######################################
@@ -135,7 +137,7 @@ paths:
   /collection/{collection_name}:
     $ref: "./collection/collection_name/index.yaml"
 
-  # ############################## Index ##################################################
+  ############################### Index ##################################################
 
   /collection/{collection_name}/index:
     $ref: "./collection/collection_name/index/index.yaml"
@@ -153,3 +155,8 @@ paths:
 
   /collection/{collection_name}/document/{document_id}:
     $ref: "./collection/collection_name/document/document_id/index.yaml"
+
+  ############################## Usage #############################################
+
+  /usage/{organization_id}: 
+    $ref: "./usage/organization_id/index.yaml"

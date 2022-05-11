@@ -68,6 +68,8 @@ tags:
     description: Operations on indices
   - name: Document
     description: Operations on documents
+  - name: Internal
+    description: Internal operations
 paths:
   /user/register:
     post:
@@ -241,6 +243,8 @@ paths:
           $ref: '#/paths/~1health/get/responses/default'
   /user/refresh:
     post:
+      x-internal: false
+      x-hidden: false
       tags:
         - User Authentification
       description: Refresh access token using cookie
@@ -292,6 +296,8 @@ paths:
                   maxLength: 20
   /machine:
     post:
+      x-internal: false
+      x-hidden: false
       tags:
         - Create Machine Account
       description: Create a new machine account.
@@ -355,6 +361,8 @@ paths:
                     - read
                     - admin
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Machine Authentification
       description: Get all machines in organization
@@ -411,6 +419,8 @@ paths:
           maxLength: 18
           pattern: '^[a-z0-9]{18}$'
     delete:
+      x-internal: false
+      x-hidden: false
       tags:
         - Machine Authentification
       description: Delete machine account
@@ -425,6 +435,8 @@ paths:
     servers:
       - url: 'https://api.hiddb.io'
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Check health
       description: Check access to databases
@@ -475,6 +487,8 @@ paths:
         default:
           $ref: '#/paths/~1health/get/responses/default'
     post:
+      x-internal: false
+      x-hidden: false
       tags:
         - Database
       description: Create new database
@@ -613,6 +627,8 @@ paths:
           $ref: '#/paths/~1health/get/responses/default'
   /instance:
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Instance
       description: Get information about instances
@@ -634,6 +650,8 @@ paths:
         default:
           $ref: '#/paths/~1health/get/responses/default'
     post:
+      x-internal: false
+      x-hidden: false
       tags:
         - Instance
       description: Create new instance
@@ -767,6 +785,8 @@ paths:
           maxLength: 18
           pattern: '^[a-z0-9]{18}$'
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Instance
       description: Get information about specific instance
@@ -846,6 +866,8 @@ paths:
         default:
           $ref: '#/paths/~1health/get/responses/default'
     put:
+      x-internal: false
+      x-hidden: false
       tags:
         - Instance
       description: Awake or put instance to sleep
@@ -1337,5 +1359,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1document~1%7Bdocument_id%7D/get/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+  '/usage/{organization_id}':
+    servers:
+      - url: INSTANCE_MANATEMENT_URL
+        description: instance management microservice
+    get:
+      x-internal: true
+      x-hidden: true
+      tags:
+        - Internal
+      description: Get usage of organization
+      summary: Get usage
+      parameters:
+        - name: organization_id
+          in: path
+          description: The ID of the organization
+          example: xxxxxxxxxxxxxxxxxx
+          required: true
+          schema:
+            type: string
+            minLength: 18
+            maxLength: 18
+            pattern: '^[a-z0-9]{18,18}$'
+        - name: from
+          in: query
+          description: from
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          description: to
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                description: JSON containing the usage per organization
         default:
           $ref: '#/paths/~1health/get/responses/default'
