@@ -1,0 +1,111 @@
+post:
+  tags:
+    - Create Machine Account
+  description: Create a new machine account.
+  summary: New machine
+  operationId: createMachine
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - machine_name
+              - id
+              - key
+              - secret
+              - permission
+            properties:
+              machine_name:
+                type: string
+                minLength: 3
+                maxLength: 20
+              id:
+                type: string
+                minLength: 18
+                maxLength: 18
+              key:
+                type: string
+                minLength: 20
+                maxLength: 20
+              secret:
+                type: string
+                minLength: 20
+                maxLength: 20
+              permission:
+                type: string
+                enum:
+                  - "write"
+                  - "read"
+                  - "admin"
+    default:
+      $ref: "../responses/errors/default.yaml"
+
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - machine_name
+            - permission
+          properties:
+            machine_name:
+              type: string
+              minLength: 3
+              maxLength: 20
+            permission:
+              type: string
+              enum:
+                - "write"
+                - "read"
+                - "admin"
+
+##################################################################
+
+get:
+  tags:
+    - Machine Authentification
+  description: Get all machines in organization
+  summary: Get all machines
+  operationId: getMachines
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              machines:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - machine_name
+                    - id
+                    - key
+                    - permission
+                  properties:
+                    machine_name:
+                      type: string
+                      minLength: 3
+                      maxLength: 20
+                    id:
+                      type: string
+                      minLength: 18
+                      maxLength: 18
+                    key:
+                      type: string
+                      minLength: 20
+                      maxLength: 20
+                    permission:
+                      type: string
+                      enum:
+                      - "write"
+                      - "read"
+                      - "admin"
+    default:
+      $ref: "../responses/errors/default.yaml"
