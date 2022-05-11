@@ -81,7 +81,7 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
       requestBody:
         required: true
         content:
@@ -110,7 +110,7 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
       requestBody:
         required: true
         content:
@@ -135,7 +135,7 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
       requestBody:
         content:
           application/json:
@@ -208,7 +208,7 @@ paths:
                     enum:
                       - Bearer
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
       requestBody:
         description: Login email and password in exchange for JWT.
         required: true
@@ -238,7 +238,7 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
   /user/refresh:
     post:
       tags:
@@ -249,7 +249,7 @@ paths:
         '200':
           $ref: '#/paths/~1user~1login/post/responses/200'
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
       requestBody:
         description: Exchange access and secret token for JSON web token (JWT).
         required: true
@@ -270,7 +270,7 @@ paths:
         '200':
           $ref: '#/paths/~1user~1login/post/responses/200'
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
       requestBody:
         description: Exchange access and secret token for JSON web token (JWT).
         required: true
@@ -334,7 +334,7 @@ paths:
                       - read
                       - admin
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
       requestBody:
         content:
           application/json:
@@ -397,7 +397,7 @@ paths:
                             - read
                             - admin
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
   '/machine/{machine_id}':
     parameters:
       - name: machine_id
@@ -420,7 +420,7 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
   /health:
     servers:
       - url: 'https://api.hiddb.io'
@@ -440,24 +440,6 @@ paths:
                 enum:
                   - Ok
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
-  /collection:
-    servers:
-      - url: 'https://{database_id}.hiddb.io'
-        description: General operations
-    get:
-      tags:
-        - Collection
-      description: Get information about collections
-      summary: Get collections
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CollectionsResponse'
-        default:
           description: error
           content:
             application/json:
@@ -468,230 +450,380 @@ paths:
                 properties:
                   error:
                     type: string
-    post:
-      tags:
-        - Collection
-      description: Create new collection
-      summary: Create collection
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CollectionRequest'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CollectionResponse'
-        default:
-          $ref: '#/paths/~1collection/get/responses/default'
-  '/collection/{collection_name}':
-    servers:
-      - url: 'https://{database_id}.hiddb.io'
-        description: General operations
+  /database:
     get:
       tags:
-        - Collection
-      description: Get information about a specific collection
-      summary: Get collection
-      parameters:
-        - name: collection_name
-          in: path
-          required: true
-          schema:
-            type: string
-            minLength: 3
-            maxLength: 20
-            pattern: '^[a-z0-9_-]{3,20}$'
+        - Database
+      description: Get information about databases
+      summary: Get databases
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponse'
+                type: object
+                required:
+                  - databases
+                properties:
+                  databases:
+                    type: array
+                    items:
+                      $ref: '#/paths/~1database~1%7Bdatabase_id%7D/get/responses/200/content/application~1json/schema'
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
+  '/database/{database_id}':
+    parameters:
+      - name: database_id
+        in: path
+        description: The ID of the database
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18}$'
+    get:
+      tags:
+        - Database
+      description: Get information about specific database
+      summary: Get database
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  database_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                  organization_id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  instances:
+                    type: array
+                    items:
+                      $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
     delete:
       tags:
-        - Collection
-      description: Delete a specific collection
-      summary: Delete collection
-      parameters:
-        - name: collection_name
-          in: path
-          required: true
-          schema:
-            type: string
-            minLength: 3
-            maxLength: 20
-            pattern: '^[a-z0-9_-]{3,20}$'
+        - Database
+      description: Delete a specific database
+      summary: Delete database
       responses:
-        '200':
+        '202':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponse'
+                $ref: '#/paths/~1database~1%7Bdatabase_id%7D/get/responses/200/content/application~1json/schema'
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
-  '/collection/{collection_name}/index':
-    servers:
-      - url: 'https://{database_id}.hiddb.io'
-        description: General operations
-    parameters:
-      - $ref: '#/components/parameters/CollectionId'
+          $ref: '#/paths/~1health/get/responses/default'
+  /instance:
     get:
       tags:
-        - Index
-      description: Get information about an existing indices
-      summary: Get indices
+        - Instance
+      description: Get information about instances
+      summary: Get instances
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IndicesResponse'
+                type: object
+                required:
+                  - instances
+                properties:
+                  instances:
+                    type: array
+                    items:
+                      $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
     post:
       tags:
-        - Index
-      description: Create new index in the specified collection
-      summary: Create index
+        - Instance
+      description: Create new instance
+      summary: Create instance
+      requestBody:
+        description: Newly created Instance.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - database_id
+                - type
+                - volume_size
+              properties:
+                database_id:
+                  type: string
+                  pattern: '^[a-z0-9]{18,18}$'
+                  example: xxxxxxxxxxxxxxxxxx
+                  minLength: 3
+                type:
+                  type: string
+                  description: Instance type
+                  default: s
+                  example: s
+                  enum:
+                    - xs
+                    - s
+                    - m
+                    - l
+                    - xl
+                volume_size:
+                  type: number
+                  description: Size of mounted and volume in gb
+                  default: 10
+                  example: 100
+                  minimum: 10
+                  maximum: 10000
+                  multipleOf: 1
+                location:
+                  type: string
+                  description: Physical instance location
+                  enum:
+                    - hel1
+                    - nbg1
+                    - fsn1
+      responses:
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+  '/instance/{instance_id}':
+    parameters:
+      - name: instance_id
+        in: path
+        description: The ID of the instance
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18}$'
+    get:
+      tags:
+        - Instance
+      description: Get information about specific instance
+      summary: Get instance
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+    put:
+      tags:
+        - Instance
+      description: Awake or put instance to sleep
+      summary: 'Instance awake, sleep'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/IndexRequest'
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - awake
+                    - provisioning
+                    - wakingup
+                    - asleep
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IndexResponse'
+                $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
-  '/collection/{collection_name}/index/{field_name}':
-    servers:
-      - url: 'https://{database_id}.hiddb.io'
-        description: General operations
-    parameters:
-      - $ref: '#/components/parameters/CollectionId'
-      - $ref: '#/components/parameters/IndexId'
-    get:
-      tags:
-        - Index
-      description: Get information about specific index
-      summary: Get index
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/IndexResponse'
-        default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
     delete:
       tags:
-        - Index
-      description: Delete index
-      summary: Delete index
+        - Instance
+      description: Delete a specific Instance
+      summary: Delete instance
       responses:
-        '200':
+        '202':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IndexResponse'
+                $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
         default:
-          $ref: '#/paths/~1collection/get/responses/default'
-  '/collection/{collection_name}/document':
-    servers:
-      - url: 'https://{database_id}.hiddb.io'
-        description: General operations
-    parameters:
-      - $ref: '#/components/parameters/CollectionId'
-    post:
-      tags:
-        - Document
-      description: Insert document. The field "field_name" will be indexed by all existing indices
-      summary: Insert document
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DocumentRequest'
-      responses:
-        '200':
-          description: Insertion successful
-        default:
-          $ref: '#/paths/~1collection/get/responses/default'
-  '/collection/{collection_name}/document/search':
-    servers:
-      - url: 'https://{database_id}.hiddb.io'
-        description: General operations
-    parameters:
-      - $ref: '#/components/parameters/CollectionId'
-    post:
-      tags:
-        - Document
-      description: 'Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead'
-      summary: ANN-search
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-      responses:
-        '200':
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SearchResponse'
-        default:
-          $ref: '#/paths/~1collection/get/responses/default'
-  '/collection/{collection_name}/document/{document_id}':
-    servers:
-      - url: 'https://{database_id}.hiddb.io'
-        description: General operations
-    parameters:
-      - $ref: '#/components/parameters/CollectionId'
-      - $ref: '#/components/parameters/DocumentId'
-    get:
-      tags:
-        - Document
-      description: Get document by ID
-      summary: Get document by ID
-      responses:
-        '200':
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocumentResponse'
-        default:
-          $ref: '#/paths/~1collection/get/responses/default'
-    delete:
-      tags:
-        - Document
-      description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated
-      summary: Remove document by ID
-      responses:
-        '200':
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocumentResponse'
-        default:
-          $ref: '#/paths/~1collection/get/responses/default'
+          $ref: '#/paths/~1health/get/responses/default'
 components:
   parameters:
     UserId:
@@ -727,112 +859,7 @@ components:
         minLength: 18
         maxLength: 18
         pattern: '^[a-z0-9]{18}$'
-    InstanceId:
-      name: instance_id
-      in: path
-      description: The ID of the instance
-      example: xxxxxxxxxxxxxxxxxx
-      required: true
-      schema:
-        type: string
-        minLength: 18
-        maxLength: 18
-        pattern: '^[a-z0-9]{18}$'
-    DatabaseId:
-      name: database_id
-      in: path
-      description: The ID of the database
-      example: xxxxxxxxxxxxxxxxxx
-      required: true
-      schema:
-        type: string
-        minLength: 18
-        maxLength: 18
-        pattern: '^[a-z0-9]{18}$'
-    CollectionId:
-      name: collection_name
-      in: path
-      description: The ID of the collection
-      example: xxxxxxxxxxxxxxxxxx
-      required: true
-      schema:
-        type: string
-        minLength: 3
-        maxLength: 20
-        pattern: '^[a-z0-9_-]{3,20}$'
-    IndexId:
-      name: field_name
-      in: path
-      description: The ID of the index
-      example: xxxxxxxxxxxxxxxxxx
-      required: true
-      schema:
-        type: string
-        minLength: 3
-        maxLength: 20
-        pattern: '^[a-z0-9_-]{3,20}$'
-    DocumentId:
-      name: document_id
-      in: path
-      description: The ID of the index
-      example: xxxxxxxxxxxxxxxxxx
-      required: true
-      schema:
-        type: string
-        minLength: 3
-        maxLength: 20
-        pattern: '^[a-z0-9_-]{3,20}$'
   schemas:
-    InstanceRequest:
-      type: object
-      required:
-        - database_id
-        - type
-        - volume_size
-      properties:
-        database_id:
-          type: string
-          pattern: '^[a-z0-9]{18,18}$'
-          example: xxxxxxxxxxxxxxxxxx
-          minLength: 3
-        type:
-          type: string
-          description: Instance type
-          default: s
-          example: s
-          enum:
-            - xs
-            - s
-            - m
-            - l
-            - xl
-        volume_size:
-          type: number
-          description: Size of mounted and volume in gb
-          default: 10
-          example: 100
-          minimum: 10
-          maximum: 10000
-          multipleOf: 1
-        location:
-          type: string
-          description: Physical instance location
-          enum:
-            - hel1
-            - nbg1
-            - fsn1
-    SleepAwakeInstance:
-      type: object
-      required:
-        - status
-      properties:
-        status:
-          type: string
-          enum:
-            - awake
-            - provisioning
-            - wakingup
-            - asleep
     CollectionRequest:
       description: Collection details
       type: object

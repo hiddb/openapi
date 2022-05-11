@@ -1,0 +1,10 @@
+name: field_name
+in: path
+description: "The ID of the index"
+example: "xxxxxxxxxxxxxxxxxx"
+required: true
+schema:
+  type: string
+  minLength: 3
+  maxLength: 20
+  pattern: "^[a-z0-9_-]{3,20}$"

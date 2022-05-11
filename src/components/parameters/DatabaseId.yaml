@@ -1,0 +1,10 @@
+name: database_id
+in: path
+description: "The ID of the database"
+example: "xxxxxxxxxxxxxxxxxx"
+required: true
+schema:
+  type: string
+  minLength: 18
+  maxLength: 18
+  pattern: "^[a-z0-9]{18}$"
