@@ -824,6 +824,119 @@ paths:
                 $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
         default:
           $ref: '#/paths/~1health/get/responses/default'
+  /collection:
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    get:
+      tags:
+        - Collection
+      description: Get information about collections
+      summary: Get collections
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - collections
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/paths/~1collection/post/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+    post:
+      tags:
+        - Collection
+      description: Create new collection
+      summary: Create collection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Collection details
+              type: object
+              required:
+                - collection_name
+              properties:
+                collection_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                  pattern: '^[a-z0-9_-]{3,20}$'
+                  example: xxxxxxxxxxxxxxxxxx
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - collection_name
+                properties:
+                  collection_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+  '/collection/{collection_name}':
+    servers:
+      - url: 'https://{database_id}.hiddb.io'
+        description: General operations
+    get:
+      tags:
+        - Collection
+      description: Get information about a specific collection
+      summary: Get collection
+      parameters:
+        - name: collection_name
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 20
+            pattern: '^[a-z0-9_-]{3,20}$'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1collection/post/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
+    delete:
+      tags:
+        - Collection
+      description: Delete a specific collection
+      summary: Delete collection
+      parameters:
+        - name: collection_name
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 20
+            pattern: '^[a-z0-9_-]{3,20}$'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1collection/post/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1health/get/responses/default'
 components:
   parameters:
     UserId:
@@ -860,38 +973,6 @@ components:
         maxLength: 18
         pattern: '^[a-z0-9]{18}$'
   schemas:
-    CollectionRequest:
-      description: Collection details
-      type: object
-      required:
-        - collection_name
-      properties:
-        collection_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-          pattern: '^[a-z0-9_-]{3,20}$'
-          example: xxxxxxxxxxxxxxxxxx
-    CollectionsResponse:
-      type: object
-      required:
-        - collections
-      properties:
-        collections:
-          type: array
-          items:
-            $ref: '#/components/schemas/CollectionResponse'
-    CollectionResponse:
-      type: object
-      required:
-        - collection_name
-      properties:
-        collection_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-          pattern: '^[a-z0-9_-]{3,20}$'
-          example: xxxxxxxxxxxxxxxxxx
     IndexRequest:
       type: object
       required:

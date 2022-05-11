@@ -1,0 +1,55 @@
+servers:
+  - url: https://{database_id}.hiddb.io
+    description: General operations
+
+get:
+  tags:
+    - Collection
+  description: Get information about collections
+  summary: Get collections
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - collections
+            properties:
+              collections:
+                type: array
+                items:
+                  $ref: "../components/schemas/CollectionResponse.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"
+
+post:
+  tags:
+    - Collection
+  description: Create new collection
+  summary: Create collection
+  requestBody:
+    content:
+      application/json:
+        schema:
+          description: Collection details
+          type: object
+          required:
+            - collection_name
+          properties:
+            collection_name:
+              type: string
+              minLength: 3
+              maxLength: 20
+              pattern: "^[a-z0-9_-]{3,20}$"
+              example: "xxxxxxxxxxxxxxxxxx"
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/CollectionResponse.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"
