@@ -1,29 +1,32 @@
 post:
   x-internal: false
-  x-hidden: true
+  x-hidden: false
   tags:
     - User Authentification
-  summary: Update password
-  description: Reset password as requested by the user.
+  description: User login using access and secret token.
+  summary: User login
+  operationId: userLogin
+
   responses:
     200:
-      description: successful operation
+      $ref: "./responses/login.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"
 
   requestBody:
+    description: Login email and password in exchange for JWT.
     required: true
     content:
       application/json:
         schema:
           type: object
           required:
-            - user_id
-            - otp
+            - email
             - password
           properties:
-            user_id:
+            email:
               type: string
-            otp:
-              type: string
+              format: email
             password:
               type: string
               format: password

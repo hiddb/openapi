@@ -87,98 +87,10 @@ paths:
     $ref: "./user/update/reset.yaml" 
 
   /user/login:
-    post:
-      tags:
-        - User Authentification
-      description: User login using access and secret token.
-      summary: User login
-      operationId: userLogin
-
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginResponse"
-        400:
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        401:
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        403:
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        404:
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        405:
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-      requestBody:
-        description: Login email and password in exchange for JWT.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserLogin"
-        required: true
+    $ref: "./user/login.yaml" 
 
   /user/logout:
-    post:
-      tags:
-        - User Authentification
-      description: Log user out
-      summary: Log out user
-      responses:
-        200:
-          description: successful operation
-        400:
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        401:
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        403:
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        404:
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        405:
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+    $ref: "./user/logout.yaml" 
 
   /user/refresh:
     post:
@@ -1606,19 +1518,6 @@ components:
           type: string
           minLength: 20
           maxLength: 20
-
-    UserLogin:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
 
     UserRefresh:
       type: object
