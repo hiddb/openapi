@@ -1,0 +1,23 @@
+  post:
+    x-hidden: true
+    tags:
+      - User Authentification
+    summary: User password reset
+    description: Send URL containing OTP to email adress provided by user to reset password.
+    responses:
+      200:
+        description: successful operation
+      default:
+        $ref: "../responses/errors/default.yaml"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                format: email

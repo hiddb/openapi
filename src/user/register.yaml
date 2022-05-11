@@ -1,0 +1,28 @@
+post:
+  x-hidden: true
+  tags:
+    - User Authentification
+  summary: Register user
+  description: Register user. Email containing URL with OTP is send out to user.
+  responses:
+    200:
+      description: successful operation
+    default:
+      $ref: "../responses/errors/default.yaml"
+    
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - email
+            - password
+          properties:
+            email:
+              type: string
+              format: email
+            password:
+              type: string
+              format: password

@@ -69,29 +69,15 @@ tags:
   - name: Document
     description: Operations on documents
 paths:
-  /user/register:
+  /user/reset:
     post:
       tags:
         - User Authentification
-      summary: Register user
-      description: Register user. Email containing URL with OTP is send out to user.
+      summary: User password reset
+      description: Send URL containing OTP to email adress provided by user to reset password.
       responses:
         "200":
           description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - email
-                  - password
-                properties:
-                  email:
-                    type: string
-                    format: email
-                  password:
-                    type: string
-                    format: password
         default:
           description: error
           content:
@@ -111,105 +97,10 @@ paths:
               type: object
               required:
                 - email
-                - password
               properties:
                 email:
                   type: string
                   format: email
-                password:
-                  type: string
-                  format: password
-  /user/update/verify:
-    post:
-      x-internal: false
-      tags:
-        - User Authentification
-      summary: Verify user's email
-      description: Verify email adress provided by the user.
-      responses:
-        "200":
-          description: successful operation
-        "400":
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "405":
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserVerify"
-        required: true
-  /user/reset:
-    post:
-      tags:
-        - User Authentification
-      summary: User password reset
-      description: Send URL containing OTP to email adress provided by user to reset password.
-      responses:
-        "200":
-          description: successful operation
-        "400":
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "405":
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserReset"
-        required: true
   /user/update/reset:
     post:
       tags:
@@ -219,42 +110,24 @@ paths:
       responses:
         "200":
           description: successful operation
-        "400":
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "405":
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserUpdateReset"
-        required: true
+              type: object
+              required:
+                - user_id
+                - otp
+                - password
+              properties:
+                user_id:
+                  type: string
+                otp:
+                  type: string
+                password:
+                  type: string
+                  format: password
   /user/login:
     post:
       tags:
@@ -1720,41 +1593,6 @@ components:
           format: password
     UserRefresh:
       type: object
-    UserVerify:
-      type: object
-      required:
-        - user_id
-        - otp
-      properties:
-        user_id:
-          type: string
-          minLength: 18
-          maxLength: 18
-          pattern: ^[a-z0-9]{18,18}$
-        otp:
-          type: string
-    UserReset:
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: string
-          format: email
-    UserUpdateReset:
-      type: object
-      required:
-        - user_id
-        - otp
-        - password
-      properties:
-        user_id:
-          type: string
-        otp:
-          type: string
-        password:
-          type: string
-          format: password
     PostMachineRequest:
       type: object
       required:
