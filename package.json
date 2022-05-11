@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "swagger-cli validate ./src/openapi.yaml && swagger-cli bundle ./src/openapi.yaml -o ./dist/openapi_private.yaml && openapi-filter --flags x-private -- ./dist/openapi_private.yaml ./dist/openapi_public.yaml"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/hiddb/openapi/issues"
   },
-  "homepage": "https://github.com/hiddb/openapi#readme"
+  "homepage": "https://github.com/hiddb/openapi#readme",
+  "dependencies": {
+    "@apidevtools/swagger-cli": "^4.0.4",
+    "openapi-filter": "^3.2.0"
+  }
 }
