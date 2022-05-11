@@ -1,0 +1,14 @@
+description: successful operation
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - access_token
+        - type
+      properties:
+        access_token:
+          type: string
+        type:
+          type: string
+          enum: ["Bearer"]
