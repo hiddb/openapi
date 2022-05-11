@@ -1,0 +1,59 @@
+parameters:
+  - $ref: "../../components/parameters/InstanceId.yaml"
+
+get:
+  tags:
+    - Instance
+  description: Get information about specific instance
+  summary: Get instance
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "../..//components/schemas/InstanceResponse.yaml"
+    default:
+      $ref: "../../responses/errors/default.yaml"
+
+put:
+  tags:
+    - Instance
+  description: Awake or put instance to sleep
+  summary: Instance awake, sleep
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum: ["awake", "provisioning", "wakingup", "asleep"]
+
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/InstanceResponse.yaml"
+    default:
+      $ref: "../../responses/errors/default.yaml"
+
+delete:
+  tags:
+    - Instance
+  description: Delete a specific Instance
+  summary: Delete instance
+  responses:
+    202:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/InstanceResponse.yaml"
+    default:
+      $ref: "../../responses/errors/default.yaml"

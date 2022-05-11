@@ -1,0 +1,79 @@
+get:
+  tags:
+    - Instance
+  description: Get information about instances
+  summary: Get instances
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - instances
+            properties:
+              instances:
+                type: array
+                items:
+                  $ref: "../components/schemas/InstanceResponse.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"
+
+post:
+  tags:
+    - Instance
+  description: Create new instance
+  summary: Create instance
+  requestBody:
+    description: Newly created Instance.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - database_id
+            - type
+            - volume_size
+          properties:
+            database_id:
+              type: string
+              pattern: "^[a-z0-9]{18,18}$"
+              example: "xxxxxxxxxxxxxxxxxx"
+              minLength: 3
+            type:
+              type: string
+              description: Instance type
+              default: s
+              example: s
+              enum:
+                - xs
+                - s
+                - m
+                - l
+                - xl
+            volume_size:
+              type: number
+              description: Size of mounted and volume in gb
+              default: 10
+              example: 100
+              minimum: 10
+              maximum: 10000
+              multipleOf: 1
+
+            location:
+              type: string
+              description: Physical instance location
+              enum:
+              - hel1
+              - nbg1
+              - fsn1
+  responses:
+    202:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/InstanceResponse.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"
