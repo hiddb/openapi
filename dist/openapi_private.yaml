@@ -311,6 +311,8 @@
     },
     "/user/logout": {
       "post": {
+        "x-internal": false,
+        "x-hidden": false,
         "tags": [
           "User Authentification"
         ],
@@ -335,81 +337,29 @@
         "summary": "Refresh JWT",
         "responses": {
           "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
+            "$ref": "#/paths/~1user~1login/post/responses/200"
           },
-          "400": {
-            "description": "invalid parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
+          "default": {
+            "$ref": "#/paths/~1user~1reset/post/responses/default"
           }
         },
         "requestBody": {
           "description": "Exchange access and secret token for JSON web token (JWT).",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRefresh"
+                "type": "object"
               }
             }
-          },
-          "required": true
+          }
         }
       }
     },
     "/machine/login": {
       "post": {
+        "x-internal": false,
+        "x-hidden": false,
         "tags": [
           "Machine Authentification"
         ],
@@ -418,76 +368,38 @@
         "operationId": "machineLogin",
         "responses": {
           "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
+            "$ref": "#/paths/~1user~1login/post/responses/200"
           },
-          "400": {
-            "description": "invalid parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
+          "default": {
+            "$ref": "#/paths/~1user~1reset/post/responses/default"
           }
         },
         "requestBody": {
           "description": "Exchange access and secret token for JSON web token (JWT).",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MachineLogin"
+                "type": "object",
+                "required": [
+                  "access_key",
+                  "secret_key"
+                ],
+                "properties": {
+                  "access_key": {
+                    "type": "string",
+                    "minLength": 20,
+                    "maxLength": 20
+                  },
+                  "secret_key": {
+                    "type": "string",
+                    "minLength": 20,
+                    "maxLength": 20
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         }
       }
     },
@@ -2503,46 +2415,6 @@
       }
     },
     "schemas": {
-      "LoginResponse": {
-        "type": "object",
-        "required": [
-          "access_token",
-          "type"
-        ],
-        "properties": {
-          "access_token": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bearer"
-            ]
-          }
-        }
-      },
-      "MachineLogin": {
-        "type": "object",
-        "required": [
-          "access_key",
-          "secret_key"
-        ],
-        "properties": {
-          "access_key": {
-            "type": "string",
-            "minLength": 20,
-            "maxLength": 20
-          },
-          "secret_key": {
-            "type": "string",
-            "minLength": 20,
-            "maxLength": 20
-          }
-        }
-      },
-      "UserRefresh": {
-        "type": "object"
-      },
       "PostMachineRequest": {
         "type": "object",
         "required": [
