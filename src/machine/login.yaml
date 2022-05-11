@@ -1,0 +1,34 @@
+post:
+  x-internal: false
+  x-hidden: false
+  tags:
+    - Machine Authentification
+  description: Machine login using access and secret token.
+  summary: Machine login
+  operationId: machineLogin
+
+  responses:
+    200:
+      $ref: "../responses/login.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"
+  
+  requestBody:
+    description: Exchange access and secret token for JSON web token (JWT).
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - access_key
+            - secret_key
+          properties:
+            access_key:
+              type: string
+              minLength: 20
+              maxLength: 20
+            secret_key:
+              type: string
+              minLength: 20
+              maxLength: 20

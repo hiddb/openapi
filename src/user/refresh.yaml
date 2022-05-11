@@ -1,0 +1,17 @@
+post:
+  tags:
+    - User Authentification
+  description: Refresh access token using cookie
+  summary: Refresh JWT
+  responses:
+    200:
+      $ref: "../responses/login.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"  
+  requestBody:
+    description: Exchange access and secret token for JSON web token (JWT).
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object

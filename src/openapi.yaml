@@ -93,111 +93,12 @@ paths:
     $ref: "./user/logout.yaml" 
 
   /user/refresh:
-    post:
-      tags:
-        - User Authentification
-      description: Refresh access token using cookie
-      summary: Refresh JWT
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginResponse"
-        400:
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        401:
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        403:
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        404:
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        405:
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-      requestBody:
-        description: Exchange access and secret token for JSON web token (JWT).
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRefresh"
-        required: true
+    $ref: "./user/refresh.yaml" 
 
   ############################## Machine Authentification ######################################
 
   /machine/login:
-    post:
-      tags:
-        - Machine Authentification
-      description: Machine login using access and secret token.
-      summary: Machine login
-      operationId: machineLogin
-
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginResponse"
-        400:
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        401:
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        403:
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        404:
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        405:
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-      
-      requestBody:
-        description: Exchange access and secret token for JSON web token (JWT).
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MachineLogin"
-        required: true
+    $ref: "./machine/login.yaml" 
 
   /machine:
     post:
@@ -1493,35 +1394,6 @@ components:
         pattern: "^[a-z0-9_-]{3,20}$"
 
   schemas:
-    LoginResponse:
-      type: object
-      required:
-        - access_token
-        - type
-      properties:
-        access_token:
-          type: string
-        type:
-          type: string
-          enum: ["Bearer"]
-    MachineLogin:
-      type: object
-      required:
-        - access_key
-        - secret_key
-      properties:
-        access_key:
-          type: string
-          minLength: 20
-          maxLength: 20
-        secret_key:
-          type: string
-          minLength: 20
-          maxLength: 20
-
-    UserRefresh:
-      type: object
-
     PostMachineRequest:
       type: object
       required:
