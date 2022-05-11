@@ -1,0 +1,27 @@
+  post:
+    x-hidden: true
+    tags:
+      - User Authentification
+    summary: Verify user's email
+    description: Verify email adress provided by the user.
+    responses:
+      200:
+        description: successful operation
+      default:
+        $ref: "../../responses/errors/default.yaml"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - user_id
+              - otp
+            properties:
+              user_id:
+                type: string
+                minLength: 18
+                maxLength: 18
+                pattern: "^[a-z0-9]{18,18}$"
+              otp:
+                type: string

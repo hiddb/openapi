@@ -1,14 +1,13 @@
 post:
+  x-hidden: true
   tags:
     - User Authentification
-  summary: Register user
-  description: Register user. Email containing URL with OTP is send out to user.
+  summary: Update password
+  description: Reset password as requested by the user.
   responses:
     200:
       description: successful operation
-    default:
-      $ref: "../../responses/errors/default.yaml"
-    
+
   requestBody:
     required: true
     content:
@@ -16,12 +15,14 @@ post:
         schema:
           type: object
           required:
-            - email
+            - user_id
+            - otp
             - password
           properties:
-            email:
+            user_id:
               type: string
-              format: email
+            otp:
+              type: string
             password:
               type: string
               format: password
