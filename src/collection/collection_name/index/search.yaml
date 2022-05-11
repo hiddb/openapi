@@ -19,6 +19,7 @@ post:
           required:
             - max_neighbors
             - field_name
+          additionalProperties: false
           properties:
             ids:
               type: array

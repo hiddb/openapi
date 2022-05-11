@@ -16,8 +16,7 @@ get:
         application/json:
           schema:
             type: object
-            required:
-              - collections
+            additionalProperties: false
             properties:
               collections:
                 type: array
@@ -39,6 +38,7 @@ post:
           type: object
           required:
             - collection_name
+          additionalProperties: false
           properties:
             collection_name:
               type: string

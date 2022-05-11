@@ -18,6 +18,7 @@
             required:
               - user_id
               - otp
+            additionalProperties: false 
             properties:
               user_id:
                 type: string

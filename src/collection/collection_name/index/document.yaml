@@ -17,9 +17,9 @@ post:
     content:
       application/json:
         schema:
-          additionalProperties: true
           required:
             - documents
+          additionalProperties: false
           properties:
             documents:
               type: array
@@ -27,6 +27,7 @@ post:
                 type: object
                 required:
                   - id
+                additionalProperties: true
                 properties:
                   id:
                     type: string

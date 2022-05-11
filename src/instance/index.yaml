@@ -14,6 +14,7 @@ get:
             type: object
             required:
               - instances
+            additionalProperties: false
             properties:
               instances:
                 type: array
@@ -37,8 +38,7 @@ post:
           type: object
           required:
             - database_id
-            - type
-            - volume_size
+          additionalProperties: false
           properties:
             database_id:
               type: string
@@ -69,9 +69,9 @@ post:
               type: string
               description: Physical instance location
               enum:
-              - hel1
-              - nbg1
-              - fsn1
+                - hel1
+                - nbg1
+                - fsn1
   responses:
     202:
       description: successful operation

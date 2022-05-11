@@ -19,6 +19,7 @@ post:
             - user_id
             - otp
             - password
+          additionalProperties: false
           properties:
             user_id:
               type: string

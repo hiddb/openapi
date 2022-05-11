@@ -1,12 +1,5 @@
 type: object
-required:
-  - id
-  - created_at
-  - deleted_at
-  - status
-  - type
-  - server
-  - volume_size
+additionalProperties: false
 properties:
   id:
     type: string
@@ -37,8 +30,7 @@ properties:
   server:
     type: object
     nullable: true
-    required:
-      - id
+    additionalProperties: false
     properties:
       id:
         type: string

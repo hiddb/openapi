@@ -20,6 +20,7 @@ post:
           required:
             - email
             - password
+          additionalProperties: true
           properties:
             email:
               type: string

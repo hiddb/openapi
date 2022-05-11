@@ -2,7 +2,7 @@ post:
   x-internal: false
   x-hidden: false 
   tags:
-    - Create Machine Account
+    - Machine Authentification
   description: Create a new machine account.
   summary: New machine
   operationId: createMachine
@@ -13,12 +13,7 @@ post:
         application/json:
           schema:
             type: object
-            required:
-              - machine_name
-              - id
-              - key
-              - secret
-              - permission
+            additionalProperties: false
             properties:
               machine_name:
                 type: string
@@ -53,6 +48,7 @@ post:
           required:
             - machine_name
             - permission
+          additionalProperties: false
           properties:
             machine_name:
               type: string
@@ -82,16 +78,13 @@ get:
         application/json:
           schema:
             type: object
+            additionalProperties: false
             properties:
               machines:
                 type: array
                 items:
                   type: object
-                  required:
-                    - machine_name
-                    - id
-                    - key
-                    - permission
+                  additionalProperties: false
                   properties:
                     machine_name:
                       type: string

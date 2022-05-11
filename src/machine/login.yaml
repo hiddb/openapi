@@ -23,6 +23,7 @@ post:
           required:
             - access_key
             - secret_key
+          additionalProperties: false
           properties:
             access_key:
               type: string
