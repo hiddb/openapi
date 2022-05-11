@@ -1,5 +1,5 @@
 parameters:
-  - $ref: "../../schemas/machine_id.yaml"
+  - $ref: "../../components/parameters/machine_id.yaml"
 
 delete:
   tags:
