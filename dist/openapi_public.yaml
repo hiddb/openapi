@@ -96,7 +96,7 @@ paths:
                     enum:
                       - Bearer
         default:
-          $ref: "#/paths/~1user~1reset/post/responses/default"
+          $ref: "#/paths/~1machine/get/responses/default"
       requestBody:
         description: Login email and password in exchange for JWT.
         required: true
@@ -126,7 +126,7 @@ paths:
         "200":
           description: successful operation
         default:
-          $ref: "#/paths/~1user~1reset/post/responses/default"
+          $ref: "#/paths/~1machine/get/responses/default"
   /user/refresh:
     post:
       tags:
@@ -137,7 +137,7 @@ paths:
         "200":
           $ref: "#/paths/~1user~1login/post/responses/200"
         default:
-          $ref: "#/paths/~1user~1reset/post/responses/default"
+          $ref: "#/paths/~1machine/get/responses/default"
       requestBody:
         description: Exchange access and secret token for JSON web token (JWT).
         required: true
@@ -158,7 +158,7 @@ paths:
         "200":
           $ref: "#/paths/~1user~1login/post/responses/200"
         default:
-          $ref: "#/paths/~1user~1reset/post/responses/default"
+          $ref: "#/paths/~1machine/get/responses/default"
       requestBody:
         description: Exchange access and secret token for JSON web token (JWT).
         required: true
@@ -191,42 +191,57 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostMachineResponse"
-        "400":
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "405":
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                type: object
+                required:
+                  - machine_name
+                  - id
+                  - key
+                  - secret
+                  - permission
+                properties:
+                  machine_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                  key:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                  secret:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                  permission:
+                    type: string
+                    enum:
+                      - write
+                      - read
+                      - admin
+        default:
+          $ref: "#/paths/~1machine/get/responses/default"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostMachineRequest"
+              type: object
+              required:
+                - machine_name
+                - permission
+              properties:
+                machine_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                permission:
+                  type: string
+                  enum:
+                    - write
+                    - read
+                    - admin
     get:
       tags:
         - Machine Authentification
@@ -239,37 +254,47 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetMachinesResponse"
-        "400":
-          description: invalid parameters
+                type: object
+                properties:
+                  machines:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - machine_name
+                        - id
+                        - key
+                        - permission
+                      properties:
+                        machine_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                        key:
+                          type: string
+                          minLength: 20
+                          maxLength: 20
+                        permission:
+                          type: string
+                          enum:
+                            - write
+                            - read
+                            - admin
+        default:
+          description: error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "405":
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
   "/machine/{machine_id}":
     parameters:
       - $ref: "#/components/parameters/MachineId"
@@ -1412,84 +1437,6 @@ components:
         maxLength: 20
         pattern: ^[a-z0-9_-]{3,20}$
   schemas:
-    PostMachineRequest:
-      type: object
-      required:
-        - machine_name
-        - permission
-      properties:
-        machine_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-        permission:
-          type: string
-          enum:
-            - write
-            - read
-            - admin
-    PostMachineResponse:
-      type: object
-      required:
-        - machine_name
-        - id
-        - key
-        - secret
-        - permission
-      properties:
-        machine_name:
-          type: string
-          minLength: 3
-          maxLength: 20
-        id:
-          type: string
-          minLength: 18
-          maxLength: 18
-        key:
-          type: string
-          minLength: 20
-          maxLength: 20
-        secret:
-          type: string
-          minLength: 20
-          maxLength: 20
-        permission:
-          type: string
-          enum:
-            - write
-            - read
-            - admin
-    GetMachinesResponse:
-      type: object
-      properties:
-        machines:
-          type: array
-          items:
-            type: object
-            required:
-              - machine_name
-              - id
-              - key
-              - permission
-            properties:
-              machine_name:
-                type: string
-                minLength: 3
-                maxLength: 20
-              id:
-                type: string
-                minLength: 18
-                maxLength: 18
-              key:
-                type: string
-                minLength: 20
-                maxLength: 20
-              permission:
-                type: string
-                enum:
-                  - write
-                  - read
-                  - admin
     InstanceRequest:
       type: object
       required:
