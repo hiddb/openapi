@@ -5,6 +5,8 @@ parameters:
   - $ref: "../../../components/parameters/CollectionId.yaml"
 
 get:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Index
   description: Get information about an existing indices
@@ -27,6 +29,8 @@ get:
       $ref: "../../../responses/errors/default.yaml"
 
 post:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Index
   description: Create new index in the specified collection

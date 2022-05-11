@@ -340,6 +340,8 @@ paths:
                     type: string
   /database:
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Database
       description: Get information about databases
@@ -357,26 +359,52 @@ paths:
                   databases:
                     type: array
                     items:
-                      $ref: "#/paths/~1database~1%7Bdatabase_id%7D/get/responses/200/content/application~1json/schema"
+                      $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
-  "/database/{database_id}":
-    parameters:
-      - name: database_id
-        in: path
-        description: The ID of the database
-        example: xxxxxxxxxxxxxxxxxx
-        required: true
-        schema:
-          type: string
-          minLength: 18
-          maxLength: 18
-          pattern: ^[a-z0-9]{18}$
-    get:
+    post:
       tags:
         - Database
-      description: Get information about specific database
-      summary: Get database
+      description: Create new database
+      summary: Create database
+      requestBody:
+        description: Newly created database.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - database_name
+              properties:
+                database_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                  pattern: ^[a-z0-9_-]{3,20}$
+                instances:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - type
+                      - volume_size
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - xs
+                          - s
+                          - m
+                          - l
+                          - xl
+                      volume_size:
+                        type: number
+                        description: Size of mounted and volume in gb
+                        default: 10
+                        example: 100
+                        minimum: 10
+                        maximum: 10000
+                        multipleOf: 1
       responses:
         "200":
           description: successful operation
@@ -419,9 +447,45 @@ paths:
                     type: array
                     items:
                       $ref: "#/paths/~1instance/post/responses/202/content/application~1json/schema"
+        "202":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
+        default:
+          $ref: "#/paths/~1health/get/responses/default"
+  "/database/{database_id}":
+    parameters:
+      - name: database_id
+        in: path
+        description: The ID of the database
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: ^[a-z0-9]{18}$
+    get:
+      x-internal: false
+      x-hidden: false
+      tags:
+        - Database
+      description: Get information about specific database
+      summary: Get database
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
     delete:
+      x-internal: false
+      x-hidden: false
       tags:
         - Database
       description: Delete a specific database
@@ -432,7 +496,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1database~1%7Bdatabase_id%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1database/post/responses/200/content/application~1json/schema"
         default:
           $ref: "#/paths/~1health/get/responses/default"
   /instance:
@@ -717,6 +781,8 @@ paths:
       - url: https://{database_id}.hiddb.io
         description: General operations
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Collection
       description: Get information about collections
@@ -780,6 +846,8 @@ paths:
       - url: https://{database_id}.hiddb.io
         description: General operations
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Collection
       description: Get information about a specific collection
@@ -803,6 +871,8 @@ paths:
         default:
           $ref: "#/paths/~1health/get/responses/default"
     delete:
+      x-internal: false
+      x-hidden: false
       tags:
         - Collection
       description: Delete a specific collection
@@ -841,6 +911,8 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Index
       description: Get information about an existing indices
@@ -862,6 +934,8 @@ paths:
         default:
           $ref: "#/paths/~1health/get/responses/default"
     post:
+      x-internal: false
+      x-hidden: false
       tags:
         - Index
       description: Create new index in the specified collection
@@ -939,6 +1013,8 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Index
       description: Get information about specific index
@@ -953,6 +1029,8 @@ paths:
         default:
           $ref: "#/paths/~1health/get/responses/default"
     delete:
+      x-internal: false
+      x-hidden: false
       tags:
         - Index
       description: Delete index
@@ -973,6 +1051,8 @@ paths:
     parameters:
       - $ref: "#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0"
     post:
+      x-internal: false
+      x-hidden: false
       tags:
         - Document
       description: Insert document. The field "field_name" will be indexed by all existing indices
@@ -1017,6 +1097,8 @@ paths:
     parameters:
       - $ref: "#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0"
     post:
+      x-internal: false
+      x-hidden: false
       tags:
         - Document
       description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"
@@ -1097,6 +1179,8 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     get:
+      x-internal: false
+      x-hidden: false
       tags:
         - Document
       description: Get document by ID
@@ -1128,6 +1212,8 @@ paths:
         default:
           $ref: "#/paths/~1health/get/responses/default"
     delete:
+      x-internal: false
+      x-hidden: false
       tags:
         - Document
       description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated

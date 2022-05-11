@@ -3,6 +3,8 @@ servers:
     description: General operations
 
 get:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Collection
   description: Get information about collections

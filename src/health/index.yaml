@@ -1,6 +1,8 @@
 servers:
   - url: https://api.hiddb.io
 get:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Check health
   description: Check access to databases

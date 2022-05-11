@@ -2,6 +2,8 @@ parameters:
   - $ref: "../../components/parameters/DatabaseId.yaml"
 
 get:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Database
   description: Get information about specific database
@@ -17,6 +19,8 @@ get:
       $ref: "../../responses/errors/default.yaml"
 
 delete:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Database
   description: Delete a specific database
