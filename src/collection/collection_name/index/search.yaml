@@ -1,0 +1,55 @@
+servers:
+  - url: https://{database_id}.hiddb.io
+    description: General operations
+parameters:
+  - $ref: "../../../components/parameters/CollectionId.yaml"
+
+post:
+  tags:
+    - Document
+  description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"
+  summary: ANN-search
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - max_neighbors
+            - field_name
+          properties:
+            ids:
+              type: array
+              items:
+                type: string
+              example: ["document1", "document2", "document3"]
+              description: Get documents close to the specified document. Provide either `ids` or `vectors`
+            vectors:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+              example: [[1.0, 2.0, 3.0]]
+              description: Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
+            max_neighbors:
+              type: number
+              default: 20
+              minimum: 1
+              description: Maximal number of neighbors to include in response
+            field_name:
+              type: string
+              minLength: 3
+              maxLength: 20
+              pattern: "^[a-z0-9_-]{3,20}$"
+              description: This parameter specifies the index to perform the query in
+              example: "xxxxxxxxxxxxxxxxxx"
+  responses:
+    200:
+      description: Insertion successful
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/SearchResponse.yaml"
+    default:
+      $ref: "../../../responses/errors/default.yaml"

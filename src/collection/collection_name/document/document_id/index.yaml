@@ -1,0 +1,36 @@
+servers:
+  - url: https://{database_id}.hiddb.io
+    description: General operations
+parameters:
+  - $ref: "../../../../components/parameters/CollectionId.yaml"
+  - $ref: "../../../../components/parameters/DocumentId.yaml"
+
+get:
+  tags:
+    - Document
+  description: Get document by ID
+  summary: Get document by ID
+  responses:
+    200:
+      description: Insertion successful
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/schemas/DocumentResponse.yaml"
+    default:
+      $ref: "../../../../responses/errors/default.yaml"
+
+delete:
+  tags:
+    - Document
+  description: This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated
+  summary: Remove document by ID
+  responses:
+    200:
+      description: Insertion successful
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/schemas/DocumentResponse.yaml"
+    default:
+      $ref: "../../../../responses/errors/default.yaml"

@@ -1,0 +1,43 @@
+servers:
+  - url: https://{database_id}.hiddb.io
+    description: General operations
+parameters:
+  - $ref: "./../../../components/parameters/CollectionId.yaml"
+
+post:
+  tags:
+    - Document
+  description:
+    Insert document. The field "field_name" will be indexed by all existing
+    indices
+  summary: Insert document
+  requestBody:
+    content:
+      application/json:
+        schema:
+          additionalProperties: true
+          required:
+            - documents
+          properties:
+            documents:
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    minLength: 3
+                    maxLength: 50
+                  field:
+                    type: array
+                    items:
+                      type: number
+                      format: double
+                    example: [1.0, 2.0, 3.0]
+  responses:
+    200:
+      description: Insertion successful
+    default:
+      $ref: "../../../responses/errors/default.yaml"

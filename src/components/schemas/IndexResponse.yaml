@@ -1,0 +1,29 @@
+type: object
+required:
+  - collection_name
+  - field_name
+  - n_documents
+  - distance_metric
+  - dimension
+properties:
+  collection_name:
+    type: string
+    minLength: 3
+    maxLength: 20
+    pattern: "^[a-z0-9_-]{3,20}$"
+    example: "xxxxxxxxxxxxxxxxxx"
+  field_name:
+    type: string
+    minLength: 3
+    maxLength: 20
+    pattern: "^[a-z0-9_-]{3,20}$"
+    example: "xxxxxxxxxxxxxxxxxx"
+  n_documents:
+    type: integer
+    format: int64
+  distance_metric:
+    type: string
+    enum: ["euclidean"]
+  dimension:
+    type: integer
+    format: int64

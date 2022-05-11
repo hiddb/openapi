@@ -1,0 +1,15 @@
+type: object
+additionalProperties: true
+required:
+  - id
+properties:
+  id:
+    type: string
+    minLength: 3
+    maxLength: 50
+  field:
+    type: array
+    items:
+      type: number
+      format: double
+    example: [1.0, 2.0, 3.0]
