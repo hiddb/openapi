@@ -2,6 +2,8 @@ servers:
   - url: https://{database_id}.hiddb.io
     description: General operations
 get:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Collection
   description: Get information about a specific collection
@@ -26,6 +28,8 @@ get:
       $ref: "../../responses/errors/default.yaml"
 
 delete:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Collection
   description: Delete a specific collection

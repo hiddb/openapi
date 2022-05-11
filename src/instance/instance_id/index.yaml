@@ -2,6 +2,8 @@ parameters:
   - $ref: "../../components/parameters/InstanceId.yaml"
 
 get:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Instance
   description: Get information about specific instance
@@ -17,6 +19,8 @@ get:
       $ref: "../../responses/errors/default.yaml"
 
 put:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Instance
   description: Awake or put instance to sleep

@@ -5,6 +5,8 @@ parameters:
   - $ref: "./../../../components/parameters/CollectionId.yaml"
 
 post:
+  x-internal: false
+  x-hidden: false 
   tags:
     - Document
   description:
