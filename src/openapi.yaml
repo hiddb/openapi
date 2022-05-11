@@ -75,58 +75,11 @@ paths:
   ############################## User Authentification ######################################
 
   /user/register:
-    post:
-      tags:
-        - User Authentification
-      summary: Register user
-      description: Register user. Email containing URL with OTP is send out to user.
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserRegister"
-        400:
-          description: invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        401:
-          description: invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        403:
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        404:
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        405:
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRegister"
-        required: true
+    $ref: "./responses/user/register.yaml" 
 
   /user/update/verify:
     post:
+      x-internal: false
       tags:
         - User Authentification
       summary: Verify user's email
@@ -1797,19 +1750,6 @@ components:
           type: string
           format: password
 
-    UserRegister:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-
     UserRefresh:
       type: object
 
@@ -2322,4 +2262,13 @@ components:
         error:
           type: string
                   
-                  
+  responses:
+    defaultError:
+      description: error
+      content:
+        application/json:
+          schema:
+            type: object 
+            properties:
+              error:
+                type: string
