@@ -1,0 +1,82 @@
+get:
+  tags:
+    - Database
+  description: Get information about databases
+  summary: Get databases
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - databases
+            properties:
+              databases:
+                type: array
+                items:
+                  $ref: "../components/schemas/DatabaseResponse.yaml"
+    default:
+      $ref: "../responses/errors/default.yaml"
+      
+###################################################################
+
+# post:
+#   tags:
+#     - Database
+#   description: Create new database
+#   summary: Create database
+#   requestBody:
+#     description: Newly created database.
+#     content:
+#       application/json:
+#         schema:
+#           type: object
+#           required:
+#             - database_name
+#           properties:
+#             database_name:
+#               type: string
+#               minLength: 3
+#               maxLength: 20
+#               pattern: "^[a-z0-9_-]{3,20}$"
+#             instances:
+#               type: array
+#               items:
+#                 type: object
+#                 required:
+#                   - type
+#                   - volume_size
+#                 properties:
+#                   type:
+#                     type: string
+#                     enum:
+#                       - xs
+#                       - s
+#                       - m
+#                       - l
+#                       - xl
+#                   volume_size:
+#                     type: number
+#                     description: Size of mounted and volume in gb
+#                     default: 10
+#                     example: 100
+#                     minimum: 10
+#                   maximum: 10000
+#                   multipleOf: 1
+#   responses:
+#     "200":
+#       description: successful operation
+#       content:
+#         application/json:
+#           schema:
+#             $ref: "../components/schemas/DatabaseResponse.yaml"
+#     202:
+#       description: successful operation
+#       content:
+#         application/json:
+#           schema:
+#             $ref: "../components/schemas/DatabaseResponse.yaml"
+#     default:
+#       $ref: "../responses/errors/default.yaml"
