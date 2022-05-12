@@ -23,7 +23,7 @@ post:
           required:
             - email
             - password
-          additionalProperties: true
+          additionalProperties: false
           properties:
             email:
               type: string

@@ -11,14 +11,13 @@
       default:
         $ref: "../responses/errors/default.yaml"
     requestBody:
-      required: true
       content:
         application/json:
           schema:
             type: object
             required:
               - email
-            additionalProperties: true
+            additionalProperties: false
             properties:
               email:
                 type: string

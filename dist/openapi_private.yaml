@@ -83,7 +83,15 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
       requestBody:
         required: true
         content:
@@ -93,7 +101,7 @@ paths:
               required:
                 - email
                 - password
-              additionalProperties: true
+              additionalProperties: false
               properties:
                 email:
                   type: string
@@ -113,16 +121,23 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
       requestBody:
-        required: true
         content:
           application/json:
             schema:
               type: object
               required:
                 - email
-              additionalProperties: true
+              additionalProperties: false
               properties:
                 email:
                   type: string
@@ -139,7 +154,15 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
       requestBody:
         content:
           application/json:
@@ -203,7 +226,6 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
                 properties:
                   access_token:
                     type: string
@@ -212,7 +234,15 @@ paths:
                     enum:
                       - Bearer
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
       requestBody:
         description: Login email and password in exchange for JWT.
         required: true
@@ -223,7 +253,7 @@ paths:
               required:
                 - email
                 - password
-              additionalProperties: true
+              additionalProperties: false
               properties:
                 email:
                   type: string
@@ -243,7 +273,15 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   /user/refresh:
     post:
       x-internal: false
@@ -254,9 +292,28 @@ paths:
       summary: Refresh JWT
       responses:
         '200':
-          $ref: '#/paths/~1user~1login/post/responses/200'
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
       requestBody:
         description: Exchange access and secret token for JSON web token (JWT).
         required: true
@@ -264,6 +321,7 @@ paths:
           application/json:
             schema:
               type: object
+              additionalProperties: false
   /machine/login:
     post:
       x-internal: false
@@ -275,9 +333,28 @@ paths:
       operationId: machineLogin
       responses:
         '200':
-          $ref: '#/paths/~1user~1login/post/responses/200'
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
       requestBody:
         description: Exchange access and secret token for JSON web token (JWT).
         required: true
@@ -339,7 +416,15 @@ paths:
                       - read
                       - admin
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
       requestBody:
         content:
           application/json:
@@ -402,7 +487,15 @@ paths:
                             - read
                             - admin
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/machine/{machine_id}':
     parameters:
       - name: machine_id
@@ -427,7 +520,15 @@ paths:
         '200':
           description: successful operation
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   /health:
     servers:
       - url: 'https://api.hiddb.io'
@@ -478,9 +579,103 @@ paths:
                   databases:
                     type: array
                     items:
-                      $ref: '#/paths/~1database/post/responses/202/content/application~1json/schema'
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        database_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                          pattern: '^[a-z0-9_-]{3,20}$'
+                        organization_id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{3,20}$'
+                          example: xxxxxxxxxxxxxxxxxx
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        instances:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: false
+                            properties:
+                              id:
+                                type: string
+                                minLength: 18
+                                maxLength: 18
+                                pattern: '^[a-z0-9]{18,18}$'
+                              created_at:
+                                type: string
+                                format: date-time
+                              deleted_at:
+                                type: string
+                                format: date-time
+                                nullable: true
+                              status:
+                                type: string
+                                enum:
+                                  - awake
+                                  - provisioning
+                                  - wakingup
+                                  - asleep
+                              type:
+                                type: string
+                                description: Instance type
+                                default: s
+                                example: s
+                                enum:
+                                  - xs
+                                  - s
+                                  - m
+                                  - l
+                                  - xl
+                              server:
+                                type: object
+                                nullable: true
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    type: string
+                                    minLength: 18
+                                    maxLength: 18
+                                    pattern: '^[a-z0-9]{18,18}$'
+                              volume_size:
+                                type: number
+                                description: Size of mounted and volume in gb
+                                default: 10
+                                example: 100
+                                minimum: 10
+                                maximum: 10000
+                                multipleOf: 1
+                              location:
+                                type: string
+                                description: Physical instance location
+                                enum:
+                                  - hel1
+                                  - nbg1
+                                  - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     post:
       x-internal: false
       x-hidden: false
@@ -566,9 +761,74 @@ paths:
                   instances:
                     type: array
                     items:
-                      $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/database/{database_id}':
     parameters:
       - name: database_id
@@ -594,9 +854,103 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1database/post/responses/202/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  database_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                  organization_id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  instances:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     delete:
       x-internal: false
       x-hidden: false
@@ -610,9 +964,103 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1database/post/responses/202/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  database_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                  organization_id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  instances:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   /instance:
     get:
       x-internal: false
@@ -635,9 +1083,74 @@ paths:
                   instances:
                     type: array
                     items:
-                      $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     post:
       x-internal: false
       x-hidden: false
@@ -751,7 +1264,15 @@ paths:
                       - nbg1
                       - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/instance/{instance_id}':
     parameters:
       - name: instance_id
@@ -836,7 +1357,15 @@ paths:
                       - nbg1
                       - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     put:
       x-internal: false
       x-hidden: true
@@ -864,9 +1393,74 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     delete:
       tags:
         - Instance
@@ -878,9 +1472,74 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1instance/post/responses/202/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   /collection:
     servers:
       - url: 'https://{database_id}.hiddb.io'
@@ -904,9 +1563,25 @@ paths:
                   collections:
                     type: array
                     items:
-                      $ref: '#/paths/~1collection/post/responses/200/content/application~1json/schema'
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        collection_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                          pattern: '^[a-z0-9_-]{3,20}$'
+                          example: xxxxxxxxxxxxxxxxxx
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     post:
       tags:
         - Collection
@@ -944,7 +1619,15 @@ paths:
                     pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/collection/{collection_name}':
     servers:
       - url: 'https://{database_id}.hiddb.io'
@@ -971,9 +1654,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1collection/post/responses/200/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  collection_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     delete:
       x-internal: false
       x-hidden: false
@@ -996,9 +1695,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1collection/post/responses/200/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  collection_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/collection/{collection_name}/index':
     servers:
       - url: 'https://{database_id}.hiddb.io'
@@ -1033,9 +1748,41 @@ paths:
                   indices:
                     type: array
                     items:
-                      $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/post/responses/200/content/application~1json/schema'
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        collection_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                          pattern: '^[a-z0-9_-]{3,20}$'
+                          example: xxxxxxxxxxxxxxxxxx
+                        field_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                          pattern: '^[a-z0-9_-]{3,20}$'
+                          example: xxxxxxxxxxxxxxxxxx
+                        n_documents:
+                          type: integer
+                          format: int64
+                        distance_metric:
+                          type: string
+                          enum:
+                            - euclidean
+                        dimension:
+                          type: integer
+                          format: int64
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     post:
       x-internal: false
       x-hidden: false
@@ -1094,13 +1841,30 @@ paths:
                     type: integer
                     format: int64
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/collection/{collection_name}/index/{field_name}':
     servers:
       - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
-      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+      - name: collection_name
+        in: path
+        description: The ID of the collection
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
       - name: field_name
         in: path
         description: The ID of the index
@@ -1124,9 +1888,41 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/post/responses/200/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  collection_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  field_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  n_documents:
+                    type: integer
+                    format: int64
+                  distance_metric:
+                    type: string
+                    enum:
+                      - euclidean
+                  dimension:
+                    type: integer
+                    format: int64
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     delete:
       x-internal: false
       x-hidden: false
@@ -1140,15 +1936,56 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/post/responses/200/content/application~1json/schema'
+                type: object
+                additionalProperties: false
+                properties:
+                  collection_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  field_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  n_documents:
+                    type: integer
+                    format: int64
+                  distance_metric:
+                    type: string
+                    enum:
+                      - euclidean
+                  dimension:
+                    type: integer
+                    format: int64
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/collection/{collection_name}/document':
     servers:
       - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
-      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+      - name: collection_name
+        in: path
+        description: The ID of the collection
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
     post:
       x-internal: false
       x-hidden: false
@@ -1189,13 +2026,30 @@ paths:
         '200':
           description: Insertion successful
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/collection/{collection_name}/document/search':
     servers:
       - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
-      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+      - name: collection_name
+        in: path
+        description: The ID of the collection
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
     post:
       x-internal: false
       x-hidden: false
@@ -1263,13 +2117,30 @@ paths:
                         items:
                           type: string
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/collection/{collection_name}/document/{document_id}':
     servers:
       - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
-      - $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1index/parameters/0'
+      - name: collection_name
+        in: path
+        description: The ID of the collection
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^[a-z0-9_-]{3,20}$'
       - name: document_id
         in: path
         description: The ID of the index
@@ -1310,7 +2181,15 @@ paths:
                       - 2
                       - 3
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
     delete:
       x-internal: false
       x-hidden: false
@@ -1324,9 +2203,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1collection~1%7Bcollection_name%7D~1document~1%7Bdocument_id%7D/get/responses/200/content/application~1json/schema'
+                type: object
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+                    minLength: 3
+                    maxLength: 50
+                  field:
+                    type: array
+                    items:
+                      type: number
+                      format: double
+                    example:
+                      - 1
+                      - 2
+                      - 3
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   '/usage/{organization_id}':
     servers:
       - url: INSTANCE_MANATEMENT_URL
@@ -1372,4 +2274,12 @@ paths:
                 type: object
                 description: JSON containing the usage per organization
         default:
-          $ref: '#/paths/~1health/get/responses/default'
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
