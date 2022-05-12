@@ -1,0 +1,26 @@
+post:
+  x-internal: true
+  x-hidden: true 
+  tags:
+    - Internal
+  description: Create new customer portal session for registered customer
+  summary: Stripe Customer Portal
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          additionalProperties: false
+          
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              checkoutUrl:
+                type: string
+    default:
+      $ref: "../responses/errors/default.yaml"

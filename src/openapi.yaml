@@ -156,7 +156,16 @@ paths:
   /collection/{collection_name}/document/{document_id}:
     $ref: "./collection/collection_name/document/document_id/index.yaml"
 
-  ############################## Usage #############################################
+  ############################## Internal #############################################
 
-  /usage/{organization_id}: 
+  /organization/{organization_id}/usage: 
     $ref: "./usage/organization_id/index.yaml"
+
+  /customer/address:
+    $ref: "./customer/address.yaml"
+
+  /customer/checkout:
+    $ref: "./customer/checkout.yaml"
+
+  /customer/portal:
+    $ref: "./customer/portal.yaml"
