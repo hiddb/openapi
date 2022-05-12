@@ -31,3 +31,5 @@ post:
             password:
               type: string
               format: password
+            stay_logged_in:
+              type: boolean 

@@ -122,6 +122,8 @@ paths:
                 password:
                   type: string
                   format: password
+                stay_logged_in:
+                  type: boolean
   /user/logout:
     post:
       x-internal: false
