@@ -1,0 +1,26 @@
+post:
+  x-internal: true
+  x-hidden: true 
+  tags:
+    - Internal
+  description: Create new checkout session for registered customer
+  summary: Stripe Checkout
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          additionalProperties: false
+          
+  responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              checkoutUrl:
+                type: string
+    default:
+      $ref: "../responses/errors/default.yaml"

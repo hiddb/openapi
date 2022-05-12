@@ -33,3 +33,4 @@ post:
               format: password
             stay_logged_in:
               type: boolean 
+              default: false

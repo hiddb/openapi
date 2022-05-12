@@ -1,0 +1,29 @@
+type: object
+additionalProperties: false
+required:
+  - city
+  - country
+  - line1
+  - line2
+  - postal_code
+  - state
+properties:
+  city: 
+    type: string
+    description: Two-letter country code (ISO 3166-1 alpha-2)
+    maxLength: 50
+  country: 
+    type: string  
+    maxLength: 50
+  line1: 
+    type: string
+    maxLength: 50
+  line2: 
+    type: string
+    maxLength: 50
+  postal_code: 
+    type: string
+    maxLength: 25
+  state: 
+    type: string
+    maxLength: 50

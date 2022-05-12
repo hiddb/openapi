@@ -263,6 +263,7 @@ paths:
                   format: password
                 stay_logged_in:
                   type: boolean
+                  default: false
   /user/logout:
     post:
       x-internal: false
@@ -2231,7 +2232,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/usage/{organization_id}':
+  '/organization/{organization_id}/usage':
     servers:
       - url: INSTANCE_MANATEMENT_URL
         description: instance management microservice
@@ -2275,6 +2276,210 @@ paths:
               schema:
                 type: object
                 description: JSON containing the usage per organization
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /customer/address:
+    get:
+      x-internal: true
+      x-hidden: true
+      tags:
+        - Internal
+      description: Get customer billing information
+      summary: Get collections
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - city
+                  - country
+                  - line1
+                  - line2
+                  - postal_code
+                  - state
+                properties:
+                  city:
+                    type: string
+                    description: Two-letter country code (ISO 3166-1 alpha-2)
+                    maxLength: 50
+                  country:
+                    type: string
+                    maxLength: 50
+                  line1:
+                    type: string
+                    maxLength: 50
+                  line2:
+                    type: string
+                    maxLength: 50
+                  postal_code:
+                    type: string
+                    maxLength: 25
+                  state:
+                    type: string
+                    maxLength: 50
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+    put:
+      tags:
+        - Internal
+      description: Create new collection
+      summary: Create collection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - city
+                - country
+                - line1
+                - line2
+                - postal_code
+                - state
+              properties:
+                city:
+                  type: string
+                  description: Two-letter country code (ISO 3166-1 alpha-2)
+                  maxLength: 50
+                country:
+                  type: string
+                  maxLength: 50
+                line1:
+                  type: string
+                  maxLength: 50
+                line2:
+                  type: string
+                  maxLength: 50
+                postal_code:
+                  type: string
+                  maxLength: 25
+                state:
+                  type: string
+                  maxLength: 50
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - city
+                  - country
+                  - line1
+                  - line2
+                  - postal_code
+                  - state
+                properties:
+                  city:
+                    type: string
+                    description: Two-letter country code (ISO 3166-1 alpha-2)
+                    maxLength: 50
+                  country:
+                    type: string
+                    maxLength: 50
+                  line1:
+                    type: string
+                    maxLength: 50
+                  line2:
+                    type: string
+                    maxLength: 50
+                  postal_code:
+                    type: string
+                    maxLength: 25
+                  state:
+                    type: string
+                    maxLength: 50
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /customer/checkout:
+    post:
+      x-internal: true
+      x-hidden: true
+      tags:
+        - Internal
+      description: Create new checkout session for registered customer
+      summary: Stripe Checkout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkoutUrl:
+                    type: string
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /customer/portal:
+    post:
+      x-internal: true
+      x-hidden: true
+      tags:
+        - Internal
+      description: Create new customer portal session for registered customer
+      summary: Stripe Customer Portal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkoutUrl:
+                    type: string
         default:
           description: error
           content:
