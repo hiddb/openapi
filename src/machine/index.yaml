@@ -1,6 +1,5 @@
 post:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - Machine Authentification
   description: Create a new machine account.
@@ -64,8 +63,7 @@ post:
 ##################################################################
 
 get:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - Machine Authentification
   description: Get all machines in organization

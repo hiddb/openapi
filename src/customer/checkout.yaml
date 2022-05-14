@@ -1,6 +1,5 @@
 post:
-  x-internal: true
-  x-hidden: true 
+   
   tags:
     - Internal
   description: Create new checkout session for registered customer

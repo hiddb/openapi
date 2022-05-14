@@ -1,6 +1,5 @@
 get:
-  x-internal: true
-  x-hidden: true 
+   
   tags:
     - Internal
   description: Get customer billing information

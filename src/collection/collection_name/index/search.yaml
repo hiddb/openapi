@@ -5,8 +5,7 @@ parameters:
   - $ref: "../../../components/parameters/CollectionId.yaml"
 
 post:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - Document
   description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"

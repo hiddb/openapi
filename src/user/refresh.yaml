@@ -1,6 +1,5 @@
 post:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - User Authentification
   description: Refresh access token using cookie

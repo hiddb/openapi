@@ -6,8 +6,7 @@ parameters:
   - $ref: "../../../../components/parameters/DocumentId.yaml"
 
 get:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - Document
   description: Get document by ID
@@ -23,8 +22,7 @@ get:
       $ref: "../../../../responses/errors/default.yaml"
 
 delete:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - Document
   description: COMING SOON! Remove document by ID. The corresponding indices will be updated
