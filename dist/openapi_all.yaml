@@ -1,13 +1,13 @@
 openapi: 3.0.0
 servers:
-  - url: https://{service}.hiddb.io
+  - url: 'https://{service}.hiddb.io'
     description: Access to your HIDDB databases
     variables:
       service:
         default: api
         enum:
           - api
-          - "{database_id}"
+          - '{database_id}'
 info:
   description: |
     This is the official API documentation for the HIDDB vector search database.
@@ -47,10 +47,10 @@ info:
     Congratulations your have now full and secure control over your personal HIDDB database.
   version: 0.2.3
   title: API documentation
-  termsOfService: https:/hiddb.com/terms
+  termsOfService: 'https:/hiddb.com/terms'
   license:
     name: Propretary Licence
-    url: https://hiddb.com/licence
+    url: 'https://hiddb.com/licence'
 tags:
   - name: Check health
     description: Check if you are all good
@@ -71,6 +71,256 @@ tags:
   - name: Internal
     description: Internal operations
 paths:
+  /user/register:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: Register user
+      description: Register user. Email containing URL with OTP is send out to user.
+      responses:
+        '200':
+          description: successful operation
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+  /user/reset:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: User password reset
+      description: Send URL containing OTP to email adress provided by user to reset password.
+      responses:
+        '200':
+          description: successful operation
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+  /user/update/verify:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: Verify user's email
+      description: Verify email adress provided by the user.
+      responses:
+        '200':
+          description: successful operation
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - otp
+              additionalProperties: false
+              properties:
+                user_id:
+                  type: string
+                  minLength: 18
+                  maxLength: 18
+                  pattern: '^[a-z0-9]{18,18}$'
+                otp:
+                  type: string
+  /user/update/reset:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: Update password
+      description: Reset password as requested by the user.
+      responses:
+        '200':
+          description: successful operation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - otp
+                - password
+              additionalProperties: false
+              properties:
+                user_id:
+                  type: string
+                otp:
+                  type: string
+                password:
+                  type: string
+                  format: password
+  /user/login:
+    x-internal: true
+    post:
+      x-internal: false
+      tags:
+        - User Authentification
+      description: User login using access and secret token.
+      summary: User login
+      operationId: userLogin
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        description: Login email and password in exchange for JWT.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                stay_logged_in:
+                  type: boolean
+                  default: false
+  /user/logout:
+    x-internal: true
+    post:
+      x-internal: false
+      tags:
+        - User Authentification
+      description: Log user out
+      summary: Log out user
+      responses:
+        '200':
+          description: successful operation
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /user/refresh:
+    x-internal: true
+    post:
+      x-internal: false
+      tags:
+        - User Authentification
+      description: Refresh access token using cookie
+      summary: Refresh JWT
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        description: Exchange access and secret token for JSON web token (JWT).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
   /machine/login:
     x-internal: false
     post:
@@ -81,7 +331,7 @@ paths:
       summary: Machine login
       operationId: machineLogin
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -134,7 +384,7 @@ paths:
       summary: New machine
       operationId: createMachine
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -202,7 +452,7 @@ paths:
       summary: Get all machines
       operationId: getMachines
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -244,7 +494,7 @@ paths:
                 properties:
                   error:
                     type: string
-  "/machine/{machine_id}":
+  '/machine/{machine_id}':
     x-internal: false
     parameters:
       - name: machine_id
@@ -256,7 +506,7 @@ paths:
           type: string
           minLength: 18
           maxLength: 18
-          pattern: ^[a-z0-9]{18}$
+          pattern: '^[a-z0-9]{18}$'
     delete:
       x-internal: false
       tags:
@@ -265,8 +515,37 @@ paths:
       summary: Delete machine account
       operationId: deleteMachine
       responses:
-        "200":
+        '200':
           description: successful operation
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /health:
+    x-internal: true
+    servers:
+      - url: 'https://api.hiddb.io'
+    get:
+      tags:
+        - Check health
+      description: Check access to databases
+      summary: Check health database
+      responses:
+        '200':
+          description: successfull operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                default: Ok
+                enum:
+                  - Ok
         default:
           description: error
           content:
@@ -286,7 +565,7 @@ paths:
       description: Get information about databases
       summary: Get databases
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -304,17 +583,17 @@ paths:
                           type: string
                           minLength: 18
                           maxLength: 18
-                          pattern: ^[a-z0-9]{18,18}$
+                          pattern: '^[a-z0-9]{18,18}$'
                         database_name:
                           type: string
                           minLength: 3
                           maxLength: 20
-                          pattern: ^[a-z0-9_-]{3,20}$
+                          pattern: '^[a-z0-9_-]{3,20}$'
                         organization_id:
                           type: string
                           minLength: 18
                           maxLength: 18
-                          pattern: ^[a-z0-9]{3,20}$
+                          pattern: '^[a-z0-9]{3,20}$'
                           example: xxxxxxxxxxxxxxxxxx
                         created_at:
                           type: string
@@ -333,7 +612,7 @@ paths:
                                 type: string
                                 minLength: 18
                                 maxLength: 18
-                                pattern: ^[a-z0-9]{18,18}$
+                                pattern: '^[a-z0-9]{18,18}$'
                               created_at:
                                 type: string
                                 format: date-time
@@ -368,7 +647,7 @@ paths:
                                     type: string
                                     minLength: 18
                                     maxLength: 18
-                                    pattern: ^[a-z0-9]{18,18}$
+                                    pattern: '^[a-z0-9]{18,18}$'
                               volume_size:
                                 type: number
                                 description: Size of mounted and volume in gb
@@ -414,7 +693,7 @@ paths:
                   type: string
                   minLength: 3
                   maxLength: 20
-                  pattern: ^[a-z0-9_-]{3,20}$
+                  pattern: '^[a-z0-9_-]{3,20}$'
                 instances:
                   type: array
                   items:
@@ -444,7 +723,7 @@ paths:
                         maximum: 10000
                         multipleOf: 1
       responses:
-        "202":
+        '202':
           description: successful operation
           content:
             application/json:
@@ -456,17 +735,17 @@ paths:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{18,18}$
+                    pattern: '^[a-z0-9]{18,18}$'
                   database_name:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                   organization_id:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{3,20}$
+                    pattern: '^[a-z0-9]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   created_at:
                     type: string
@@ -485,7 +764,7 @@ paths:
                           type: string
                           minLength: 18
                           maxLength: 18
-                          pattern: ^[a-z0-9]{18,18}$
+                          pattern: '^[a-z0-9]{18,18}$'
                         created_at:
                           type: string
                           format: date-time
@@ -520,7 +799,7 @@ paths:
                               type: string
                               minLength: 18
                               maxLength: 18
-                              pattern: ^[a-z0-9]{18,18}$
+                              pattern: '^[a-z0-9]{18,18}$'
                         volume_size:
                           type: number
                           description: Size of mounted and volume in gb
@@ -546,7 +825,7 @@ paths:
                 properties:
                   error:
                     type: string
-  "/database/{database_id}":
+  '/database/{database_id}':
     x-internal: false
     parameters:
       - name: database_id
@@ -558,7 +837,7 @@ paths:
           type: string
           minLength: 18
           maxLength: 18
-          pattern: ^[a-z0-9]{18}$
+          pattern: '^[a-z0-9]{18}$'
     get:
       x-internal: false
       tags:
@@ -566,7 +845,7 @@ paths:
       description: Get information about specific database
       summary: Get database
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -578,17 +857,17 @@ paths:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{18,18}$
+                    pattern: '^[a-z0-9]{18,18}$'
                   database_name:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                   organization_id:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{3,20}$
+                    pattern: '^[a-z0-9]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   created_at:
                     type: string
@@ -607,7 +886,7 @@ paths:
                           type: string
                           minLength: 18
                           maxLength: 18
-                          pattern: ^[a-z0-9]{18,18}$
+                          pattern: '^[a-z0-9]{18,18}$'
                         created_at:
                           type: string
                           format: date-time
@@ -642,7 +921,7 @@ paths:
                               type: string
                               minLength: 18
                               maxLength: 18
-                              pattern: ^[a-z0-9]{18,18}$
+                              pattern: '^[a-z0-9]{18,18}$'
                         volume_size:
                           type: number
                           description: Size of mounted and volume in gb
@@ -675,7 +954,7 @@ paths:
       description: Delete a specific database
       summary: Delete database
       responses:
-        "202":
+        '202':
           description: successful operation
           content:
             application/json:
@@ -687,17 +966,17 @@ paths:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{18,18}$
+                    pattern: '^[a-z0-9]{18,18}$'
                   database_name:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                   organization_id:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{3,20}$
+                    pattern: '^[a-z0-9]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   created_at:
                     type: string
@@ -716,7 +995,7 @@ paths:
                           type: string
                           minLength: 18
                           maxLength: 18
-                          pattern: ^[a-z0-9]{18,18}$
+                          pattern: '^[a-z0-9]{18,18}$'
                         created_at:
                           type: string
                           format: date-time
@@ -751,7 +1030,7 @@ paths:
                               type: string
                               minLength: 18
                               maxLength: 18
-                              pattern: ^[a-z0-9]{18,18}$
+                              pattern: '^[a-z0-9]{18,18}$'
                         volume_size:
                           type: number
                           description: Size of mounted and volume in gb
@@ -786,7 +1065,7 @@ paths:
       description: Get information about instances
       summary: Get instances
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -806,7 +1085,7 @@ paths:
                           type: string
                           minLength: 18
                           maxLength: 18
-                          pattern: ^[a-z0-9]{18,18}$
+                          pattern: '^[a-z0-9]{18,18}$'
                         created_at:
                           type: string
                           format: date-time
@@ -841,7 +1120,7 @@ paths:
                               type: string
                               minLength: 18
                               maxLength: 18
-                              pattern: ^[a-z0-9]{18,18}$
+                              pattern: '^[a-z0-9]{18,18}$'
                         volume_size:
                           type: number
                           description: Size of mounted and volume in gb
@@ -885,7 +1164,7 @@ paths:
               properties:
                 database_id:
                   type: string
-                  pattern: ^[a-z0-9]{18,18}$
+                  pattern: '^[a-z0-9]{18,18}$'
                   example: xxxxxxxxxxxxxxxxxx
                   minLength: 3
                 type:
@@ -915,7 +1194,7 @@ paths:
                     - nbg1
                     - fsn1
       responses:
-        "202":
+        '202':
           description: successful operation
           content:
             application/json:
@@ -927,7 +1206,7 @@ paths:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{18,18}$
+                    pattern: '^[a-z0-9]{18,18}$'
                   created_at:
                     type: string
                     format: date-time
@@ -962,7 +1241,7 @@ paths:
                         type: string
                         minLength: 18
                         maxLength: 18
-                        pattern: ^[a-z0-9]{18,18}$
+                        pattern: '^[a-z0-9]{18,18}$'
                   volume_size:
                     type: number
                     description: Size of mounted and volume in gb
@@ -988,7 +1267,7 @@ paths:
                 properties:
                   error:
                     type: string
-  "/instance/{instance_id}":
+  '/instance/{instance_id}':
     x-internal: false
     parameters:
       - name: instance_id
@@ -1000,7 +1279,7 @@ paths:
           type: string
           minLength: 18
           maxLength: 18
-          pattern: ^[a-z0-9]{18}$
+          pattern: '^[a-z0-9]{18}$'
     get:
       x-internal: false
       tags:
@@ -1008,7 +1287,7 @@ paths:
       description: Get information about specific instance
       summary: Get instance
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1020,7 +1299,7 @@ paths:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{18,18}$
+                    pattern: '^[a-z0-9]{18,18}$'
                   created_at:
                     type: string
                     format: date-time
@@ -1055,7 +1334,7 @@ paths:
                         type: string
                         minLength: 18
                         maxLength: 18
-                        pattern: ^[a-z0-9]{18,18}$
+                        pattern: '^[a-z0-9]{18,18}$'
                   volume_size:
                     type: number
                     description: Size of mounted and volume in gb
@@ -1085,7 +1364,7 @@ paths:
       tags:
         - Instance
       description: Awake or put instance to sleep
-      summary: Instance awake, sleep
+      summary: 'Instance awake, sleep'
       requestBody:
         content:
           application/json:
@@ -1101,7 +1380,7 @@ paths:
                     - awake
                     - asleep
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1113,7 +1392,7 @@ paths:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{18,18}$
+                    pattern: '^[a-z0-9]{18,18}$'
                   created_at:
                     type: string
                     format: date-time
@@ -1148,7 +1427,7 @@ paths:
                         type: string
                         minLength: 18
                         maxLength: 18
-                        pattern: ^[a-z0-9]{18,18}$
+                        pattern: '^[a-z0-9]{18,18}$'
                   volume_size:
                     type: number
                     description: Size of mounted and volume in gb
@@ -1180,7 +1459,7 @@ paths:
       description: Delete a specific Instance
       summary: Delete instance
       responses:
-        "202":
+        '202':
           description: successful operation
           content:
             application/json:
@@ -1192,7 +1471,7 @@ paths:
                     type: string
                     minLength: 18
                     maxLength: 18
-                    pattern: ^[a-z0-9]{18,18}$
+                    pattern: '^[a-z0-9]{18,18}$'
                   created_at:
                     type: string
                     format: date-time
@@ -1227,7 +1506,7 @@ paths:
                         type: string
                         minLength: 18
                         maxLength: 18
-                        pattern: ^[a-z0-9]{18,18}$
+                        pattern: '^[a-z0-9]{18,18}$'
                   volume_size:
                     type: number
                     description: Size of mounted and volume in gb
@@ -1256,7 +1535,7 @@ paths:
   /collection:
     x-internal: false
     servers:
-      - url: https://{database_id}.hiddb.io
+      - url: 'https://{database_id}.hiddb.io'
         description: General operations
     get:
       x-internal: false
@@ -1265,7 +1544,7 @@ paths:
       description: Get information about collections
       summary: Get collections
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1283,7 +1562,7 @@ paths:
                           type: string
                           minLength: 3
                           maxLength: 20
-                          pattern: ^[a-z0-9_-]{3,20}$
+                          pattern: '^[a-z0-9_-]{3,20}$'
                           example: xxxxxxxxxxxxxxxxxx
         default:
           description: error
@@ -1315,10 +1594,10 @@ paths:
                   type: string
                   minLength: 3
                   maxLength: 20
-                  pattern: ^[a-z0-9_-]{3,20}$
+                  pattern: '^[a-z0-9_-]{3,20}$'
                   example: xxxxxxxxxxxxxxxxxx
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1330,7 +1609,7 @@ paths:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
         default:
           description: error
@@ -1342,10 +1621,10 @@ paths:
                 properties:
                   error:
                     type: string
-  "/collection/{collection_name}":
+  '/collection/{collection_name}':
     x-internal: false
     servers:
-      - url: https://{database_id}.hiddb.io
+      - url: 'https://{database_id}.hiddb.io'
         description: General operations
     get:
       x-internal: false
@@ -1361,9 +1640,9 @@ paths:
             type: string
             minLength: 3
             maxLength: 20
-            pattern: ^[a-z0-9_-]{3,20}$
+            pattern: '^[a-z0-9_-]{3,20}$'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1375,7 +1654,7 @@ paths:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
         default:
           description: error
@@ -1401,9 +1680,9 @@ paths:
             type: string
             minLength: 3
             maxLength: 20
-            pattern: ^[a-z0-9_-]{3,20}$
+            pattern: '^[a-z0-9_-]{3,20}$'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1415,7 +1694,7 @@ paths:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
         default:
           description: error
@@ -1427,10 +1706,10 @@ paths:
                 properties:
                   error:
                     type: string
-  "/collection/{collection_name}/index":
+  '/collection/{collection_name}/index':
     x-internal: false
     servers:
-      - url: https://{database_id}.hiddb.io
+      - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
       - name: collection_name
@@ -1442,7 +1721,7 @@ paths:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: ^[a-z0-9_-]{3,20}$
+          pattern: '^[a-z0-9_-]{3,20}$'
     get:
       x-internal: false
       tags:
@@ -1450,7 +1729,7 @@ paths:
       description: Get information about an existing indices
       summary: Get indices
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1468,13 +1747,13 @@ paths:
                           type: string
                           minLength: 3
                           maxLength: 20
-                          pattern: ^[a-z0-9_-]{3,20}$
+                          pattern: '^[a-z0-9_-]{3,20}$'
                           example: xxxxxxxxxxxxxxxxxx
                         field_name:
                           type: string
                           minLength: 3
                           maxLength: 20
-                          pattern: ^[a-z0-9_-]{3,20}$
+                          pattern: '^[a-z0-9_-]{3,20}$'
                           example: xxxxxxxxxxxxxxxxxx
                         n_documents:
                           type: integer
@@ -1516,13 +1795,13 @@ paths:
                   type: string
                   minLength: 3
                   maxLength: 20
-                  pattern: ^[a-z0-9_-]{3,20}$
+                  pattern: '^[a-z0-9_-]{3,20}$'
                   example: xxxxxxxxxxxxxxxxxx
                 dimension:
                   type: integer
                   format: int64
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1534,13 +1813,13 @@ paths:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   field_name:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   n_documents:
                     type: integer
@@ -1562,10 +1841,10 @@ paths:
                 properties:
                   error:
                     type: string
-  "/collection/{collection_name}/index/{field_name}":
+  '/collection/{collection_name}/index/{field_name}':
     x-internal: false
     servers:
-      - url: https://{database_id}.hiddb.io
+      - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
       - name: collection_name
@@ -1577,7 +1856,7 @@ paths:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: ^[a-z0-9_-]{3,20}$
+          pattern: '^[a-z0-9_-]{3,20}$'
       - name: field_name
         in: path
         description: The ID of the index
@@ -1587,7 +1866,7 @@ paths:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: ^[a-z0-9_-]{3,20}$
+          pattern: '^[a-z0-9_-]{3,20}$'
     get:
       x-internal: false
       tags:
@@ -1595,7 +1874,7 @@ paths:
       description: Get information about specific index
       summary: Get index
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1607,13 +1886,13 @@ paths:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   field_name:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   n_documents:
                     type: integer
@@ -1642,7 +1921,7 @@ paths:
       description: Delete index
       summary: Delete index
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -1654,13 +1933,13 @@ paths:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   field_name:
                     type: string
                     minLength: 3
                     maxLength: 20
-                    pattern: ^[a-z0-9_-]{3,20}$
+                    pattern: '^[a-z0-9_-]{3,20}$'
                     example: xxxxxxxxxxxxxxxxxx
                   n_documents:
                     type: integer
@@ -1682,10 +1961,10 @@ paths:
                 properties:
                   error:
                     type: string
-  "/collection/{collection_name}/document":
+  '/collection/{collection_name}/document':
     x-internal: false
     servers:
-      - url: https://{database_id}.hiddb.io
+      - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
       - name: collection_name
@@ -1697,7 +1976,7 @@ paths:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: ^[a-z0-9_-]{3,20}$
+          pattern: '^[a-z0-9_-]{3,20}$'
     post:
       x-internal: false
       tags:
@@ -1734,7 +2013,7 @@ paths:
                           - 2
                           - 3
       responses:
-        "200":
+        '200':
           description: Insertion successful
         default:
           description: error
@@ -1746,10 +2025,10 @@ paths:
                 properties:
                   error:
                     type: string
-  "/collection/{collection_name}/document/search":
+  '/collection/{collection_name}/document/search':
     x-internal: false
     servers:
-      - url: https://{database_id}.hiddb.io
+      - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
       - name: collection_name
@@ -1761,12 +2040,12 @@ paths:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: ^[a-z0-9_-]{3,20}$
+          pattern: '^[a-z0-9_-]{3,20}$'
     post:
       x-internal: false
       tags:
         - Document
-      description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"
+      description: 'Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead'
       summary: ANN-search
       requestBody:
         content:
@@ -1807,11 +2086,11 @@ paths:
                   type: string
                   minLength: 3
                   maxLength: 20
-                  pattern: ^[a-z0-9_-]{3,20}$
+                  pattern: '^[a-z0-9_-]{3,20}$'
                   description: This parameter specifies the index to perform the query in
                   example: xxxxxxxxxxxxxxxxxx
       responses:
-        "200":
+        '200':
           description: Insertion successful
           content:
             application/json:
@@ -1837,10 +2116,10 @@ paths:
                 properties:
                   error:
                     type: string
-  "/collection/{collection_name}/document/{document_id}":
+  '/collection/{collection_name}/document/{document_id}':
     x-internal: false
     servers:
-      - url: https://{database_id}.hiddb.io
+      - url: 'https://{database_id}.hiddb.io'
         description: General operations
     parameters:
       - name: collection_name
@@ -1852,7 +2131,7 @@ paths:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: ^[a-z0-9_-]{3,20}$
+          pattern: '^[a-z0-9_-]{3,20}$'
       - name: document_id
         in: path
         description: The ID of the index
@@ -1862,7 +2141,7 @@ paths:
           type: string
           minLength: 3
           maxLength: 20
-          pattern: ^[a-z0-9_-]{3,20}$
+          pattern: '^[a-z0-9_-]{3,20}$'
     get:
       x-internal: false
       tags:
@@ -1870,7 +2149,7 @@ paths:
       description: Get document by ID
       summary: Get document by ID
       responses:
-        "200":
+        '200':
           description: Insertion successful
           content:
             application/json:
@@ -1908,7 +2187,7 @@ paths:
       description: COMING SOON! Remove document by ID. The corresponding indices will be updated
       summary: Remove document by ID
       responses:
-        "200":
+        '200':
           description: Insertion successful
           content:
             application/json:
@@ -1929,6 +2208,260 @@ paths:
                       - 1
                       - 2
                       - 3
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  '/organization/{organization_id}/usage':
+    x-internal: true
+    servers:
+      - url: INSTANCE_MANATEMENT_URL
+        description: instance management microservice
+    get:
+      tags:
+        - Internal
+      description: Get usage of organization
+      summary: Get usage
+      parameters:
+        - name: organization_id
+          in: path
+          description: The ID of the organization
+          example: xxxxxxxxxxxxxxxxxx
+          required: true
+          schema:
+            type: string
+            minLength: 18
+            maxLength: 18
+            pattern: '^[a-z0-9]{18,18}$'
+        - name: from
+          in: query
+          description: from
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          description: to
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                description: JSON containing the usage per organization
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /customer/address:
+    x-internal: true
+    get:
+      tags:
+        - Internal
+      description: Get customer billing information
+      summary: Get collections
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - city
+                  - country
+                  - line1
+                  - line2
+                  - postal_code
+                  - state
+                properties:
+                  city:
+                    type: string
+                    description: Two-letter country code (ISO 3166-1 alpha-2)
+                    maxLength: 50
+                  country:
+                    type: string
+                    maxLength: 50
+                  line1:
+                    type: string
+                    maxLength: 50
+                  line2:
+                    type: string
+                    maxLength: 50
+                  postal_code:
+                    type: string
+                    maxLength: 25
+                  state:
+                    type: string
+                    maxLength: 50
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+    put:
+      tags:
+        - Internal
+      description: Create new collection
+      summary: Create collection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - city
+                - country
+                - line1
+                - line2
+                - postal_code
+                - state
+              properties:
+                city:
+                  type: string
+                  description: Two-letter country code (ISO 3166-1 alpha-2)
+                  maxLength: 50
+                country:
+                  type: string
+                  maxLength: 50
+                line1:
+                  type: string
+                  maxLength: 50
+                line2:
+                  type: string
+                  maxLength: 50
+                postal_code:
+                  type: string
+                  maxLength: 25
+                state:
+                  type: string
+                  maxLength: 50
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - city
+                  - country
+                  - line1
+                  - line2
+                  - postal_code
+                  - state
+                properties:
+                  city:
+                    type: string
+                    description: Two-letter country code (ISO 3166-1 alpha-2)
+                    maxLength: 50
+                  country:
+                    type: string
+                    maxLength: 50
+                  line1:
+                    type: string
+                    maxLength: 50
+                  line2:
+                    type: string
+                    maxLength: 50
+                  postal_code:
+                    type: string
+                    maxLength: 25
+                  state:
+                    type: string
+                    maxLength: 50
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /customer/checkout:
+    x-internal: true
+    post:
+      tags:
+        - Internal
+      description: Create new checkout session for registered customer
+      summary: Stripe Checkout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkoutUrl:
+                    type: string
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+  /customer/portal:
+    x-internal: true
+    post:
+      tags:
+        - Internal
+      description: Create new customer portal session for registered customer
+      summary: Stripe Customer Portal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkoutUrl:
+                    type: string
         default:
           description: error
           content:

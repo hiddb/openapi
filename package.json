@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "swagger-cli validate ./src/openapi.yaml && swagger-cli bundle ./src/openapi.yaml --dereference --type yaml -o ./dist/openapi_private.yaml && openapi-filter --flags x-private --flags x-hidden -- ./dist/openapi_private.yaml ./dist/openapi_public.yaml"
+    "build": "bash build.sh"
   },
   "repository": {
     "type": "git",

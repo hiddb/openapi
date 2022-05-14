@@ -1,6 +1,5 @@
 post:
-  x-internal: false
-  x-hidden: true
+  
   tags:
     - User Authentification
   summary: Register user

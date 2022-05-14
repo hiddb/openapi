@@ -6,8 +6,7 @@ parameters:
   - $ref: "../../../../components/parameters/IndexId.yaml"
 
 get:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - Index
   description: Get information about specific index
@@ -23,8 +22,7 @@ get:
       $ref: "../../../../responses/errors/default.yaml"
 
 delete:
-  x-internal: false
-  x-hidden: false 
+  x-internal: false 
   tags:
     - Index
   description: Delete index
