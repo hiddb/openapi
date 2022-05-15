@@ -1,5 +1,4 @@
 post:
-  x-internal: false
   tags:
     - User Authentification
   description: Log user out

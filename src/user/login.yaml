@@ -1,5 +1,4 @@
 post:
-  x-internal: false
   tags:
     - User Authentification
   description: User login using access and secret token.

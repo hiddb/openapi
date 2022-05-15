@@ -1,5 +1,4 @@
 get:
-  x-internal: false 
   tags:
     - Instance
   description: Get information about instances
@@ -23,7 +22,6 @@ get:
       $ref: "../responses/errors/default.yaml"
 
 post:
-  x-internal: false 
   tags:
     - Instance
   description: Create new instance

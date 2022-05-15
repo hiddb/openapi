@@ -74,7 +74,6 @@ paths:
   /machine/login:
     x-internal: false
     post:
-      x-internal: false
       tags:
         - Machine Authentification
       description: Machine login using access and secret token.
@@ -127,7 +126,6 @@ paths:
   /machine:
     x-internal: false
     post:
-      x-internal: false
       tags:
         - Machine Authentification
       description: Create a new machine account.
@@ -195,7 +193,6 @@ paths:
                     - read
                     - admin
     get:
-      x-internal: false
       tags:
         - Machine Authentification
       description: Get all machines in organization
@@ -258,7 +255,6 @@ paths:
           maxLength: 18
           pattern: ^[a-z0-9]{18}$
     delete:
-      x-internal: false
       tags:
         - Machine Authentification
       description: Delete machine account
@@ -280,7 +276,6 @@ paths:
   /database:
     x-internal: false
     get:
-      x-internal: false
       tags:
         - Database
       description: Get information about databases
@@ -395,7 +390,6 @@ paths:
                   error:
                     type: string
     post:
-      x-internal: false
       tags:
         - Database
       description: Create new database
@@ -560,7 +554,6 @@ paths:
           maxLength: 18
           pattern: ^[a-z0-9]{18}$
     get:
-      x-internal: false
       tags:
         - Database
       description: Get information about specific database
@@ -669,7 +662,6 @@ paths:
                   error:
                     type: string
     delete:
-      x-internal: false
       tags:
         - Database
       description: Delete a specific database
@@ -780,7 +772,6 @@ paths:
   /instance:
     x-internal: false
     get:
-      x-internal: false
       tags:
         - Instance
       description: Get information about instances
@@ -868,7 +859,6 @@ paths:
                   error:
                     type: string
     post:
-      x-internal: false
       tags:
         - Instance
       description: Create new instance
@@ -1002,7 +992,6 @@ paths:
           maxLength: 18
           pattern: ^[a-z0-9]{18}$
     get:
-      x-internal: false
       tags:
         - Instance
       description: Get information about specific instance
@@ -1259,7 +1248,6 @@ paths:
       - url: https://{database_id}.hiddb.io
         description: General operations
     get:
-      x-internal: false
       tags:
         - Collection
       description: Get information about collections
@@ -1296,7 +1284,6 @@ paths:
                   error:
                     type: string
     post:
-      x-internal: false
       tags:
         - Collection
       description: Create new collection
@@ -1348,7 +1335,6 @@ paths:
       - url: https://{database_id}.hiddb.io
         description: General operations
     get:
-      x-internal: false
       tags:
         - Collection
       description: Get information about a specific collection
@@ -1388,7 +1374,6 @@ paths:
                   error:
                     type: string
     delete:
-      x-internal: false
       tags:
         - Collection
       description: Delete a specific collection
@@ -1444,7 +1429,6 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     get:
-      x-internal: false
       tags:
         - Index
       description: Get information about an existing indices
@@ -1497,7 +1481,6 @@ paths:
                   error:
                     type: string
     post:
-      x-internal: false
       tags:
         - Index
       description: Create new index in the specified collection
@@ -1589,7 +1572,6 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     get:
-      x-internal: false
       tags:
         - Index
       description: Get information about specific index
@@ -1636,7 +1618,6 @@ paths:
                   error:
                     type: string
     delete:
-      x-internal: false
       tags:
         - Index
       description: Delete index
@@ -1699,7 +1680,6 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     post:
-      x-internal: false
       tags:
         - Document
       description: Insert document. The field "field_name" will be indexed by all existing indices
@@ -1763,7 +1743,6 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     post:
-      x-internal: false
       tags:
         - Document
       description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"
@@ -1864,7 +1843,6 @@ paths:
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
     get:
-      x-internal: false
       tags:
         - Document
       description: Get document by ID
@@ -1902,7 +1880,6 @@ paths:
                   error:
                     type: string
     delete:
-      x-internal: false
       tags:
         - Document
       description: COMING SOON! Remove document by ID. The corresponding indices will be updated

@@ -1,5 +1,4 @@
 post:
-  x-internal: false
   tags:
     - Machine Authentification
   description: Machine login using access and secret token.
