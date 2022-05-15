@@ -2,7 +2,6 @@ parameters:
   - $ref: "../../components/parameters/MachineId.yaml"
 
 delete:
-  x-internal: false 
   tags:
     - Machine Authentification
   description: Delete machine account

@@ -208,10 +208,116 @@ paths:
                   format: password
   /user/login:
     x-internal: true
+    post:
+      tags:
+        - User Authentification
+      description: User login using access and secret token.
+      summary: User login
+      operationId: userLogin
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        description: Login email and password in exchange for JWT.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                stay_logged_in:
+                  type: boolean
+                  default: false
   /user/logout:
     x-internal: true
+    post:
+      tags:
+        - User Authentification
+      description: Log user out
+      summary: Log out user
+      responses:
+        "200":
+          description: successful operation
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
   /user/refresh:
     x-internal: true
+    post:
+      tags:
+        - User Authentification
+      description: Refresh access token using cookie
+      summary: Refresh JWT
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        description: Exchange access and secret token for JSON web token (JWT).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
   /health:
     x-internal: true
     servers:

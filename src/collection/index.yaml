@@ -3,7 +3,6 @@ servers:
     description: General operations
 
 get:
-  x-internal: false 
   tags:
     - Collection
   description: Get information about collections
@@ -25,7 +24,6 @@ get:
       $ref: "../responses/errors/default.yaml"
 
 post:
-  x-internal: false
   tags:
     - Collection
   description: Create new collection
