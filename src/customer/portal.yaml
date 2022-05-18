@@ -18,6 +18,9 @@ post:
         application/json:
           schema:
             type: object
+            additionalProperties: false
+            required:
+              - checkoutUrl
             properties:
               checkoutUrl:
                 type: string

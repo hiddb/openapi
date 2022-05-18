@@ -3,7 +3,7 @@ get:
   tags:
     - Internal
   description: Get customer billing information
-  summary: Get collections
+  summary: Get customer information
   responses:
     200:
       description: successful operation
@@ -18,8 +18,8 @@ get:
 put:
   tags:
     - Internal
-  description: Create new collection
-  summary: Create collection
+  description: Update customer billing information
+  summary: Update customer information
   requestBody:
       content:
         application/json:
