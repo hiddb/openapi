@@ -2251,7 +2251,7 @@ paths:
       tags:
         - Internal
       description: Get customer billing information
-      summary: Get collections
+      summary: Get customer information
       responses:
         '200':
           description: successful operation
@@ -2261,6 +2261,7 @@ paths:
                 type: object
                 additionalProperties: false
                 required:
+                  - name
                   - city
                   - country
                   - line1
@@ -2268,6 +2269,10 @@ paths:
                   - postal_code
                   - state
                 properties:
+                  name:
+                    type: string
+                    description: First and last name or company name
+                    maxLength: 50
                   city:
                     type: string
                     description: Two-letter country code (ISO 3166-1 alpha-2)
@@ -2300,8 +2305,8 @@ paths:
     put:
       tags:
         - Internal
-      description: Create new collection
-      summary: Create collection
+      description: Update customer billing information
+      summary: Update customer information
       requestBody:
         content:
           application/json:
@@ -2309,6 +2314,7 @@ paths:
               type: object
               additionalProperties: false
               required:
+                - name
                 - city
                 - country
                 - line1
@@ -2316,6 +2322,10 @@ paths:
                 - postal_code
                 - state
               properties:
+                name:
+                  type: string
+                  description: First and last name or company name
+                  maxLength: 50
                 city:
                   type: string
                   description: Two-letter country code (ISO 3166-1 alpha-2)
@@ -2344,6 +2354,7 @@ paths:
                 type: object
                 additionalProperties: false
                 required:
+                  - name
                   - city
                   - country
                   - line1
@@ -2351,6 +2362,10 @@ paths:
                   - postal_code
                   - state
                 properties:
+                  name:
+                    type: string
+                    description: First and last name or company name
+                    maxLength: 50
                   city:
                     type: string
                     description: Two-letter country code (ISO 3166-1 alpha-2)
@@ -2400,6 +2415,9 @@ paths:
             application/json:
               schema:
                 type: object
+                additionalProperties: false
+                required:
+                  - checkoutUrl
                 properties:
                   checkoutUrl:
                     type: string
@@ -2433,6 +2451,9 @@ paths:
             application/json:
               schema:
                 type: object
+                additionalProperties: false
+                required:
+                  - checkoutUrl
                 properties:
                   checkoutUrl:
                     type: string
