@@ -17,6 +17,8 @@ get:
           schema:
             type: object
             additionalProperties: false
+            required:
+              - indices
             properties:
               indices:
                 type: array

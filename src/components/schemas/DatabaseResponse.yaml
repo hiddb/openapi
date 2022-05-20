@@ -1,5 +1,12 @@
 type: object
 additionalProperties: false
+required:
+  - id
+  - database_name
+  - organization_id
+  - created_at
+  - deleted_at
+  - instances
 properties:
   id:
     type: string

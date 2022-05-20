@@ -1,5 +1,7 @@
 type: object
 additionalProperties: false
+required:
+  - collection_name
 properties:
   collection_name:
     type: string

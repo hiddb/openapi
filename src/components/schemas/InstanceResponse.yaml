@@ -1,5 +1,14 @@
 type: object
 additionalProperties: false
+required:
+  - id
+  - created_at
+  - deleted_at
+  - status
+  - type
+  - server
+  - volume_size
+  - location
 properties:
   id:
     type: string

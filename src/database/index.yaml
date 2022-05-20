@@ -11,6 +11,8 @@ get:
           schema:
             type: object
             additionalProperties: false
+            required:
+              - databases            
             properties:
               databases:
                 type: array
