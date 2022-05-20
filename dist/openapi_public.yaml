@@ -72,7 +72,6 @@ tags:
     description: Internal operations
 paths:
   /machine/login:
-    x-internal: false
     post:
       tags:
         - Machine Authentification
@@ -128,7 +127,6 @@ paths:
                   minLength: 20
                   maxLength: 20
   /machine:
-    x-internal: false
     post:
       tags:
         - Machine Authentification
@@ -259,7 +257,6 @@ paths:
                   error:
                     type: string
   "/machine/{machine_id}":
-    x-internal: false
     parameters:
       - name: machine_id
         in: path
@@ -291,7 +288,6 @@ paths:
                   error:
                     type: string
   /database:
-    x-internal: false
     get:
       tags:
         - Database
@@ -592,7 +588,6 @@ paths:
                   error:
                     type: string
   "/database/{database_id}":
-    x-internal: false
     parameters:
       - name: database_id
         in: path
@@ -853,7 +848,6 @@ paths:
                   error:
                     type: string
   /instance:
-    x-internal: false
     get:
       tags:
         - Instance
@@ -1080,7 +1074,6 @@ paths:
                   error:
                     type: string
   "/instance/{instance_id}":
-    x-internal: false
     parameters:
       - name: instance_id
         in: path
@@ -1371,7 +1364,6 @@ paths:
                   error:
                     type: string
   /collection:
-    x-internal: false
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -1464,7 +1456,6 @@ paths:
                   error:
                     type: string
   "/collection/{collection_name}":
-    x-internal: false
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -1551,7 +1542,6 @@ paths:
                   error:
                     type: string
   "/collection/{collection_name}/index":
-    x-internal: false
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -1698,7 +1688,6 @@ paths:
                   error:
                     type: string
   "/collection/{collection_name}/index/{field_name}":
-    x-internal: false
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -1828,7 +1817,6 @@ paths:
                   error:
                     type: string
   "/collection/{collection_name}/document":
-    x-internal: false
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -1891,7 +1879,6 @@ paths:
                   error:
                     type: string
   "/collection/{collection_name}/document/search":
-    x-internal: false
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -1983,7 +1970,6 @@ paths:
                   error:
                     type: string
   "/collection/{collection_name}/document/{document_id}":
-    x-internal: false
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
