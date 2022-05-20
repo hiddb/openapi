@@ -75,12 +75,19 @@ get:
           schema:
             type: object
             additionalProperties: false
+            required:
+              - machines
             properties:
               machines:
                 type: array
                 items:
                   type: object
                   additionalProperties: false
+                  required:
+                    - id
+                    - machine_name
+                    - key
+                    - permission
                   properties:
                     machine_name:
                       type: string

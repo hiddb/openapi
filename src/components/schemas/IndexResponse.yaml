@@ -1,5 +1,11 @@
 type: object
 additionalProperties: false
+required:
+  - collection_name
+  - field_name
+  - n_documents
+  - distance_metric
+  - dimension
 properties:
   collection_name:
     type: string

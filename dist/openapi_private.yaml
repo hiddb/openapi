@@ -87,7 +87,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -124,7 +124,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -156,7 +156,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -221,6 +221,10 @@ paths:
             application/json:
               schema:
                 type: object
+                additionalProperties: false
+                required:
+                  - access_token
+                  - type
                 properties:
                   access_token:
                     type: string
@@ -234,7 +238,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -275,7 +279,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -293,6 +297,10 @@ paths:
             application/json:
               schema:
                 type: object
+                additionalProperties: false
+                required:
+                  - access_token
+                  - type
                 properties:
                   access_token:
                     type: string
@@ -306,7 +314,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -343,7 +351,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -396,7 +404,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -453,7 +461,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -546,7 +554,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -582,7 +590,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -618,7 +626,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
