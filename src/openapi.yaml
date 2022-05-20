@@ -107,15 +107,12 @@ paths:
   ############################## Machine Authentification ######################################
 
   /machine/login:
-    x-internal: false 
     $ref: "./machine/login.yaml" 
 
   /machine:
-    x-internal: false 
     $ref: "./machine/index.yaml" 
 
   /machine/{machine_id}:
-    x-internal: false 
     $ref: "./machine/machine_id/index.yaml"
 
   ############################## Check connection ######################################
@@ -127,55 +124,44 @@ paths:
   ############################## Databases #############################################
 
   /database:
-    x-internal: false 
     $ref: "./database/index.yaml"
 
   /database/{database_id}:
-    x-internal: false 
     $ref: "./database/database_id/index.yaml"
 
   # ############################## Instances #############################################
 
   /instance:
-    x-internal: false 
     $ref: "./instance/index.yaml"
 
   /instance/{instance_id}:
-    x-internal: false 
     $ref: "./instance/instance_id/index.yaml"
 
   ############################## Collection #############################################
 
   /collection:
-    x-internal: false 
     $ref: "./collection/index.yaml"
 
   /collection/{collection_name}:
-    x-internal: false 
     $ref: "./collection/collection_name/index.yaml"
 
   ############################### Index ##################################################
 
   /collection/{collection_name}/index:
-    x-internal: false 
     $ref: "./collection/collection_name/index/index.yaml"
 
   /collection/{collection_name}/index/{field_name}:
-    x-internal: false 
     $ref: "./collection/collection_name/index/field_name/index.yaml"
 
   # ############################## Document ###############################################
 
   /collection/{collection_name}/document:
-    x-internal: false 
     $ref: "./collection/collection_name/index/document.yaml"
 
   /collection/{collection_name}/document/search:
-    x-internal: false 
     $ref: "./collection/collection_name/index/search.yaml"
 
   /collection/{collection_name}/document/{document_id}:
-    x-internal: false 
     $ref: "./collection/collection_name/document/document_id/index.yaml"
 
   ############################## Internal #############################################
