@@ -103,6 +103,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -177,6 +179,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -253,6 +257,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -284,6 +290,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -417,6 +425,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -584,6 +594,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -720,6 +732,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -844,6 +858,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -941,6 +957,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1070,6 +1088,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1170,6 +1190,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1272,6 +1294,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1360,6 +1384,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1404,6 +1430,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1452,6 +1480,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1497,6 +1527,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1538,6 +1570,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1613,6 +1647,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1684,6 +1720,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1761,6 +1799,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1813,6 +1853,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1875,6 +1917,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -1966,6 +2010,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -2030,6 +2076,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
@@ -2069,6 +2117,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - error
                 properties:
                   error:
                     type: string
