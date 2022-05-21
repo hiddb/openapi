@@ -4,6 +4,8 @@ content:
     schema:
       type: object 
       additionalProperties: true
+      required:
+        - error
       properties:
         error:
           type: string
