@@ -87,6 +87,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -126,6 +127,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -160,6 +162,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -244,6 +247,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -287,6 +291,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -324,6 +329,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -369,6 +375,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -445,6 +452,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -523,6 +531,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -556,6 +565,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -587,6 +597,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -722,6 +733,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -891,6 +903,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1029,6 +1042,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1155,6 +1169,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1254,6 +1269,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1385,6 +1401,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1487,6 +1504,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1591,6 +1609,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1681,6 +1700,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1727,6 +1747,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1777,6 +1798,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1824,6 +1846,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1867,6 +1890,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -1944,6 +1968,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2017,6 +2042,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2096,6 +2122,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2150,6 +2177,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2214,6 +2242,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2307,6 +2336,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2373,6 +2403,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2414,6 +2445,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2469,6 +2501,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2528,6 +2561,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2623,6 +2657,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2661,6 +2696,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
@@ -2699,6 +2735,7 @@ paths:
             application/json:
               schema:
                 type: object
+                nullable: true
                 additionalProperties: true
                 required:
                   - error
