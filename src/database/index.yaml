@@ -72,6 +72,12 @@ post:
                     maximum: 10000
                     multipleOf: 1
   responses:
+    200:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/DatabaseResponse.yaml"
     202:
       description: successful operation
       content:
