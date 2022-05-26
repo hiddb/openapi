@@ -8,6 +8,7 @@ get:
     - Internal
   description: Get usage of organization
   summary: Get usage
+  operationId: getUsage
   parameters:
     - $ref: "../../components/parameters/OrganizationId.yaml"
     - name: from

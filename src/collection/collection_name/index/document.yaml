@@ -11,6 +11,7 @@ post:
     Insert document. The field "field_name" will be indexed by all existing
     indices
   summary: Insert document
+  operationId: insertDocuments
   requestBody:
     content:
       application/json:

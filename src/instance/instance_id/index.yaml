@@ -6,6 +6,7 @@ get:
     - Instance
   description: Get information about specific instance
   summary: Get instance
+  operationId: getInstance
   responses:
     200:
       description: successful operation
@@ -22,6 +23,7 @@ put:
     - Instance
   description: Awake or put instance to sleep
   summary: Instance awake, sleep
+  operationId: updateInstanceStatus
   requestBody:
     content:
       application/json:
@@ -50,6 +52,7 @@ delete:
     - Instance
   description: Delete a specific Instance
   summary: Delete instance
+  operationId: deleteInstance
   responses:
     202:
       description: successful operation

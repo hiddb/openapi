@@ -9,6 +9,7 @@ post:
     - Document
   description: "Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead"
   summary: ANN-search
+  operationId: getAnn
   requestBody:
     content:
       application/json:

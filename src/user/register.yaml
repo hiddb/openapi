@@ -4,6 +4,7 @@ post:
     - User Authentification
   summary: Register user
   description: Register user. Email containing URL with OTP is send out to user.
+  operationId: registerUser
   responses:
     200:
       description: successful operation

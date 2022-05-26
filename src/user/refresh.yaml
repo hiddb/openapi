@@ -3,6 +3,7 @@ post:
     - User Authentification
   description: Refresh access token using cookie
   summary: Refresh JWT
+  operationId: refreshToken
   responses:
     200:
       $ref: "../responses/login.yaml"

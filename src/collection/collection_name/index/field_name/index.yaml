@@ -10,6 +10,7 @@ get:
     - Index
   description: Get information about specific index
   summary: Get index
+  operationId: getIndex
   responses:
     200:
       description: successful operation
@@ -25,6 +26,7 @@ delete:
     - Index
   description: Delete index
   summary: Delete index
+  operationId: deleteIndex
   responses:
     200:
       description: successful operation

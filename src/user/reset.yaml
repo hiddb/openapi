@@ -4,6 +4,7 @@
       - User Authentification
     summary: User password reset
     description: Send URL containing OTP to email adress provided by user to reset password.
+    operationId: resetPassword
     responses:
       200:
         description: successful operation

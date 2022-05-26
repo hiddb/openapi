@@ -6,6 +6,7 @@ get:
     - Collection
   description: Get information about a specific collection
   summary: Get collection
+  operationId: getCollection
   parameters:
     - name: collection_name
       in: path
@@ -30,6 +31,7 @@ delete:
     - Collection
   description: Delete a specific collection
   summary: Delete collection
+  operationId: deleteCollection
   parameters:
     - name: collection_name
       in: path

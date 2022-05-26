@@ -10,6 +10,7 @@ get:
     - Document
   description: Get document by ID
   summary: Get document by ID
+  operationId: getDocument
   responses:
     200:
       description: Insertion successful
@@ -25,6 +26,7 @@ delete:
     - Document
   description: COMING SOON! Remove document by ID. The corresponding indices will be updated
   summary: Remove document by ID
+  operationId: deleteDocument
   responses:
     200:
       description: Insertion successful

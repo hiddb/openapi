@@ -3,7 +3,7 @@ post:
     - User Authentification
   description: User login using access and secret token.
   summary: User login
-  operationId: userLogin
+  operationId: loginUser
 
   responses:
     200:

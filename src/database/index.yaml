@@ -3,6 +3,7 @@ get:
     - Database
   description: Get information about databases
   summary: Get databases
+  operationId: listDatabase
   responses:
     200:
       description: successful operation
@@ -28,6 +29,7 @@ post:
     - Database
   description: Create new database
   summary: Create database
+  operationId: createDatabase
   requestBody:
     description: Newly created database.
     content:
