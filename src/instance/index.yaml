@@ -3,6 +3,7 @@ get:
     - Instance
   description: Get information about instances
   summary: Get instances
+  operationId: listInstances
   responses:
     200:
       description: successful operation
@@ -26,6 +27,7 @@ post:
     - Instance
   description: Create new instance
   summary: Create instance
+  operationId: createInstance
   requestBody:
     description: Newly created Instance.
     content:

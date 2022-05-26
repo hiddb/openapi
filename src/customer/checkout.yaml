@@ -4,6 +4,7 @@ post:
     - Internal
   description: Create new checkout session for registered customer
   summary: Stripe Checkout
+  operationId: customerCheckout
   requestBody:
     content:
       application/json:

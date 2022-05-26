@@ -78,6 +78,7 @@ paths:
         - User Authentification
       summary: Register user
       description: Register user. Email containing URL with OTP is send out to user.
+      operationId: registerUser
       responses:
         '200':
           description: successful operation
@@ -118,6 +119,7 @@ paths:
         - User Authentification
       summary: User password reset
       description: Send URL containing OTP to email adress provided by user to reset password.
+      operationId: resetPassword
       responses:
         '200':
           description: successful operation
@@ -153,6 +155,7 @@ paths:
         - User Authentification
       summary: Verify user's email
       description: Verify email adress provided by the user.
+      operationId: verifyEmail
       responses:
         '200':
           description: successful operation
@@ -193,6 +196,7 @@ paths:
         - User Authentification
       summary: Update password
       description: Reset password as requested by the user.
+      operationId: resetPassword
       responses:
         '200':
           description: successful operation
@@ -222,7 +226,7 @@ paths:
         - User Authentification
       description: User login using access and secret token.
       summary: User login
-      operationId: userLogin
+      operationId: loginUser
       responses:
         '200':
           description: successful operation
@@ -282,6 +286,7 @@ paths:
         - User Authentification
       description: Log user out
       summary: Log out user
+      operationId: logoutUser
       responses:
         '200':
           description: successful operation
@@ -305,6 +310,7 @@ paths:
         - User Authentification
       description: Refresh access token using cookie
       summary: Refresh JWT
+      operationId: refreshToken
       responses:
         '200':
           description: successful operation
@@ -581,6 +587,7 @@ paths:
         - Check health
       description: Check access to databases
       summary: Check health database
+      operationId: checkHealth
       responses:
         '200':
           description: successfull operation
@@ -610,6 +617,7 @@ paths:
         - Database
       description: Get information about databases
       summary: Get databases
+      operationId: listDatabase
       responses:
         '200':
           description: successful operation
@@ -745,6 +753,7 @@ paths:
         - Database
       description: Create new database
       summary: Create database
+      operationId: createDatabase
       requestBody:
         description: Newly created database.
         content:
@@ -1035,6 +1044,7 @@ paths:
         - Database
       description: Get information about specific database
       summary: Get database
+      operationId: getDatabase
       responses:
         '200':
           description: successful operation
@@ -1162,6 +1172,7 @@ paths:
         - Database
       description: Delete a specific database
       summary: Delete database
+      operationId: deleteDatabase
       responses:
         '202':
           description: successful operation
@@ -1290,6 +1301,7 @@ paths:
         - Instance
       description: Get information about instances
       summary: Get instances
+      operationId: listInstances
       responses:
         '200':
           description: successful operation
@@ -1389,6 +1401,7 @@ paths:
         - Instance
       description: Create new instance
       summary: Create instance
+      operationId: createInstance
       requestBody:
         description: Newly created Instance.
         content:
@@ -1533,6 +1546,7 @@ paths:
         - Instance
       description: Get information about specific instance
       summary: Get instance
+      operationId: getInstance
       responses:
         '200':
           description: successful operation
@@ -1624,6 +1638,7 @@ paths:
         - Instance
       description: Awake or put instance to sleep
       summary: 'Instance awake, sleep'
+      operationId: updateInstanceStatus
       requestBody:
         content:
           application/json:
@@ -1729,6 +1744,7 @@ paths:
         - Instance
       description: Delete a specific Instance
       summary: Delete instance
+      operationId: deleteInstance
       responses:
         '202':
           description: successful operation
@@ -1824,6 +1840,7 @@ paths:
         - Collection
       description: Get information about collections
       summary: Get collections
+      operationId: listCollections
       responses:
         '200':
           description: successful operation
@@ -1867,6 +1884,7 @@ paths:
         - Collection
       description: Create new collection
       summary: Create collection
+      operationId: createCollection
       requestBody:
         content:
           application/json:
@@ -1922,6 +1940,7 @@ paths:
         - Collection
       description: Get information about a specific collection
       summary: Get collection
+      operationId: getCollection
       parameters:
         - name: collection_name
           in: path
@@ -1966,6 +1985,7 @@ paths:
         - Collection
       description: Delete a specific collection
       summary: Delete collection
+      operationId: deleteCollection
       parameters:
         - name: collection_name
           in: path
@@ -2025,6 +2045,7 @@ paths:
         - Index
       description: Get information about an existing indices
       summary: Get indices
+      operationId: listIndices
       responses:
         '200':
           description: successful operation
@@ -2088,6 +2109,7 @@ paths:
         - Index
       description: Create new index in the specified collection
       summary: Create index
+      operationId: createIndex
       requestBody:
         content:
           application/json:
@@ -2187,6 +2209,7 @@ paths:
         - Index
       description: Get information about specific index
       summary: Get index
+      operationId: getIndex
       responses:
         '200':
           description: successful operation
@@ -2242,6 +2265,7 @@ paths:
         - Index
       description: Delete index
       summary: Delete index
+      operationId: deleteIndex
       responses:
         '200':
           description: successful operation
@@ -2312,6 +2336,7 @@ paths:
         - Document
       description: Insert document. The field "field_name" will be indexed by all existing indices
       summary: Insert document
+      operationId: insertDocuments
       requestBody:
         content:
           application/json:
@@ -2377,6 +2402,7 @@ paths:
         - Document
       description: 'Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead'
       summary: ANN-search
+      operationId: getAnn
       requestBody:
         content:
           application/json:
@@ -2481,6 +2507,7 @@ paths:
         - Document
       description: Get document by ID
       summary: Get document by ID
+      operationId: getDocument
       responses:
         '200':
           description: Insertion successful
@@ -2523,6 +2550,7 @@ paths:
         - Document
       description: COMING SOON! Remove document by ID. The corresponding indices will be updated
       summary: Remove document by ID
+      operationId: deleteDocument
       responses:
         '200':
           description: Insertion successful
@@ -2570,6 +2598,7 @@ paths:
         - Internal
       description: Get usage of organization
       summary: Get usage
+      operationId: getUsage
       parameters:
         - name: organization_id
           in: path
@@ -2623,6 +2652,7 @@ paths:
         - Internal
       description: Get customer billing information
       summary: Get customer information
+      operationId: getCustomerBillingInfo
       responses:
         '200':
           description: successful operation
@@ -2681,6 +2711,7 @@ paths:
         - Internal
       description: Update customer billing information
       summary: Update customer information
+      operationId: updateCustomerBillingInfo
       requestBody:
         content:
           application/json:
@@ -2779,6 +2810,7 @@ paths:
         - Internal
       description: Create new checkout session for registered customer
       summary: Stripe Checkout
+      operationId: customerCheckout
       requestBody:
         content:
           application/json:
@@ -2818,6 +2850,7 @@ paths:
         - Internal
       description: Create new customer portal session for registered customer
       summary: Stripe Customer Portal
+      operationId: customerPortal
       requestBody:
         content:
           application/json:

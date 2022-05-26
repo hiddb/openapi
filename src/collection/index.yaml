@@ -7,6 +7,7 @@ get:
     - Collection
   description: Get information about collections
   summary: Get collections
+  operationId: listCollections
   responses:
     200:
       description: successful operation
@@ -30,6 +31,7 @@ post:
     - Collection
   description: Create new collection
   summary: Create collection
+  operationId: createCollection
   requestBody:
     content:
       application/json:

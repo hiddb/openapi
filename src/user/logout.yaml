@@ -3,6 +3,7 @@ post:
     - User Authentification
   description: Log user out
   summary: Log out user
+  operationId: logoutUser
   responses:
     200:
       description: successful operation

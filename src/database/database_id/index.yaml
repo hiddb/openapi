@@ -6,6 +6,7 @@ get:
     - Database
   description: Get information about specific database
   summary: Get database
+  operationId: getDatabase
   responses:
     200:
       description: successful operation
@@ -21,6 +22,7 @@ delete:
     - Database
   description: Delete a specific database
   summary: Delete database
+  operationId: deleteDatabase
   responses:
     202:
       description: successful operation

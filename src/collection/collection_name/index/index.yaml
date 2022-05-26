@@ -9,6 +9,7 @@ get:
     - Index
   description: Get information about an existing indices
   summary: Get indices
+  operationId: listIndices
   responses:
     200:
       description: successful operation
@@ -32,6 +33,7 @@ post:
     - Index
   description: Create new index in the specified collection
   summary: Create index
+  operationId: createIndex
   requestBody:
     content:
       application/json:

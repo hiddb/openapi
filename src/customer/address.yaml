@@ -4,6 +4,7 @@ get:
     - Internal
   description: Get customer billing information
   summary: Get customer information
+  operationId: getCustomerBillingInfo
   responses:
     200:
       description: successful operation
@@ -20,6 +21,7 @@ put:
     - Internal
   description: Update customer billing information
   summary: Update customer information
+  operationId: updateCustomerBillingInfo
   requestBody:
       content:
         application/json:

@@ -4,6 +4,7 @@ post:
     - Internal
   description: Create new customer portal session for registered customer
   summary: Stripe Customer Portal
+  operationId: customerPortal
   requestBody:
     content:
       application/json:

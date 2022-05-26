@@ -10,6 +10,7 @@ paths:
         - User Authentification
       summary: Register user
       description: Register user. Email containing URL with OTP is send out to user.
+      operationId: registerUser
       responses:
         "200":
           description: successful operation
@@ -50,6 +51,7 @@ paths:
         - User Authentification
       summary: User password reset
       description: Send URL containing OTP to email adress provided by user to reset password.
+      operationId: resetPassword
       responses:
         "200":
           description: successful operation
@@ -85,6 +87,7 @@ paths:
         - User Authentification
       summary: Verify user's email
       description: Verify email adress provided by the user.
+      operationId: verifyEmail
       responses:
         "200":
           description: successful operation
@@ -125,6 +128,7 @@ paths:
         - User Authentification
       summary: Update password
       description: Reset password as requested by the user.
+      operationId: resetPassword
       responses:
         "200":
           description: successful operation
@@ -154,7 +158,7 @@ paths:
         - User Authentification
       description: User login using access and secret token.
       summary: User login
-      operationId: userLogin
+      operationId: loginUser
       responses:
         "200":
           description: successful operation
@@ -214,6 +218,7 @@ paths:
         - User Authentification
       description: Log user out
       summary: Log out user
+      operationId: logoutUser
       responses:
         "200":
           description: successful operation
@@ -237,6 +242,7 @@ paths:
         - User Authentification
       description: Refresh access token using cookie
       summary: Refresh JWT
+      operationId: refreshToken
       responses:
         "200":
           description: successful operation
@@ -285,6 +291,7 @@ paths:
         - Check health
       description: Check access to databases
       summary: Check health database
+      operationId: checkHealth
       responses:
         "200":
           description: successfull operation
@@ -318,6 +325,7 @@ paths:
         - Internal
       description: Get usage of organization
       summary: Get usage
+      operationId: getUsage
       parameters:
         - name: organization_id
           in: path
@@ -371,6 +379,7 @@ paths:
         - Internal
       description: Get customer billing information
       summary: Get customer information
+      operationId: getCustomerBillingInfo
       responses:
         "200":
           description: successful operation
@@ -429,6 +438,7 @@ paths:
         - Internal
       description: Update customer billing information
       summary: Update customer information
+      operationId: updateCustomerBillingInfo
       requestBody:
         content:
           application/json:
@@ -527,6 +537,7 @@ paths:
         - Internal
       description: Create new checkout session for registered customer
       summary: Stripe Checkout
+      operationId: customerCheckout
       requestBody:
         content:
           application/json:
@@ -566,6 +577,7 @@ paths:
         - Internal
       description: Create new customer portal session for registered customer
       summary: Stripe Customer Portal
+      operationId: customerPortal
       requestBody:
         content:
           application/json:

@@ -5,6 +5,7 @@ get:
     - Check health
   description: Check access to databases
   summary: Check health database
+  operationId: checkHealth
   responses:
     200:
       description: successfull operation
