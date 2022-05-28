@@ -4,7 +4,7 @@ post:
     - User Authentification
   summary: Update password
   description: Reset password as requested by the user.
-  operationId: resetPassword
+  operationId: updateResetPassword
   responses:
     200:
       description: successful operation

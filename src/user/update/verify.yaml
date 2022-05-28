@@ -4,7 +4,7 @@
       - User Authentification
     summary: Verify user's email
     description: Verify email adress provided by the user.
-    operationId: verifyEmail
+    operationId: updateVerifyEmail
     responses:
       200:
         description: successful operation
