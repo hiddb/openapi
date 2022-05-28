@@ -12,9 +12,12 @@ get:
         application/json:
           schema:
             $ref: '../components/schemas/CustomerAddress.yaml'
-                
-    default:
-      $ref: "../responses/errors/default.yaml"
+    400:
+      $ref: "../responses/errors/400.yaml"
+    404:
+      $ref: "../responses/errors/404.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"
 
 put:
   tags:
@@ -34,5 +37,7 @@ put:
         application/json:
           schema:
             $ref: '../components/schemas/CustomerAddress.yaml'
-    default:
-      $ref: "../responses/errors/default.yaml"
+    404:
+      $ref: "../responses/errors/404.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"

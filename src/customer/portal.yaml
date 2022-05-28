@@ -25,5 +25,3 @@ post:
             properties:
               checkoutUrl:
                 type: string
-    default:
-      $ref: "../responses/errors/default.yaml"
