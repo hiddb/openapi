@@ -1,13 +1,7 @@
 openapi: 3.0.0
 servers:
-  - url: https://{service}.hiddb.io
+  - url: https://api.hiddb.io
     description: Access to your HIDDB databases
-    variables:
-      service:
-        default: api
-        enum:
-          - "api"
-          - "{database_id}"
 
 info:
   description: |

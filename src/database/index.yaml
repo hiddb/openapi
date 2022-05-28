@@ -19,15 +19,19 @@ get:
                 type: array
                 items:
                   $ref: "../components/schemas/DatabaseResponse.yaml"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    400:
+      $ref: "../responses/errors/400.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"
       
 ###################################################################
 
 post:
   tags:
     - Database
-  description: Create new database
+  description: Create new database.
   summary: Create database
   operationId: createDatabase
   requestBody:
@@ -46,6 +50,7 @@ post:
               maxLength: 20
               pattern: "^[a-z0-9_-]{3,20}$"
             instances:
+              description: Currently only databases with up to a single instance are supported.
               type: array
               items:
                 type: object
@@ -86,5 +91,9 @@ post:
         application/json:
           schema:
             $ref: "../components/schemas/DatabaseResponse.yaml"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    400:
+      $ref: "../responses/errors/400.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"

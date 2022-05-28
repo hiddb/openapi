@@ -1,13 +1,7 @@
 openapi: 3.0.0
 servers:
-  - url: 'https://{service}.hiddb.io'
+  - url: 'https://api.hiddb.io'
     description: Access to your HIDDB databases
-    variables:
-      service:
-        default: api
-        enum:
-          - api
-          - '{database_id}'
 info:
   description: |
     This is the official API documentation for the HIDDB vector search database.
@@ -82,8 +76,8 @@ paths:
       responses:
         '200':
           description: successful operation
-        default:
-          description: error
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -95,6 +89,8 @@ paths:
                 properties:
                   error:
                     type: string
+        '409':
+          description: conflict
       requestBody:
         required: true
         content:
@@ -123,8 +119,8 @@ paths:
       responses:
         '200':
           description: successful operation
-        default:
-          description: error
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -159,8 +155,8 @@ paths:
       responses:
         '200':
           description: successful operation
-        default:
-          description: error
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -172,6 +168,8 @@ paths:
                 properties:
                   error:
                     type: string
+        '401':
+          description: unauthorized
       requestBody:
         content:
           application/json:
@@ -200,6 +198,21 @@ paths:
       responses:
         '200':
           description: successful operation
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
       requestBody:
         required: true
         content:
@@ -241,12 +254,13 @@ paths:
                 properties:
                   access_token:
                     type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                   type:
                     type: string
                     enum:
                       - Bearer
-        default:
-          description: error
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -258,6 +272,10 @@ paths:
                 properties:
                   error:
                     type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
       requestBody:
         description: Login email and password in exchange for JWT.
         required: true
@@ -290,8 +308,8 @@ paths:
       responses:
         '200':
           description: successful operation
-        default:
-          description: error
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -303,6 +321,8 @@ paths:
                 properties:
                   error:
                     type: string
+        '401':
+          description: unauthorized
   /user/refresh:
     x-internal: true
     post:
@@ -325,12 +345,13 @@ paths:
                 properties:
                   access_token:
                     type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                   type:
                     type: string
                     enum:
                       - Bearer
-        default:
-          description: error
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -342,6 +363,8 @@ paths:
                 properties:
                   error:
                     type: string
+        '401':
+          description: unauthorized
       requestBody:
         description: Exchange access and secret token for JSON web token (JWT).
         required: true
@@ -371,12 +394,17 @@ paths:
                 properties:
                   access_token:
                     type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                   type:
                     type: string
                     enum:
                       - Bearer
-        default:
-          description: error
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -452,8 +480,10 @@ paths:
                       - write
                       - read
                       - admin
-        default:
-          description: error
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -531,8 +561,10 @@ paths:
                             - write
                             - read
                             - admin
-        default:
-          description: error
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -565,8 +597,23 @@ paths:
       responses:
         '200':
           description: successful operation
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -735,8 +782,23 @@ paths:
                                   - hel1
                                   - nbg1
                                   - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -751,7 +813,7 @@ paths:
     post:
       tags:
         - Database
-      description: Create new database
+      description: Create new database.
       summary: Create database
       operationId: createDatabase
       requestBody:
@@ -770,6 +832,7 @@ paths:
                   maxLength: 20
                   pattern: '^[a-z0-9_-]{3,20}$'
                 instances:
+                  description: Currently only databases with up to a single instance are supported.
                   type: array
                   items:
                     type: object
@@ -1014,8 +1077,23 @@ paths:
                             - hel1
                             - nbg1
                             - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -1154,8 +1232,36 @@ paths:
                             - hel1
                             - nbg1
                             - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -1282,8 +1388,36 @@ paths:
                             - hel1
                             - nbg1
                             - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -1383,8 +1517,23 @@ paths:
                             - hel1
                             - nbg1
                             - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -1399,7 +1548,7 @@ paths:
     post:
       tags:
         - Instance
-      description: Create new instance
+      description: Create new instance. Currently you can only create a single instance per database. In future versions we will not restrict the number of instances per database.
       summary: Create instance
       operationId: createInstance
       requestBody:
@@ -1516,8 +1665,38 @@ paths:
                       - hel1
                       - nbg1
                       - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -1620,8 +1799,38 @@ paths:
                       - hel1
                       - nbg1
                       - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -1726,8 +1935,38 @@ paths:
                       - hel1
                       - nbg1
                       - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -1818,8 +2057,38 @@ paths:
                       - hel1
                       - nbg1
                       - fsn1
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:

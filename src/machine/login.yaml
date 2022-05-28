@@ -8,8 +8,12 @@ post:
   responses:
     200:
       $ref: "../responses/login.yaml"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    403:
+      $ref: "../responses/errors/403.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"
   
   requestBody:
     description: Exchange access and secret token for JSON web token (JWT).
