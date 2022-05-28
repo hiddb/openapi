@@ -2962,8 +2962,36 @@ paths:
                   state:
                     type: string
                     maxLength: 50
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -3059,8 +3087,23 @@ paths:
                   state:
                     type: string
                     maxLength: 50
-        default:
-          description: error
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
           content:
             application/json:
               schema:
@@ -3099,8 +3142,23 @@ paths:
                 properties:
                   checkoutUrl:
                     type: string
-        default:
-          description: error
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -3139,16 +3197,5 @@ paths:
                 properties:
                   checkoutUrl:
                     type: string
-        default:
-          description: error
-          content:
-            application/json:
-              schema:
-                type: object
-                nullable: true
-                additionalProperties: true
-                required:
-                  - error
-                properties:
-                  error:
-                    type: string
+        '401':
+          description: unauthorized
