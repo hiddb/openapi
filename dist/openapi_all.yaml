@@ -151,7 +151,7 @@ paths:
         - User Authentification
       summary: Verify user's email
       description: Verify email adress provided by the user.
-      operationId: verifyEmail
+      operationId: updateVerifyEmail
       responses:
         '200':
           description: successful operation
@@ -194,7 +194,7 @@ paths:
         - User Authentification
       summary: Update password
       description: Reset password as requested by the user.
-      operationId: resetPassword
+      operationId: updateResetPassword
       responses:
         '200':
           description: successful operation
