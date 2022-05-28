@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "pre-commit": [ "npm run build" ],
   "scripts": {
     "build": "bash build.sh",
     "mockserver": "prism mock dist/openapi_all.yaml"
@@ -22,6 +23,7 @@
     "openapi-filter": "^3.2.0"
   },
   "devDependencies": {
+    "pre-commit": "^1.2.2",
     "prism": "^4.1.2"
   }
 }
