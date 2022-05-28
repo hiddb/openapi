@@ -8,8 +8,12 @@ post:
   responses:
     200:
       $ref: "../responses/login.yaml"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    400:
+      $ref: "../responses/errors/400.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    403:
+      $ref: "../responses/errors/403.yaml"
 
   requestBody:
     description: Login email and password in exchange for JWT.

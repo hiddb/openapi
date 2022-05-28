@@ -14,8 +14,14 @@ get:
         application/json:
           schema:
             $ref: "../../components/schemas/DatabaseResponse.yaml"
-    default:
-      $ref: "../../responses/errors/default.yaml"
+    400:
+      $ref: "../../responses/errors/400.yaml"
+    401:
+      $ref: "../../responses/errors/401.yaml"
+    404:
+      $ref: "../../responses/errors/404.yaml"
+    500:
+      $ref: "../../responses/errors/500.yaml"
 
 delete:
   tags:
@@ -30,5 +36,11 @@ delete:
         application/json:
           schema:
             $ref: "../../components/schemas/DatabaseResponse.yaml"
-    default:
-      $ref: "../../responses/errors/default.yaml"
+    400:
+      $ref: "../../responses/errors/400.yaml"
+    401:
+      $ref: "../../responses/errors/401.yaml"
+    404:
+      $ref: "../../responses/errors/404.yaml"
+    500:
+      $ref: "../../responses/errors/500.yaml"

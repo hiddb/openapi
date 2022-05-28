@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "bash build.sh"
+    "build": "bash build.sh",
+    "mockserver": "prism mock dist/openapi_all.yaml"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,8 @@
   "dependencies": {
     "@apidevtools/swagger-cli": "^4.0.4",
     "openapi-filter": "^3.2.0"
+  },
+  "devDependencies": {
+    "prism": "^4.1.2"
   }
 }

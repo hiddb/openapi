@@ -19,13 +19,17 @@ get:
                 type: array
                 items:
                   $ref: "../components/schemas/InstanceResponse.yaml"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    400:
+      $ref: "../responses/errors/400.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"
 
 post:
   tags:
     - Instance
-  description: Create new instance
+  description: Create new instance. Currently you can only create a single instance per database. In future versions we will not restrict the number of instances per database.
   summary: Create instance
   operationId: createInstance
   requestBody:
@@ -77,5 +81,13 @@ post:
         application/json:
           schema:
             $ref: "../components/schemas/InstanceResponse.yaml"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    400:
+      $ref: "../responses/errors/400.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    403:
+      $ref: "../responses/errors/403.yaml"
+    404:
+      $ref: "../responses/errors/404.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"

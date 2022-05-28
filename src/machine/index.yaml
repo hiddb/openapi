@@ -41,8 +41,10 @@ post:
                   - "write"
                   - "read"
                   - "admin"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"
 
   requestBody:
     content:
@@ -113,5 +115,7 @@ get:
                       - "write"
                       - "read"
                       - "admin"
-    default:
-      $ref: "../responses/errors/default.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
+    500:
+      $ref: "../responses/errors/500.yaml"
