@@ -27,5 +27,7 @@ post:
                 type: string
     400:
       $ref: "../responses/errors/400.yaml"
+    401:
+      $ref: "../responses/errors/401.yaml"
     404:
       $ref: "../responses/errors/404.yaml"

@@ -25,3 +25,5 @@ post:
             properties:
               checkoutUrl:
                 type: string
+    401:
+      $ref: "../responses/errors/401.yaml"
