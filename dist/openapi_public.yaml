@@ -2294,6 +2294,10 @@ paths:
                           - 1
                           - 2
                           - 3
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
       responses:
         "200":
           description: Insertion successful
@@ -2373,6 +2377,10 @@ paths:
                   pattern: ^[a-z0-9_-]{3,20}$
                   description: This parameter specifies the index to perform the query in
                   example: xxxxxxxxxxxxxxxxxx
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
       responses:
         "200":
           description: Insertion successful

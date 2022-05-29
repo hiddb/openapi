@@ -38,6 +38,11 @@ post:
                       type: number
                       format: double
                     example: [1.0, 2.0, 3.0]
+      application/octet-stream:
+        schema:
+          type: string
+          format: binary
+
   responses:
     200:
       description: Insertion successful
