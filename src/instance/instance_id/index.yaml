@@ -26,6 +26,7 @@ get:
       $ref: "../../responses/errors/500.yaml"
 
 put:
+  x-internal: true
   tags:
     - Instance
   description: Awake or put instance to sleep
