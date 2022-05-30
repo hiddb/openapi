@@ -7,7 +7,7 @@ info:
     This is the official API documentation for the HIDDB vector search database.
 
     In order to get started you will need to generate a API access key and secret token.
-    Sign in into the your [dashboard](https://dashboard.hiddb.com/) and navigate to `API Access` / `Create API Key`.
+    Sign in into the your [dashboard](https://dash.hiddb.com/) and navigate to `API Access` / `Create API Key`.
     Make sure to copy the token because it won't be shown to you again.
 
     Now you can sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
@@ -2826,7 +2826,7 @@ paths:
     delete:
       tags:
         - Document
-      description: COMING SOON! Remove document by ID. The corresponding indices will be updated
+      description: Remove document by ID. The document is deleted from the collection and the corresponding indices are updated.
       summary: Remove document by ID
       operationId: deleteDocument
       responses:

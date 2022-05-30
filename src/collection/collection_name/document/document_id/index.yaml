@@ -24,7 +24,7 @@ get:
 delete:
   tags:
     - Document
-  description: COMING SOON! Remove document by ID. The corresponding indices will be updated
+  description: Remove document by ID. The document is deleted from the collection and the corresponding indices are updated.
   summary: Remove document by ID
   operationId: deleteDocument
   responses:
