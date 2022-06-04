@@ -40,11 +40,11 @@ post:
         schema:
           type: object
           required:
-            - field_name
+            - index_name
             - dimension
           additionalProperties: false
           properties:
-            field_name:
+            index_name:
               type: string
               minLength: 3
               maxLength: 20
