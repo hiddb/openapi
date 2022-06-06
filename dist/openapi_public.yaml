@@ -39,7 +39,7 @@ info:
     ```
 
     Congratulations your have now full and secure control over your personal HIDDB database.
-  version: 0.2.3
+  version: 0.2.4
   title: API documentation
   termsOfService: https:/hiddb.com/terms
   license:
