@@ -2129,6 +2129,7 @@ paths:
                       additionalProperties: false
                       required:
                         - collection_name
+                        - n_documents
                       properties:
                         collection_name:
                           type: string
@@ -2185,6 +2186,7 @@ paths:
                 additionalProperties: false
                 required:
                   - collection_name
+                  - n_documents
                 properties:
                   collection_name:
                     type: string
@@ -2238,6 +2240,7 @@ paths:
                 additionalProperties: false
                 required:
                   - collection_name
+                  - n_documents
                 properties:
                   collection_name:
                     type: string
@@ -2287,6 +2290,7 @@ paths:
                 additionalProperties: false
                 required:
                   - collection_name
+                  - n_documents
                 properties:
                   collection_name:
                     type: string

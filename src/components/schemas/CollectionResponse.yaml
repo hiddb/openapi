@@ -2,6 +2,7 @@ type: object
 additionalProperties: false
 required:
   - collection_name
+  - n_documents
 properties:
   collection_name:
     type: string
