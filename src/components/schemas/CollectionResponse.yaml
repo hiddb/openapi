@@ -9,3 +9,7 @@ properties:
     maxLength: 20
     pattern: "^[a-z0-9_-]{3,20}$"
     example: "xxxxxxxxxxxxxxxxxx"
+  n_documents:
+    type: number
+    format: int64
+    minimum: 0
