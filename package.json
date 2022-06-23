@@ -25,7 +25,7 @@
     "openapi-filter": "^3.2.0"
   },
   "devDependencies": {
-    "pre-commit": "^1.2.2",
-    "prism": "^4.1.2"
+    "@stoplight/prism-cli": "^4.10.1",
+    "pre-commit": "^1.2.2"
   }
 }
