@@ -144,8 +144,8 @@ paths:
   /collection/{collection_name}/index:
     $ref: "./collection/collection_name/index/index.yaml"
 
-  /collection/{collection_name}/index/{index_name}:
-    $ref: "./collection/collection_name/index/index_name/index.yaml"
+  /collection/{collection_name}/index/{field_name}:
+    $ref: "./collection/collection_name/index/field_name/index.yaml"
 
   # ############################## Document ###############################################
 

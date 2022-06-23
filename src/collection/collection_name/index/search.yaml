@@ -17,7 +17,7 @@ post:
           type: object
           required:
             - max_neighbors
-            - index_name
+            - field_name
           additionalProperties: false
           properties:
             ids:
@@ -39,7 +39,7 @@ post:
               default: 20
               minimum: 1
               description: Maximal number of neighbors to include in response
-            index_name:
+            field_name:
               type: string
               minLength: 3
               maxLength: 20

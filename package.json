@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "pre-commit": [ "build" ],
+  "pre-commit": [
+    "build"
+  ],
   "scripts": {
     "build": "bash build.sh",
     "mockserver": "prism mock dist/openapi_all.yaml"

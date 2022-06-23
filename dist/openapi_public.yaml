@@ -1876,7 +1876,7 @@ paths:
                       additionalProperties: false
                       required:
                         - collection_name
-                        - index_name
+                        - field_name
                         - n_documents
                         - distance_metric
                         - dimension
@@ -1887,7 +1887,7 @@ paths:
                           maxLength: 20
                           pattern: ^[a-z0-9_-]{3,20}$
                           example: xxxxxxxxxxxxxxxxxx
-                        index_name:
+                        field_name:
                           type: string
                           minLength: 3
                           maxLength: 20
@@ -1928,11 +1928,11 @@ paths:
             schema:
               type: object
               required:
-                - index_name
+                - field_name
                 - dimension
               additionalProperties: false
               properties:
-                index_name:
+                field_name:
                   type: string
                   minLength: 3
                   maxLength: 20
@@ -1951,7 +1951,7 @@ paths:
                 additionalProperties: false
                 required:
                   - collection_name
-                  - index_name
+                  - field_name
                   - n_documents
                   - distance_metric
                   - dimension
@@ -1962,7 +1962,7 @@ paths:
                     maxLength: 20
                     pattern: ^[a-z0-9_-]{3,20}$
                     example: xxxxxxxxxxxxxxxxxx
-                  index_name:
+                  field_name:
                     type: string
                     minLength: 3
                     maxLength: 20
@@ -1991,7 +1991,7 @@ paths:
                 properties:
                   error:
                     type: string
-  "/collection/{collection_name}/index/{index_name}":
+  "/collection/{collection_name}/index/{field_name}":
     servers:
       - url: https://{database_id}.hiddb.io
         description: General operations
@@ -2006,7 +2006,7 @@ paths:
           minLength: 3
           maxLength: 20
           pattern: ^[a-z0-9_-]{3,20}$
-      - name: index_name
+      - name: field_name
         in: path
         description: The ID of the index
         example: xxxxxxxxxxxxxxxxxx
@@ -2032,7 +2032,7 @@ paths:
                 additionalProperties: false
                 required:
                   - collection_name
-                  - index_name
+                  - field_name
                   - n_documents
                   - distance_metric
                   - dimension
@@ -2043,7 +2043,7 @@ paths:
                     maxLength: 20
                     pattern: ^[a-z0-9_-]{3,20}$
                     example: xxxxxxxxxxxxxxxxxx
-                  index_name:
+                  field_name:
                     type: string
                     minLength: 3
                     maxLength: 20
@@ -2088,7 +2088,7 @@ paths:
                 additionalProperties: false
                 required:
                   - collection_name
-                  - index_name
+                  - field_name
                   - n_documents
                   - distance_metric
                   - dimension
@@ -2099,7 +2099,7 @@ paths:
                     maxLength: 20
                     pattern: ^[a-z0-9_-]{3,20}$
                     example: xxxxxxxxxxxxxxxxxx
-                  index_name:
+                  field_name:
                     type: string
                     minLength: 3
                     maxLength: 20
@@ -2146,7 +2146,7 @@ paths:
     post:
       tags:
         - Document
-      description: Insert document. The field "index_name" can be indexed by an index with the same name
+      description: Insert document. The field "field_name" can be indexed by an index with the same name
       summary: Insert document
       operationId: insertDocuments
       requestBody:
@@ -2226,7 +2226,7 @@ paths:
               type: object
               required:
                 - max_neighbors
-                - index_name
+                - field_name
               additionalProperties: false
               properties:
                 ids:
@@ -2254,7 +2254,7 @@ paths:
                   default: 20
                   minimum: 1
                   description: Maximal number of neighbors to include in response
-                index_name:
+                field_name:
                   type: string
                   minLength: 3
                   maxLength: 20

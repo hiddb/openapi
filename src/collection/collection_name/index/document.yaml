@@ -8,7 +8,7 @@ post:
   tags:
     - Document
   description:
-    Insert document. The field "index_name" can be indexed by an index with the same name
+    Insert document. The field "field_name" can be indexed by an index with the same name
   summary: Insert document
   operationId: insertDocuments
   requestBody:

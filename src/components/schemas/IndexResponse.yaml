@@ -2,7 +2,7 @@ type: object
 additionalProperties: false
 required:
   - collection_name
-  - index_name
+  - field_name
   - n_documents
   - distance_metric
   - dimension
@@ -13,7 +13,7 @@ properties:
     maxLength: 20
     pattern: "^[a-z0-9_-]{3,20}$"
     example: "xxxxxxxxxxxxxxxxxx"
-  index_name:
+  field_name:
     type: string
     minLength: 3
     maxLength: 20
