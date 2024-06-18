@@ -15,7 +15,7 @@ info:
          --header "Authorization: Bearer $TOKEN"
     ```
 
-  version: 0.2.4
+  version: 0.3.0
   title: API documentation
   termsOfService: "https:/hiddb.com/terms"
   license:
