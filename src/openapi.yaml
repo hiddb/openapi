@@ -20,36 +20,14 @@ info:
     name: Propretary Licence
     url: "https://hiddb.com/licence"
 tags:
-  - name: Database
-    description: Operations on databases
-  - name: Instance
-    description: Operations on instances
   - name: Collection
     description: Operations on collections
   - name: Index
     description: Operations on indices
   - name: Document
     description: Operations on documents
-  - name: Internal
-    description: Internal operations
 
 paths:
-
-  ############################## Databases #############################################
-
-  /database:
-    $ref: "./database/index.yaml"
-
-  /database/{database_id}:
-    $ref: "./database/database_id/index.yaml"
-
-  # ############################## Instances #############################################
-
-  /instance:
-    $ref: "./instance/index.yaml"
-
-  /instance/{instance_id}:
-    $ref: "./instance/instance_id/index.yaml"
 
   ############################## Collection #############################################
 
