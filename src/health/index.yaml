@@ -1,5 +1,5 @@
 servers:
-  - url: https://api.hiddb.io
+  - url: https://<database_url>
 get:
   tags:
     - Check health

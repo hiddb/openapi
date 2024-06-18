@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: https://api.hiddb.io
+  - url: https://<database_url>
     description: Access to your HIDDB databases
 info:
   description: |
