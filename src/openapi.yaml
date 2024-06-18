@@ -6,40 +6,14 @@ servers:
 info:
   description: |
     This is the official API documentation for the HIDDB vector search database.
-
-    In order to get started you will need to generate a API access key and secret token.
-    Sign in into the your [dashboard](https://dash.hiddb.com/) and navigate to `API Access` / `Create API Key`.
-    Make sure to copy the token because it won't be shown to you again.
-
-    Now you can sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
-  
+    Example usage:
+    
     ```bash
-    KEY="<key>"
-    SECRET="<secret>"
-    TOKEN=`\
     curl --location \
-         --request POST "https://api.hiddb.io/machine/login" \
-         --header "Content-Type: application/json" \
-         --header "Accept: application/json" \
-         --data-raw "{
-             \"access_key\": \"$KEY\",
-             \"secret_key\": \"$SECRET\"
-         }" | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])"`
-    ```
-
-    Once you have your API Token created, all API requests are authorized in the same way. 
-    HIDDB uses the RFC standard `Authorization: Bearer <Token>` interface.
-    When used in an example API request it looks like this:
-
-    ```bash
-    DATABASE_ID="<database_id>"
-    curl --location \
-         --request GET "https://${DATABASE_ID}.hiddb.io/collection" \
+         --request GET "https://<database_url>/collection" \
          --header "Accept: application/json" \
          --header "Authorization: Bearer $TOKEN"
     ```
-
-    Congratulations your have now full and secure control over your personal HIDDB database.
 
   version: 0.2.4
   title: API documentation
@@ -48,12 +22,6 @@ info:
     name: Propretary Licence
     url: "https://hiddb.com/licence"
 tags:
-  - name: Check health
-    description: Check if you are all good
-  - name: User Authentification
-    description: User authentification
-  - name: Machine Authentification
-    description: Machine authentification
   - name: Database
     description: Operations on databases
   - name: Instance
@@ -68,52 +36,6 @@ tags:
     description: Internal operations
 
 paths:
-  ############################## User Authentification ######################################
-
-  /user/register:
-    x-internal: true 
-    $ref: "./user/register.yaml" 
-
-  /user/reset:
-    x-internal: true 
-    $ref: "./user/reset.yaml" 
-
-  /user/update/verify:
-    x-internal: true 
-    $ref: "./user/update/verify.yaml" 
-
-  /user/update/reset:
-    x-internal: true 
-    $ref: "./user/update/reset.yaml" 
-
-  /user/login:
-    x-internal: true 
-    $ref: "./user/login.yaml" 
-
-  /user/logout:
-    x-internal: true 
-    $ref: "./user/logout.yaml" 
-
-  /user/refresh:
-    x-internal: true 
-    $ref: "./user/refresh.yaml" 
-
-  ############################## Machine Authentification ######################################
-
-  /machine/login:
-    $ref: "./machine/login.yaml" 
-
-  /machine:
-    $ref: "./machine/index.yaml" 
-
-  /machine/{machine_id}:
-    $ref: "./machine/machine_id/index.yaml"
-
-  ############################## Check connection ######################################
-
-  /health:
-    x-internal: true 
-    $ref: "./health/index.yaml"
 
   ############################## Databases #############################################
 
