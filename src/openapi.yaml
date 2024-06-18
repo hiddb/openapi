@@ -5,14 +5,12 @@ servers:
 
 info:
   description: |
-    This is the official API documentation for the HIDDB vector search database.
     Example usage:
     
     ```bash
     curl --location \
          --request GET "https://<database_url>/collection" \
          --header "Accept: application/json" \
-         --header "Authorization: Bearer $TOKEN"
     ```
 
   version: 0.3.0
