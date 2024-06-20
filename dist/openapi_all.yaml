@@ -1,45 +1,17 @@
 openapi: 3.0.0
 servers:
-  - url: 'https://api.hiddb.io'
+  - url: 'https://<database_url>'
     description: Access to your HIDDB databases
 info:
   description: |
-    This is the official API documentation for the HIDDB vector search database.
-
-    In order to get started you will need to generate a API access key and secret token.
-    Sign in into the your [dashboard](https://dash.hiddb.com/) and navigate to `API Access` / `Create API Key`.
-    Make sure to copy the token because it won't be shown to you again.
-
-    Now you can sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
+    Example usage:
 
     ```bash
-    KEY="<key>"
-    SECRET="<secret>"
-    TOKEN=`\
     curl --location \
-         --request POST "https://api.hiddb.io/machine/login" \
-         --header "Content-Type: application/json" \
+         --request GET "https://<database_url>/collection" \
          --header "Accept: application/json" \
-         --data-raw "{
-             \"access_key\": \"$KEY\",
-             \"secret_key\": \"$SECRET\"
-         }" | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])"`
     ```
-
-    Once you have your API Token created, all API requests are authorized in the same way. 
-    HIDDB uses the RFC standard `Authorization: Bearer <Token>` interface.
-    When used in an example API request it looks like this:
-
-    ```bash
-    DATABASE_ID="<database_id>"
-    curl --location \
-         --request GET "https://${DATABASE_ID}.hiddb.io/collection" \
-         --header "Accept: application/json" \
-         --header "Authorization: Bearer $TOKEN"
-    ```
-
-    Congratulations your have now full and secure control over your personal HIDDB database.
-  version: 0.2.4
+  version: 0.3.0
   title: API documentation
   termsOfService: 'https:/hiddb.com/terms'
   license:
@@ -47,14 +19,19 @@ info:
     url: 'https://hiddb.com/licence'
 tags:
   - name: Check health
+    x-internal: true
     description: Check if you are all good
   - name: User Authentification
+    x-internal: true
     description: User authentification
   - name: Machine Authentification
+    x-internal: true
     description: Machine authentification
   - name: Database
+    x-internal: true
     description: Operations on databases
   - name: Instance
+    x-internal: true
     description: Operations on instances
   - name: Collection
     description: Operations on collections
@@ -63,6 +40,7 @@ tags:
   - name: Document
     description: Operations on documents
   - name: Internal
+    x-internal: true
     description: Internal operations
 paths:
   /user/register:
@@ -374,6 +352,7 @@ paths:
               type: object
               additionalProperties: false
   /machine/login:
+    x-internal: true
     post:
       tags:
         - Machine Authentification
@@ -437,6 +416,7 @@ paths:
                   minLength: 20
                   maxLength: 20
   /machine:
+    x-internal: true
     post:
       tags:
         - Machine Authentification
@@ -577,6 +557,7 @@ paths:
                   error:
                     type: string
   '/machine/{machine_id}':
+    x-internal: true
     parameters:
       - name: machine_id
         in: path
@@ -628,7 +609,7 @@ paths:
   /health:
     x-internal: true
     servers:
-      - url: 'https://api.hiddb.io'
+      - url: 'https://<database_url>'
     get:
       tags:
         - Check health
@@ -659,6 +640,7 @@ paths:
                   error:
                     type: string
   /database:
+    x-internal: true
     get:
       tags:
         - Database
@@ -1106,6 +1088,7 @@ paths:
                   error:
                     type: string
   '/database/{database_id}':
+    x-internal: true
     parameters:
       - name: database_id
         in: path
@@ -1430,6 +1413,7 @@ paths:
                   error:
                     type: string
   /instance:
+    x-internal: true
     get:
       tags:
         - Instance
@@ -1709,6 +1693,7 @@ paths:
                   error:
                     type: string
   '/instance/{instance_id}':
+    x-internal: true
     parameters:
       - name: instance_id
         in: path
@@ -2103,7 +2088,7 @@ paths:
                     type: string
   /collection:
     servers:
-      - url: 'https://{database_id}.hiddb.io'
+      - url: 'https://<database_url>'
         description: General operations
     get:
       tags:
@@ -2213,7 +2198,7 @@ paths:
                     type: string
   '/collection/{collection_name}':
     servers:
-      - url: 'https://{database_id}.hiddb.io'
+      - url: 'https://<database_url>'
         description: General operations
     get:
       tags:
@@ -2317,7 +2302,7 @@ paths:
                     type: string
   '/collection/{collection_name}/index':
     servers:
-      - url: 'https://{database_id}.hiddb.io'
+      - url: 'https://<database_url>'
         description: General operations
     parameters:
       - name: collection_name
@@ -2471,7 +2456,7 @@ paths:
                     type: string
   '/collection/{collection_name}/index/{field_name}':
     servers:
-      - url: 'https://{database_id}.hiddb.io'
+      - url: 'https://<database_url>'
         description: General operations
     parameters:
       - name: collection_name
@@ -2608,7 +2593,7 @@ paths:
                     type: string
   '/collection/{collection_name}/document':
     servers:
-      - url: 'https://{database_id}.hiddb.io'
+      - url: 'https://<database_url>'
         description: General operations
     parameters:
       - name: collection_name
@@ -2678,7 +2663,7 @@ paths:
                     type: string
   '/collection/{collection_name}/document/search':
     servers:
-      - url: 'https://{database_id}.hiddb.io'
+      - url: 'https://<database_url>'
         description: General operations
     parameters:
       - name: collection_name
@@ -2777,7 +2762,7 @@ paths:
                     type: string
   '/collection/{collection_name}/document/{document_id}':
     servers:
-      - url: 'https://{database_id}.hiddb.io'
+      - url: 'https://<database_url>'
         description: General operations
     parameters:
       - name: collection_name

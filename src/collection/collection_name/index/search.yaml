@@ -1,5 +1,5 @@
 servers:
-  - url: https://{database_id}.hiddb.io
+  - url: https://<database_url>
     description: General operations
 parameters:
   - $ref: "../../../components/parameters/CollectionId.yaml"

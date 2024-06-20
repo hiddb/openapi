@@ -1,47 +1,19 @@
 openapi: 3.0.0
 servers:
-  - url: https://api.hiddb.io
+  - url: https://<database_url>
     description: Access to your HIDDB databases
 
 info:
   description: |
-    This is the official API documentation for the HIDDB vector search database.
-
-    In order to get started you will need to generate a API access key and secret token.
-    Sign in into the your [dashboard](https://dash.hiddb.com/) and navigate to `API Access` / `Create API Key`.
-    Make sure to copy the token because it won't be shown to you again.
-
-    Now you can sign in your machine by requesting a temporary JSON Web Token (JWT) by performing a GET request to `hiddb.io/machine/login`.
-  
+    Example usage:
+    
     ```bash
-    KEY="<key>"
-    SECRET="<secret>"
-    TOKEN=`\
     curl --location \
-         --request POST "https://api.hiddb.io/machine/login" \
-         --header "Content-Type: application/json" \
+         --request GET "https://<database_url>/collection" \
          --header "Accept: application/json" \
-         --data-raw "{
-             \"access_key\": \"$KEY\",
-             \"secret_key\": \"$SECRET\"
-         }" | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])"`
     ```
 
-    Once you have your API Token created, all API requests are authorized in the same way. 
-    HIDDB uses the RFC standard `Authorization: Bearer <Token>` interface.
-    When used in an example API request it looks like this:
-
-    ```bash
-    DATABASE_ID="<database_id>"
-    curl --location \
-         --request GET "https://${DATABASE_ID}.hiddb.io/collection" \
-         --header "Accept: application/json" \
-         --header "Authorization: Bearer $TOKEN"
-    ```
-
-    Congratulations your have now full and secure control over your personal HIDDB database.
-
-  version: 0.2.4
+  version: 0.3.0
   title: API documentation
   termsOfService: "https:/hiddb.com/terms"
   license:
@@ -49,14 +21,19 @@ info:
     url: "https://hiddb.com/licence"
 tags:
   - name: Check health
+    x-internal: true 
     description: Check if you are all good
   - name: User Authentification
+    x-internal: true 
     description: User authentification
   - name: Machine Authentification
+    x-internal: true 
     description: Machine authentification
   - name: Database
+    x-internal: true 
     description: Operations on databases
   - name: Instance
+    x-internal: true 
     description: Operations on instances
   - name: Collection
     description: Operations on collections
@@ -65,6 +42,7 @@ tags:
   - name: Document
     description: Operations on documents
   - name: Internal
+    x-internal: true 
     description: Internal operations
 
 paths:
@@ -101,12 +79,15 @@ paths:
   ############################## Machine Authentification ######################################
 
   /machine/login:
+    x-internal: true 
     $ref: "./machine/login.yaml" 
 
   /machine:
+    x-internal: true 
     $ref: "./machine/index.yaml" 
 
   /machine/{machine_id}:
+    x-internal: true 
     $ref: "./machine/machine_id/index.yaml"
 
   ############################## Check connection ######################################
@@ -118,17 +99,21 @@ paths:
   ############################## Databases #############################################
 
   /database:
+    x-internal: true 
     $ref: "./database/index.yaml"
 
   /database/{database_id}:
+    x-internal: true 
     $ref: "./database/database_id/index.yaml"
 
   # ############################## Instances #############################################
 
   /instance:
+    x-internal: true 
     $ref: "./instance/index.yaml"
 
   /instance/{instance_id}:
+    x-internal: true 
     $ref: "./instance/instance_id/index.yaml"
 
   ############################## Collection #############################################
