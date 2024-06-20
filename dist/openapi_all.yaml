@@ -18,13 +18,2074 @@ info:
     name: Propretary Licence
     url: 'https://hiddb.com/licence'
 tags:
+  - name: Check health
+    x-internal: true
+    description: Check if you are all good
+  - name: User Authentification
+    x-internal: true
+    description: User authentification
+  - name: Machine Authentification
+    x-internal: true
+    description: Machine authentification
+  - name: Database
+    x-internal: true
+    description: Operations on databases
+  - name: Instance
+    x-internal: true
+    description: Operations on instances
   - name: Collection
     description: Operations on collections
   - name: Index
     description: Operations on indices
   - name: Document
     description: Operations on documents
+  - name: Internal
+    x-internal: true
+    description: Internal operations
 paths:
+  /user/register:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: Register user
+      description: Register user. Email containing URL with OTP is send out to user.
+      operationId: registerUser
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '409':
+          description: conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+  /user/reset:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: User password reset
+      description: Send URL containing OTP to email adress provided by user to reset password.
+      operationId: resetPassword
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+  /user/update/verify:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: Verify user's email
+      description: Verify email adress provided by the user.
+      operationId: updateVerifyEmail
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - otp
+              additionalProperties: false
+              properties:
+                user_id:
+                  type: string
+                  minLength: 18
+                  maxLength: 18
+                  pattern: '^[a-z0-9]{18,18}$'
+                otp:
+                  type: string
+  /user/update/reset:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      summary: Update password
+      description: Reset password as requested by the user.
+      operationId: updateResetPassword
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - otp
+                - password
+              additionalProperties: false
+              properties:
+                user_id:
+                  type: string
+                otp:
+                  type: string
+                password:
+                  type: string
+                  format: password
+  /user/login:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      description: User login using access and secret token.
+      summary: User login
+      operationId: loginUser
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - access_token
+                  - type
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+      requestBody:
+        description: Login email and password in exchange for JWT.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              additionalProperties: false
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                stay_logged_in:
+                  type: boolean
+                  default: false
+  /user/logout:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      description: Log user out
+      summary: Log out user
+      operationId: logoutUser
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+  /user/refresh:
+    x-internal: true
+    post:
+      tags:
+        - User Authentification
+      description: Refresh access token using cookie
+      summary: Refresh JWT
+      operationId: refreshToken
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - access_token
+                  - type
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+      requestBody:
+        description: Exchange access and secret token for JSON web token (JWT).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+  /machine/login:
+    x-internal: true
+    post:
+      tags:
+        - Machine Authentification
+      description: Machine login using access and secret token.
+      summary: Machine login
+      operationId: machineLogin
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - access_token
+                  - type
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                  type:
+                    type: string
+                    enum:
+                      - Bearer
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        description: Exchange access and secret token for JSON web token (JWT).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - access_key
+                - secret_key
+              additionalProperties: false
+              properties:
+                access_key:
+                  type: string
+                  minLength: 20
+                  maxLength: 20
+                secret_key:
+                  type: string
+                  minLength: 20
+                  maxLength: 20
+  /machine:
+    x-internal: true
+    post:
+      tags:
+        - Machine Authentification
+      description: Create a new machine account.
+      summary: New machine
+      operationId: createMachine
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - machine_name
+                  - id
+                  - key
+                  - secret
+                  - permission
+                properties:
+                  machine_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                  key:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                  secret:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                  permission:
+                    type: string
+                    enum:
+                      - write
+                      - read
+                      - admin
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - machine_name
+                - permission
+              additionalProperties: false
+              properties:
+                machine_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                permission:
+                  type: string
+                  enum:
+                    - write
+                    - read
+                    - admin
+    get:
+      tags:
+        - Machine Authentification
+      description: Get all machines in organization
+      summary: Get all machines
+      operationId: getMachines
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - machines
+                properties:
+                  machines:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - machine_name
+                        - key
+                        - permission
+                      properties:
+                        machine_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                        key:
+                          type: string
+                          minLength: 20
+                          maxLength: 20
+                        permission:
+                          type: string
+                          enum:
+                            - write
+                            - read
+                            - admin
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+  '/machine/{machine_id}':
+    x-internal: true
+    parameters:
+      - name: machine_id
+        in: path
+        description: The ID of the machine
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18}$'
+    delete:
+      tags:
+        - Machine Authentification
+      description: Delete machine account
+      summary: Delete machine account
+      operationId: deleteMachine
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+  /health:
+    x-internal: true
+    servers:
+      - url: 'https://<database_url>'
+    get:
+      tags:
+        - Check health
+      description: Check access to databases
+      summary: Check health database
+      operationId: checkHealth
+      responses:
+        '200':
+          description: successfull operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                default: Ok
+                enum:
+                  - Ok
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+  /database:
+    x-internal: true
+    get:
+      tags:
+        - Database
+      description: Get information about databases
+      summary: Get databases
+      operationId: listDatabase
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - databases
+                properties:
+                  databases:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - database_name
+                        - organization_id
+                        - created_at
+                        - deleted_at
+                        - instances
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        database_name:
+                          type: string
+                          minLength: 3
+                          maxLength: 20
+                          pattern: '^[a-z0-9_-]{3,20}$'
+                        organization_id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{3,20}$'
+                          example: xxxxxxxxxxxxxxxxxx
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        instances:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: false
+                            required:
+                              - id
+                              - created_at
+                              - deleted_at
+                              - status
+                              - type
+                              - server
+                              - volume_size
+                              - location
+                            properties:
+                              id:
+                                type: string
+                                minLength: 18
+                                maxLength: 18
+                                pattern: '^[a-z0-9]{18,18}$'
+                              created_at:
+                                type: string
+                                format: date-time
+                              deleted_at:
+                                type: string
+                                format: date-time
+                                nullable: true
+                              status:
+                                type: string
+                                enum:
+                                  - awake
+                                  - provisioning
+                                  - wakingup
+                                  - asleep
+                              type:
+                                type: string
+                                description: Instance type
+                                default: s
+                                example: s
+                                enum:
+                                  - xs
+                                  - s
+                                  - m
+                                  - l
+                                  - xl
+                              server:
+                                type: object
+                                nullable: true
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    type: string
+                                    minLength: 18
+                                    maxLength: 18
+                                    pattern: '^[a-z0-9]{18,18}$'
+                              volume_size:
+                                type: number
+                                description: Size of mounted and volume in gb
+                                default: 10
+                                example: 100
+                                minimum: 10
+                                maximum: 10000
+                                multipleOf: 1
+                              location:
+                                type: string
+                                description: Physical instance location
+                                enum:
+                                  - hel1
+                                  - nbg1
+                                  - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+    post:
+      tags:
+        - Database
+      description: Create new database.
+      summary: Create database
+      operationId: createDatabase
+      requestBody:
+        description: Newly created database.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - database_name
+              additionalProperties: false
+              properties:
+                database_name:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                  pattern: '^[a-z0-9_-]{3,20}$'
+                instances:
+                  description: Currently only databases with up to a single instance are supported.
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: false
+                    properties:
+                      location:
+                        type: string
+                        enum:
+                          - hel1
+                          - nbg1
+                          - fsn1
+                      type:
+                        type: string
+                        enum:
+                          - xs
+                          - s
+                          - m
+                          - l
+                          - xl
+                      volume_size:
+                        type: number
+                        description: Size of mounted and volume in gb
+                        default: 10
+                        example: 100
+                        minimum: 10
+                        maximum: 10000
+                        multipleOf: 1
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  database_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                  organization_id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  instances:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  database_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                  organization_id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  instances:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+  '/database/{database_id}':
+    x-internal: true
+    parameters:
+      - name: database_id
+        in: path
+        description: The ID of the database
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18}$'
+    get:
+      tags:
+        - Database
+      description: Get information about specific database
+      summary: Get database
+      operationId: getDatabase
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  database_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                  organization_id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  instances:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+    delete:
+      tags:
+        - Database
+      description: Delete a specific database
+      summary: Delete database
+      operationId: deleteDatabase
+      responses:
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  database_name:
+                    type: string
+                    minLength: 3
+                    maxLength: 20
+                    pattern: '^[a-z0-9_-]{3,20}$'
+                  organization_id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{3,20}$'
+                    example: xxxxxxxxxxxxxxxxxx
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  instances:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+  /instance:
+    x-internal: true
+    get:
+      tags:
+        - Instance
+      description: Get information about instances
+      summary: Get instances
+      operationId: listInstances
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - instances
+                additionalProperties: false
+                properties:
+                  instances:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
+                      properties:
+                        id:
+                          type: string
+                          minLength: 18
+                          maxLength: 18
+                          pattern: '^[a-z0-9]{18,18}$'
+                        created_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                            - awake
+                            - provisioning
+                            - wakingup
+                            - asleep
+                        type:
+                          type: string
+                          description: Instance type
+                          default: s
+                          example: s
+                          enum:
+                            - xs
+                            - s
+                            - m
+                            - l
+                            - xl
+                        server:
+                          type: object
+                          nullable: true
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              minLength: 18
+                              maxLength: 18
+                              pattern: '^[a-z0-9]{18,18}$'
+                        volume_size:
+                          type: number
+                          description: Size of mounted and volume in gb
+                          default: 10
+                          example: 100
+                          minimum: 10
+                          maximum: 10000
+                          multipleOf: 1
+                        location:
+                          type: string
+                          description: Physical instance location
+                          enum:
+                            - hel1
+                            - nbg1
+                            - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+    post:
+      tags:
+        - Instance
+      description: Create new instance. Currently you can only create a single instance per database. In future versions we will not restrict the number of instances per database.
+      summary: Create instance
+      operationId: createInstance
+      requestBody:
+        description: Newly created Instance.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - database_id
+              additionalProperties: false
+              properties:
+                database_id:
+                  type: string
+                  pattern: '^[a-z0-9]{18,18}$'
+                  example: xxxxxxxxxxxxxxxxxx
+                  minLength: 3
+                type:
+                  type: string
+                  description: Instance type
+                  default: s
+                  example: s
+                  enum:
+                    - xs
+                    - s
+                    - m
+                    - l
+                    - xl
+                volume_size:
+                  type: number
+                  description: Size of mounted and volume in gb
+                  default: 10
+                  example: 100
+                  minimum: 10
+                  maximum: 10000
+                  multipleOf: 1
+                location:
+                  type: string
+                  description: Physical instance location
+                  enum:
+                    - hel1
+                    - nbg1
+                    - fsn1
+      responses:
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+  '/instance/{instance_id}':
+    x-internal: true
+    parameters:
+      - name: instance_id
+        in: path
+        description: The ID of the instance
+        example: xxxxxxxxxxxxxxxxxx
+        required: true
+        schema:
+          type: string
+          minLength: 18
+          maxLength: 18
+          pattern: '^[a-z0-9]{18}$'
+    get:
+      tags:
+        - Instance
+      description: Get information about specific instance
+      summary: Get instance
+      operationId: getInstance
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+    put:
+      x-internal: true
+      tags:
+        - Instance
+      description: Awake or put instance to sleep
+      summary: 'Instance awake, sleep'
+      operationId: updateInstanceStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              additionalProperties: false
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - awake
+                    - asleep
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+    delete:
+      tags:
+        - Instance
+      description: Delete a specific Instance
+      summary: Delete instance
+      operationId: deleteInstance
+      responses:
+        '202':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
+                properties:
+                  id:
+                    type: string
+                    minLength: 18
+                    maxLength: 18
+                    pattern: '^[a-z0-9]{18,18}$'
+                  created_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - awake
+                      - provisioning
+                      - wakingup
+                      - asleep
+                  type:
+                    type: string
+                    description: Instance type
+                    default: s
+                    example: s
+                    enum:
+                      - xs
+                      - s
+                      - m
+                      - l
+                      - xl
+                  server:
+                    type: object
+                    nullable: true
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        minLength: 18
+                        maxLength: 18
+                        pattern: '^[a-z0-9]{18,18}$'
+                  volume_size:
+                    type: number
+                    description: Size of mounted and volume in gb
+                    default: 10
+                    example: 100
+                    minimum: 10
+                    maximum: 10000
+                    multipleOf: 1
+                  location:
+                    type: string
+                    description: Physical instance location
+                    enum:
+                      - hel1
+                      - nbg1
+                      - fsn1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                additionalProperties: true
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
   /collection:
     servers:
       - url: 'https://<database_url>'

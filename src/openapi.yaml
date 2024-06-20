@@ -20,14 +20,101 @@ info:
     name: Propretary Licence
     url: "https://hiddb.com/licence"
 tags:
+  - name: Check health
+    x-internal: true 
+    description: Check if you are all good
+  - name: User Authentification
+    x-internal: true 
+    description: User authentification
+  - name: Machine Authentification
+    x-internal: true 
+    description: Machine authentification
+  - name: Database
+    x-internal: true 
+    description: Operations on databases
+  - name: Instance
+    x-internal: true 
+    description: Operations on instances
   - name: Collection
     description: Operations on collections
   - name: Index
     description: Operations on indices
   - name: Document
     description: Operations on documents
+  - name: Internal
+    x-internal: true 
+    description: Internal operations
 
 paths:
+  ############################## User Authentification ######################################
+
+  /user/register:
+    x-internal: true 
+    $ref: "./user/register.yaml" 
+
+  /user/reset:
+    x-internal: true 
+    $ref: "./user/reset.yaml" 
+
+  /user/update/verify:
+    x-internal: true 
+    $ref: "./user/update/verify.yaml" 
+
+  /user/update/reset:
+    x-internal: true 
+    $ref: "./user/update/reset.yaml" 
+
+  /user/login:
+    x-internal: true 
+    $ref: "./user/login.yaml" 
+
+  /user/logout:
+    x-internal: true 
+    $ref: "./user/logout.yaml" 
+
+  /user/refresh:
+    x-internal: true 
+    $ref: "./user/refresh.yaml" 
+
+  ############################## Machine Authentification ######################################
+
+  /machine/login:
+    x-internal: true 
+    $ref: "./machine/login.yaml" 
+
+  /machine:
+    x-internal: true 
+    $ref: "./machine/index.yaml" 
+
+  /machine/{machine_id}:
+    x-internal: true 
+    $ref: "./machine/machine_id/index.yaml"
+
+  ############################## Check connection ######################################
+
+  /health:
+    x-internal: true 
+    $ref: "./health/index.yaml"
+
+  ############################## Databases #############################################
+
+  /database:
+    x-internal: true 
+    $ref: "./database/index.yaml"
+
+  /database/{database_id}:
+    x-internal: true 
+    $ref: "./database/database_id/index.yaml"
+
+  # ############################## Instances #############################################
+
+  /instance:
+    x-internal: true 
+    $ref: "./instance/index.yaml"
+
+  /instance/{instance_id}:
+    x-internal: true 
+    $ref: "./instance/instance_id/index.yaml"
 
   ############################## Collection #############################################
 
